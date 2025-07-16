@@ -13,7 +13,7 @@ class StoryAvatar extends StatefulWidget {
     super.key,
     required this.imageUrl,
     this.isRead = false,
-    this.size = 70,
+    this.size = 68,
     required this.onClick,
   });
 
@@ -27,72 +27,92 @@ class _StoryAvatarState extends State<StoryAvatar> {
   @override
   Widget build(BuildContext context) {
     final bool isValidUrl = widget.imageUrl?.isNotEmpty ?? false;
-
     return GestureDetector(
-      onTap: widget.onClick,
-      child: Container(
-        width: widget.size,
-        height: widget.size,
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: widget.isRead ? Colors.grey.shade400 : Colors.green,
-            width: 2,
+        onTap: widget.onClick,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: widget.isRead
+                ? LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Color(0xFFD2D6DB), Color(0xFFD2D6DB)])
+                : LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [Colors.green, Colors.blue],
+                  ),
           ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (isValidUrl)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14), // 16 - padding
-                child: Image.network(
-                  widget.imageUrl!,
-                  width: widget.size - 4,
-                  height: widget.size - 4,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (_, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      Future.microtask(() {
-                        if (mounted) setState(() => _isLoading = false);
-                      });
-                    }
-                    return child;
-                  },
-                  errorBuilder: (_, __, ___) {
-                    setState(() => _isLoading = false);
-                    return const SizedBox.shrink();
-                  },
-                ),
-              )
-            else
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: SvgPicture.asset(
-                  AppIcons.person,
-                  width: widget.size - 4,
-                  height: widget.size - 4,
-                  fit: BoxFit.cover,
-                ),
-              ),
-
-            if (_isLoading && isValidUrl)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
+          padding: EdgeInsets.all(2),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                if (isValidUrl)
+                  Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            widget.imageUrl!,
+                            width: widget.size - 4,
+                            height: widget.size - 4,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (_, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                Future.microtask(() {
+                                  if (mounted)
+                                    setState(() => _isLoading = false);
+                                });
+                              }
+                              return child;
+                            },
+                            errorBuilder: (_, __, ___) {
+                              setState(() => _isLoading = false);
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          top: 45,
+                          left: 5,
+                          child: Text("Story text...",
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.white)))
+                    ],
+                  )
+                else
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(14),
-                    color: Colors.black12,
+                    child: SvgPicture.asset(
+                      AppIcons.person,
+                      width: widget.size - 4,
+                      height: widget.size - 4,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  child: const Center(
-                    child: CupertinoActivityIndicator(),
+                if (_isLoading && isValidUrl)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: Colors.black12,
+                      ),
+                      child: const Center(
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
+              ],
+            ),
+          ),
+        ));
   }
 }
-

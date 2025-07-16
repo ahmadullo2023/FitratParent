@@ -100,15 +100,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
             const SizedBox(height: 8),
           ],
           Expanded(
-            child: CustomPaginationWidget<ResultsModel>(
-              spacing: 12,
-              isListView: false,
-              controller: _pagingController,
-              itemBuilder: (item) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  child: ItemResults(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: CustomPaginationWidget<ResultsModel>(
+                spacing: 0,
+                isListView: false,
+                controller: _pagingController,
+                itemBuilder: (item) {
+                  return ItemResults(
                     topImageUrl: item.file?.file,
                     studentImageUrl: item.file?.file,
                     studentName: item.fullName ?? "Ann",
@@ -134,18 +133,18 @@ class _ResultsScreenState extends State<ResultsScreen> {
                               url: item.file!.file!,
                             );
                     },
-                  ),
-                );
-              },
-              getItems: (page) async {
-                try {
-                  final result = await resultsRepository.getResults(
-                      fkId: selectedFkId, page: page);
-                  return result;
-                } catch (e) {
-                  rethrow;
-                }
-              },
+                  );
+                },
+                getItems: (page) async {
+                  try {
+                    final result = await resultsRepository.getResults(
+                        fkId: selectedFkId, page: page);
+                    return result;
+                  } catch (e) {
+                    rethrow;
+                  }
+                },
+              ),
             ),
           ),
         ],

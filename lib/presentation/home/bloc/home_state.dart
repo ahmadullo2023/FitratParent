@@ -4,7 +4,7 @@ class HomeState {
   final StoriesStatus status;
   final CoursesStatus coursesStatus;
   final List<StoryModel>? storiesModel;
-  final List<StudentModel>? students;
+  // final List<StudentModel>? students;
   final LearningStatus? learningStatus;
   final LearningResponse? learningResponse;
 
@@ -14,7 +14,7 @@ class HomeState {
     this.storiesModel,
     this.learningResponse,
     this.learningStatus,
-    this.students,
+    // this.students,
   });
 
   HomeState copyWith({
@@ -31,7 +31,7 @@ class HomeState {
       learningStatus: learningStatus ?? this.learningStatus,
       learningResponse: learningResponse ?? this.learningResponse,
       storiesModel: storiesModel ?? this.storiesModel,
-      students: students ?? this.students,
+      // students: students ?? this.students,
     );
   }
 }

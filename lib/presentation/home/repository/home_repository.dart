@@ -12,7 +12,7 @@ class HomeRepository {
     required String id,
   }) async {
     final response = await requestHelper.getWithAuth(
-      "/appsettings/student/$id",
+      "/parents/retrive/$id",
       log: true,
     );
 
@@ -69,17 +69,17 @@ class HomeRepository {
    }
   }
 
-  Future<LearningResponse> getLearning () async {
-    try {
-      final response = await requestHelper.getWithAuth(
-        "/appsettings/learning/", log: true
-      );
-      return LearningResponse.fromJson(response);
-    } catch (e,s) {
-      Logger().e(["ERROR", e, s]);
-      rethrow;
-    }
-  }
+  // Future<LearningResponse> getLearning () async {
+  //   try {
+  //     final response = await requestHelper.getWithAuth(
+  //       "/appsettings/learning/", log: true
+  //     );
+  //     return LearningResponse.fromJson(response);
+  //   } catch (e,s) {
+  //     Logger().e(["ERROR", e, s]);
+  //     rethrow;
+  //   }
+  // }
 
 }
 

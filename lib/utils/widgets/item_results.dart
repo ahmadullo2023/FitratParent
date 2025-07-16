@@ -36,7 +36,7 @@ class ItemResults extends StatelessWidget {
         ),
         child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -99,20 +99,26 @@ class ItemResults extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 2),
-              Text(
-                resultType,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  resultType,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               const SizedBox(height: 2),
-              Text(
-                "Overall - $score",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Color(0xFF6C737F),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Overall - $score",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: Color(0xFF6C737F),
+                  ),
                 ),
               ),
             ],

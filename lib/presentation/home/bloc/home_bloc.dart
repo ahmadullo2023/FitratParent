@@ -29,35 +29,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
 
-    on<LoadCourses>((event, emit) async {
-      emit(state.copyWith(coursesStatus: CoursesStatus.loading));
-      try {
-        final result = await homeRepository.getStudents();
-        emit(state.copyWith(
-            coursesStatus: CoursesStatus.success,
-            students: result
-        ));
-      } on DioException catch (e) {
-        emit(state.copyWith(coursesStatus: CoursesStatus.error));
-      } catch (e) {
-        emit(state.copyWith(coursesStatus: CoursesStatus.error));
-      }
-    });
+    // on<LoadCourses>((event, emit) async {
+    //   emit(state.copyWith(coursesStatus: CoursesStatus.loading));
+    //   try {
+    //     final result = await homeRepository.getStudents();
+    //     emit(state.copyWith(
+    //         coursesStatus: CoursesStatus.success,
+    //         students: result
+    //     ));
+    //   } on DioException catch (e) {
+    //     emit(state.copyWith(coursesStatus: CoursesStatus.error));
+    //   } catch (e) {
+    //     emit(state.copyWith(coursesStatus: CoursesStatus.error));
+    //   }
+    // });
 
-    on<LoadLearnings>((event, emit) async {
-      emit(state.copyWith(learningStatus: LearningStatus.loading));
-      try {
-        final result = await homeRepository.getLearning();
-        emit(state.copyWith(
-            learningStatus: LearningStatus.success,
-          learningResponse: result
-        ));
-      } on DioException catch (e) {
-        emit(state.copyWith(learningStatus: LearningStatus.error));
-      } catch (e) {
-        emit(state.copyWith(learningStatus: LearningStatus.error));
-      }
-    });
+    // on<LoadLearnings>((event, emit) async {
+    //   emit(state.copyWith(learningStatus: LearningStatus.loading));
+    //   try {
+    //     final result = await homeRepository.getLearning();
+    //     emit(state.copyWith(
+    //         learningStatus: LearningStatus.success,
+    //       learningResponse: result
+    //     ));
+    //   } on DioException catch (e) {
+    //     emit(state.copyWith(learningStatus: LearningStatus.error));
+    //   } catch (e) {
+    //     emit(state.copyWith(learningStatus: LearningStatus.error));
+    //   }
+    // });
 
   }
 }

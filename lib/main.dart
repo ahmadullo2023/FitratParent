@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: GoogleFonts.outfit().fontFamily,
       ),
-      home: HiveHelper.isLoggedIn() ? HolderScreen() : const SplashScreen(),
+      home: SplashScreen(),
       // home: HolderScreen(),
     );
   }

@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     context.read<MainBloc>().add(LoadStudent());
     context.read<HomeBloc>().add(LoadStories());
-    context.read<HomeBloc>().add(LoadCourses());
-    context.read<HomeBloc>().add(LoadLearnings());
+    // context.read<HomeBloc>().add(LoadCourses());
+    // context.read<HomeBloc>().add(LoadLearnings());
     getResults();
     getEvents();
   }
@@ -80,8 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   onRefresh: () async {
                     context.read<MainBloc>().add(LoadStudent());
                     context.read<HomeBloc>().add(LoadStories());
-                    context.read<HomeBloc>().add(LoadCourses());
-                    context.read<HomeBloc>().add(LoadLearnings());
+                    // context.read<HomeBloc>().add(LoadCourses());
+                    // context.read<HomeBloc>().add(LoadLearnings());
                     getResults();
                   },
                   child: SingleChildScrollView(
