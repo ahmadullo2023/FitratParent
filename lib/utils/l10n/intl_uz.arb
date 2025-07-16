@@ -1,0 +1,8 @@
+{
+  "@@locale": "uz",
+  "somethingWentWrong": "Nimadir noto‘g‘ri ketdi",
+  "unexpectedError": "Kutilmagan xatolik yuz berdi",
+  "serverError": "Serverda xatolik yuz berdi",
+  "tryAgain": "Qayta urinib ko‘ring",
+  "noInternet": "Internet aloqasi yo‘q"
+}

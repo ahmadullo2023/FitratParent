@@ -1,0 +1,8 @@
+{
+  "@@locale": "en",
+  "somethingWentWrong": "Something went wrong",
+  "unexpectedError": "Unexpected error occurred",
+  "serverError": "Server error occurred",
+  "tryAgain": "Try again",
+  "noInternet": "No Internet Connection"
+}

@@ -1,0 +1,59 @@
+import 'package:fitrat_parent2/data/db/cache.dart';
+import 'package:fitrat_parent2/data/hive/hive_helper.dart';
+import 'package:fitrat_parent2/presentation/balance/bloc/balance_bloc.dart';
+import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
+import 'package:fitrat_parent2/presentation/main/bloc/main_bloc.dart';
+import 'package:fitrat_parent2/presentation/main/pages/main_page.dart';
+import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
+import 'package:fitrat_parent2/utils/servise/no_internet.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+final navigatorKey= GlobalKey<NavigatorState>();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  InternetChecker().initialize();
+
+  await initializeCache();
+  await HiveHelper.init();
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<MainBloc>(
+          create: (_) => MainBloc()..add(LoadStudent()),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (_) => HomeBloc()..add(LoadStories()),
+        ),
+        BlocProvider<BalanceBloc>(
+          create: (_) => BalanceBloc()..add(GetBalances()),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // return App();
+    return MaterialApp(
+      navigatorKey: InternetChecker().navigatorKey,
+      // navigatorKey: navigatorKey,
+      showSemanticsDebugger: false,
+      title: 'Fitrat Parent',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        fontFamily: GoogleFonts.outfit().fontFamily,
+      ),
+      home: HiveHelper.isLoggedIn() ? HolderScreen() : const SplashScreen(),
+      // home: HolderScreen(),
+    );
+  }
+}
