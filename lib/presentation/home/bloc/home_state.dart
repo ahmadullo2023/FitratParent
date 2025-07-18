@@ -4,9 +4,9 @@ class HomeState {
   final StoriesStatus status;
   final CoursesStatus coursesStatus;
   final List<StoryModel>? storiesModel;
-  // final List<StudentModel>? students;
+   final List<StudentModel>? students;
   final LearningStatus? learningStatus;
-  final LearningResponse? learningResponse;
+  final List<LearningResponse>? learningResponse;
 
   HomeState({
     this.status = StoriesStatus.loading,
@@ -14,13 +14,13 @@ class HomeState {
     this.storiesModel,
     this.learningResponse,
     this.learningStatus,
-    // this.students,
+    this.students,
   });
 
   HomeState copyWith({
     StoriesStatus? status,
     LearningStatus? learningStatus,
-    LearningResponse? learningResponse,
+    List<LearningResponse>? learningResponse,
     CoursesStatus? coursesStatus,
     List<StoryModel>? storiesModel,
     List<StudentModel>? students,
@@ -31,7 +31,7 @@ class HomeState {
       learningStatus: learningStatus ?? this.learningStatus,
       learningResponse: learningResponse ?? this.learningResponse,
       storiesModel: storiesModel ?? this.storiesModel,
-      // students: students ?? this.students,
+      students: students ?? this.students,
     );
   }
 }

@@ -780,6 +780,8 @@ _$LearningResponseImpl _$$LearningResponseImplFromJson(
     _$LearningResponseImpl(
       studentId: json['student_id'] as String?,
       fullName: json['full_name'] as String?,
+      phone: json['phone'] as String?,
+      balance: (json['balance'] as num?)?.toDouble(),
       overallLearning: (json['overall_learning'] as num?)?.toDouble(),
       courseScores: json['course_scores'] as List<dynamic>?,
     );
@@ -789,6 +791,8 @@ Map<String, dynamic> _$$LearningResponseImplToJson(
     <String, dynamic>{
       'student_id': instance.studentId,
       'full_name': instance.fullName,
+      'phone': instance.phone,
+      'balance': instance.balance,
       'overall_learning': instance.overallLearning,
       'course_scores': instance.courseScores,
     };

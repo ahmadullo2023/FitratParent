@@ -49,7 +49,7 @@ class ConnectionFailure extends Failure {
   const ConnectionFailure() : super();
 
   @override
-  String getLocalizedMessage(BuildContext context) => S.of(context).noInternet;
+  String getLocalizedMessage(BuildContext context) => "Internet ulanmagan";
 }
 
 class UnknownFailure extends Failure {

@@ -9,4 +9,4 @@ class LoadCourses extends HomeEvent {}
 
 class LoadResults extends HomeEvent {}
 
-// class LoadLearnings extends HomeEvent {}
+class LoadLearnings extends HomeEvent {}

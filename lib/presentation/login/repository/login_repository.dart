@@ -12,7 +12,6 @@ class AuthRepository {
     required String phoneNumber,
     required String password,
   }) async {
-
     final body = {
       "password": password,
       "phone": "+$phoneNumber",
@@ -26,7 +25,12 @@ class AuthRepository {
 
     try {
       final loginModel = LoginModel.fromJson(response);
-      log('Refresh_____${loginModel.refreshToken}');
+
+      if (loginModel.role != "Parents") {
+        throw Exception("Faqat ota-onalar (Parents) tizimga kira oladi.");
+      }
+
+      // Cache va Hive yozuvlari
       await cache.setString("access_token", loginModel.accessToken ?? "");
       await cache.setString("refresh_token", loginModel.refreshToken ?? "");
       await cache.setString("role", loginModel.role ?? "");
@@ -34,12 +38,16 @@ class AuthRepository {
       await cache.setString("studentIddddddd", loginModel.studentId ?? "");
       await cache.setString("phone", loginModel.phone ?? "");
       await HiveHelper.setUserId(loginModel.userId ?? "");
+
       return loginModel;
     } catch (e, s) {
       Logger().e([e, s]);
       rethrow;
     }
   }
+
+
+
 
   Future<dynamic> setPassword(
       {required String phoneNumber,

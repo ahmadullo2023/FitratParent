@@ -528,9 +528,10 @@ class LearningResponse with _$LearningResponse {
   @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 
   const factory LearningResponse({
-
     String? studentId,
     String? fullName,
+    String? phone,
+    double? balance,
     double? overallLearning,
     List<dynamic>? courseScores
 

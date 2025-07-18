@@ -64,9 +64,14 @@ dependencies:
   connectivity_plus: ^6.1.4
   syncfusion_flutter_pdfviewer: ^29.1.38
   flutter_file_downloader: ^2.1.0
-  open_file_plus: ^3.4.1+1
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.21.2
+  riverpod_annotation: ^2.6.1
+#  open_file_plus: ^3.4.1+1
   http: ^1.4.0
   sms_autofill: ^2.4.1
+  another_flushbar: ^1.12.30
+
 
   video_player: ^2.10.0
   #  chuck_interceptor: ^2.2.4
@@ -103,3 +108,4 @@ flutter:
         - asset: fonts/Outfit_Medium.ttf
 
 #        mKH7HOFt
+#        aYzhunNM

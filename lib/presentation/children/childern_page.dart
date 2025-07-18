@@ -1,8 +1,13 @@
 import 'package:fitrat_parent2/presentation/children/chat_screen.dart';
+import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
+import '../comments/pages/comments_page.dart';
+import '../home/home_screen.dart';
+import '../home/widgets/item_courses.dart';
 
 class ChildernPage extends StatefulWidget {
   const ChildernPage({super.key});
@@ -14,115 +19,76 @@ class ChildernPage extends StatefulWidget {
 class _ChildernPageState extends State<ChildernPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back)),
-        title: Text(
-          "Farzandim",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ChatPage()));
-              },
-              child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
-          SizedBox(width: 10),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Farzandim",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 20),
-              _buildChildCard(
-                name: "James Wilson",
-                subjects: "Ingliz tili, Matematika",
-                balance: "300,000",
-                progress: 88,
-                avatar: Icons.person,
-                balanceColor: Colors.green,
-              ),
-              const SizedBox(height: 28),
-              const Text(
-                "Kurslar",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                height: 72,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: const Border(
-                    top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                    left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                    right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                    bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4.5),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Container(
-                            height: 48,
-                            width: 48,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: AppColors.blueRibbon100,
-                            ),
-                          )),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Ingliz tili - Intermediate",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "Mahmudova Aziza",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xFF6C737F),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    SvgPicture.asset("assets/icons/Progress2.svg"),
-                  ],
-                ),
-              ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back)),
+            title: Text(
+              "Farzandim",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+            centerTitle: true,
+            actions: [
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CommentsPage(id: '92b0b156-a097-46c6-92d9-d92aaeda099b')));
+                  },
+                  child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
+              SizedBox(width: 10),
             ],
           ),
-        ),
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Farzandim",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildChildCard(
+                    name: state.learningResponse?.first.fullName?.toString() ??
+                        "",
+                    subjects: "Kimyo noldan",
+                    balance:
+                        state.learningResponse?.first.balance?.toString() ??
+                            "0",
+                    progress: state.learningResponse?.first.overallLearning
+                            ?.toInt() ??
+                        0,
+                    avatar: Icons.person,
+                    balanceColor: Colors.green,
+                  ),
+                  const SizedBox(height: 28),
+                  const Text(
+                    "Kurslar",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  const SizedBox(height: 16),
+                  ItemCourses(
+                      onClick: () {},
+                      color: Color(0xFF35B26A),
+                      subject: "Kimyo noldan",
+                      name: state.learningResponse!.first.fullName.toString(),
+                      percentage:
+                          state.learningResponse!.first.overallLearning!),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -201,7 +167,7 @@ class _ChildernPageState extends State<ChildernPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "500,000",
+                              formatMoney(balance),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -262,7 +228,7 @@ class _ChildernPageState extends State<ChildernPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "88%",
+                              "${progress}%",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -292,4 +258,3 @@ class _ChildernPageState extends State<ChildernPage> {
     );
   }
 }
-

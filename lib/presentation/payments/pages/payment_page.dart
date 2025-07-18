@@ -1,5 +1,7 @@
+import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/pages/payment_single.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../utils/app_colors.dart';
 
 class PaymentsPage extends StatelessWidget {
@@ -7,71 +9,61 @@ class PaymentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "To'lovlar",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 160,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    child: SizedBox(
-                      width: 300,
-                      child: _buildChildCard(
-                        name: "James Wilson",
-                        subjects: "Ingliz tili, Matematika",
-                        balance: "300,000",
-                        progress: 88,
-                        avatar: Icons.person,
-                        balanceColor: Colors.green,
-                        context: context,
-                      ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "To'lovlar",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 160,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 1,
+                      itemBuilder: (context, index) =>
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 7),
+                            child: SizedBox(
+                              width: 330,
+                              child:
+                              _buildChildCard(
+                                name: state.learningResponse?.first.fullName?.toString() ?? "",
+                                subjects: "Kimyo noldan",
+                                balance: state.learningResponse?.first.balance?.toString() ?? "0",
+                                progress: state.learningResponse?.first.overallLearning?.toInt() ?? 0,
+                                avatar: Icons.person,
+                                balanceColor: Colors.green,
+                                context: context,
+                              ),
+
+                            ),
+                          ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 28),
+                  const Text(
+                    "To‘lovlar tarixi",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  _paymentItem("Click", "250,000UZS", "09.04.2024, 12:00"),
+                  const SizedBox(height: 12),
+                  _paymentItem("Payme", "250,000UZS", "09.04.2024, 12:00"),
+                ],
               ),
-              // SizedBox(
-              //   height: 200,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     itemCount: 3,
-              //       itemBuilder: (context, index) =>
-              //   _buildChildCard(
-              //     name: "James Wilson",
-              //     subjects: "Ingliz tili, Matematika",
-              //     balance: "300,000",
-              //     progress: 88,
-              //     avatar: Icons.person,
-              //     balanceColor: Colors.green,
-              //     context: context,
-              //   ),
-              //   ),
-              // ),
-              const SizedBox(height: 28),
-              const Text(
-                "To‘lovlar tarixi",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              _paymentItem("Click", "250,000UZS", "09.04.2024, 12:00"),
-              const SizedBox(height: 12),
-              _paymentItem("Payme", "250,000UZS", "09.04.2024, 12:00"),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -188,7 +180,7 @@ class PaymentsPage extends StatelessWidget {
                   children: [
                     SizedBox(height: 8),
                     Text(
-                      "300 000",
+                      balance,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
@@ -224,7 +216,7 @@ class PaymentsPage extends StatelessWidget {
                           right: BorderSide(
                               color: AppColors.emerald600, width: 1.5),
                           bottom:
-                              BorderSide(color: AppColors.emerald600, width: 3),
+                          BorderSide(color: AppColors.emerald600, width: 3),
                         ),
                       ),
                       child: Center(

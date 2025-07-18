@@ -1,5 +1,12 @@
+import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
+import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
 import 'package:fitrat_parent2/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+String selectedValue = "Click";
+int selectedIndex = 0;
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -11,168 +18,248 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final _amountController = TextEditingController();
   String? selectedMethod;
-  String? selectedValue;
+  final _formKey = GlobalKey<FormState>();
+  String? _selectedType;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return BlocListener<PaymentBloc, PaymentState>(
+          listener: (context, state) async {
+            if (state.payment_url != null && state.payment_url!.isNotEmpty) {
+              final url = state.payment_url!;
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url),
+                    mode: LaunchMode.externalApplication);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("URL ochib bo'lmadi")),
+                );
+              }
+            }
           },
-          child: const Icon(Icons.arrow_back_outlined),
-        ),
-        title: const Text("To‘lov",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(5),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    showChildSelectionSheet(context);
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFF3F4F6),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Row(
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_back_outlined),
+              ),
+              title: const Text("To‘lov",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            ),
+            body: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CircleAvatar(
-                          radius: 26,
-                          backgroundImage:
-                              NetworkImage('https://via.placeholder.com/150'),
+                        GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            showChildSelectionSheet(context, state);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF3F4F6),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Row(
+                              children: [
+                                const CircleAvatar(
+                                  radius: 26,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          state.learningResponse?.first.fullName
+                                                  ?.toString() ??
+                                              "",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16)),
+                                      Text("Kimyo noldan",
+                                          style: TextStyle(color: Colors.grey)),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.expand_more),
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("James Wilson",
+                        const SizedBox(height: 24),
+                        const Text("Summa",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: Color(0xFF1F2A37))),
+                        const SizedBox(height: 5),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF3F4F6),
+                            borderRadius: BorderRadius.circular(12),
+                            border: const Border(
+                              top: BorderSide(
+                                  color: Color(0xFFF3F4F6), width: 1),
+                              left: BorderSide(
+                                  color: Color(0xFFF3F4F6), width: 1),
+                              right: BorderSide(
+                                  color: Color(0xFFF3F4F6), width: 1),
+                              bottom: BorderSide(
+                                  color: Color(0xFFF3F4F6), width: 3),
+                            ),
+                          ),
+                          child: TextFormField(
+                            controller: _amountController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "0",
+                              filled: true,
+                              fillColor: Color(0xFFF9FAFB),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Iltimos, summani kiriting";
+                              }
+                              final parsed = double.tryParse(value.trim());
+                              if (parsed == null) {
+                                return "Faqat raqam kiriting";
+                              }
+                              if (parsed < 1000) {
+                                return "Minimal summa 1000 so‘m bo‘lishi kerak";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text("To'lov usuli",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                color: Color(0xFF1F2A37))),
+                        const SizedBox(height: 5),
+                        GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            showPaymentMethodBottomSheet(context)
+                                .whenComplete(() {
+                              FocusScope.of(context).unfocus();
+                            });
+                            FocusScope.of(context).unfocus();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF9FAFB),
+                              borderRadius: BorderRadius.circular(12),
+                              border: const Border(
+                                top: BorderSide(
+                                    color: Color(0xFFF3F4F6), width: 1),
+                                left: BorderSide(
+                                    color: Color(0xFFF3F4F6), width: 1),
+                                right: BorderSide(
+                                    color: Color(0xFFF3F4F6), width: 1),
+                                bottom: BorderSide(
+                                    color: Color(0xFFF3F4F6), width: 3),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedValue ?? "To'lov turini tanlang",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16)),
-                              Text("Ingliz tili IELTS",
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
+                                    color: selectedValue == null
+                                        ? Colors.grey
+                                        : Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const Icon(Icons.keyboard_arrow_down, size: 24),
+                              ],
+                            ),
                           ),
                         ),
-                        const Icon(Icons.expand_more),
+                        const Spacer(),
+                        CustomButton(
+                            text: "To‘lash",
+                            onPressed: () async {
+                              final bloc = context.read<PaymentBloc>();
+
+                              if (_formKey.currentState!.validate()) {
+                                bloc.add(PayEvent(
+                                  lid: '',
+                                  student:
+                                      '07ed9628-1d05-41a3-b8c6-e347a0178294',
+                                  amount: _amountController.text,
+                                  type: selectedValue ?? "Click",
+                                ));
+
+                                await for (final state in bloc.stream) {
+                                  if (state.payment_url != null &&
+                                      state.payment_url!.isNotEmpty) {
+                                    final url = state.payment_url!;
+                                    if (await canLaunchUrl(Uri.parse(url))) {
+                                      await launchUrl(Uri.parse(url),
+                                          mode: LaunchMode.externalApplication);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text("URL ochib bo'lmadi")),
+                                      );
+                                    }
+                                    break;
+                                  }
+                                }
+                              }
+                            }),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-                const Text("Summa",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: Color(0xFF1F2A37))),
-                const SizedBox(height: 5),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF3F4F6),
-                    borderRadius: BorderRadius.circular(12),
-                    border: const Border(
-                      top: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                      left: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                      right: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                      bottom: BorderSide(color: Color(0xFFF3F4F6), width: 3),
-                    ),
-                  ),
-                  child: TextField(
-                    controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: "0",
-                      filled: true,
-                      fillColor: Color(0xFFF9FAFB),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text("To'lov usuli",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: Color(0xFF1F2A37))),
-                const SizedBox(height: 5),
-                GestureDetector(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    showPaymentMethodBottomSheet(context).whenComplete(() {
-                      FocusScope.of(context).unfocus();
-                    });
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF9FAFB),
-                      borderRadius: BorderRadius.circular(12),
-                      border: const Border(
-                        top: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                        left: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                        right: BorderSide(color: Color(0xFFF3F4F6), width: 1),
-                        bottom: BorderSide(color: Color(0xFFF3F4F6), width: 3),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          selectedValue ?? "To'lov turini tanlang",
-                          style: TextStyle(
-                            color: selectedValue == null
-                                ? Colors.grey
-                                : Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down, size: 24),
-                      ],
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                CustomButton(text: "To‘lash", onPressed: () {}),
-                const SizedBox(height: 20),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  void showChildSelectionSheet(BuildContext context) {
+  void showChildSelectionSheet(BuildContext context, HomeState state) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -210,13 +297,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                   ),
                   const SizedBox(height: 18),
-                  ...List.generate(2, (index) {
+                  ...List.generate(1, (index) {
                     final isSelected = selectedIndex == index;
-                    final name = index == 0 ? "James Wilson" : "Isabella Moore";
-                    final subject = "Ingliz tili IELTS";
-                    final avatar = index == 0
-                        ? 'https://randomuser.me/api/portraits/men/32.jpg'
-                        : 'https://randomuser.me/api/portraits/women/44.jpg';
+                    final subject = "Kimyo noldan";
+                    final avatar = 'https://randomuser.me/api/g';
+
                     return GestureDetector(
                       onTap: () => setState(() => selectedIndex = index),
                       child: Container(
@@ -245,7 +330,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    name,
+                                    state.learningResponse?.first.fullName
+                                            ?.toString() ??
+                                        "",
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -305,13 +392,9 @@ class PaymentBottomSheet extends StatefulWidget {
 }
 
 class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
-  int selectedIndex = 0;
-
   final List<String> paymentMethods = [
-    'Click Evolution',
+    'Click',
     'Payme',
-    'Uzum Bank',
-    'Paynet',
   ];
 
   @override
@@ -346,8 +429,8 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
           ...List.generate(paymentMethods.length, (index) {
             return ListTile(
               dense: true,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16), // or EdgeInsets.zero
+              contentPadding: EdgeInsets.symmetric(horizontal: 16),
+              // or EdgeInsets.zero
               title: Text(
                 paymentMethods[index],
                 style: const TextStyle(fontSize: 16),
@@ -367,6 +450,7 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
               text: "Tanlash",
               onPressed: () {
                 Navigator.pop(context, paymentMethods[selectedIndex]);
+                selectedValue = paymentMethods[selectedIndex];
               }),
 
           const SizedBox(height: 10),

@@ -50,66 +50,59 @@ class _StoryAvatarState extends State<StoryAvatar> {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Stack(
-              alignment: Alignment.center,
               children: [
-                if (isValidUrl)
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            widget.imageUrl!,
-                            width: widget.size - 4,
-                            height: widget.size - 4,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (_, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                Future.microtask(() {
-                                  if (mounted)
-                                    setState(() => _isLoading = false);
-                                });
-                              }
-                              return child;
-                            },
-                            errorBuilder: (_, __, ___) {
-                              setState(() => _isLoading = false);
-                              return const SizedBox.shrink();
-                            },
+                Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          widget.imageUrl!,
+                          width: widget.size - 4,
+                          height: widget.size - 4,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (_, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              Future.microtask(() {
+                                if (mounted) setState(() => _isLoading = false);
+                              });
+                            }
+                            return child;
+                          },
+                          errorBuilder: (_, __, ___) {
+                            setState(() => _isLoading = false);
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color.fromARGB(0, 0, 0, 0),
+                                  Color.fromARGB(0, 0, 0, 0),
+                                  Color.fromARGB(255, 0, 0, 0),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                          top: 45,
-                          left: 5,
-                          child: Text("Story text...",
-                              style:
-                                  TextStyle(fontSize: 10, color: Colors.white)))
-                    ],
-                  )
-                else
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: SvgPicture.asset(
-                      AppIcons.person,
-                      width: widget.size - 4,
-                      height: widget.size - 4,
-                      fit: BoxFit.cover,
+                      ],
                     ),
                   ),
-                if (_isLoading && isValidUrl)
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Colors.black12,
-                      ),
-                      child: const Center(
-                        child: CupertinoActivityIndicator(),
-                      ),
-                    ),
+                ),
+                // 👇 Text on top of gradient
+                Positioned(
+                  top: 45,
+                  left: 5,
+                  child: Text(
+                    "Story text...",
+                    style: TextStyle(fontSize: 10, color: Colors.white),
                   ),
+                ),
               ],
             ),
           ),

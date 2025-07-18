@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:open_file_plus/open_file_plus.dart';
+// import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -22,10 +22,10 @@ class FileDownloadService {
     try {
       final path = await _localPath;
       final file = File('$path/$fileName');
-      final result = await OpenFile.open(file.path);
-      if (result.type != ResultType.done) {
-        print('Error opening file: ${result.message}');
-      }
+      // final result = await OpenFile.open(file.path);
+      // if (result.type != ResultType.done) {
+      //   print('Error opening file: ${result.message}');
+      // }
     } catch (e) {
       print('Error opening file: $e');
       rethrow;

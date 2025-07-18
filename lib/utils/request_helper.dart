@@ -11,7 +11,6 @@ import '../data/db/cache.dart';
 import '../main.dart';
 import '../presentation/login/pages/login_screen.dart';
 import '../presentation/login/repository/login_repository.dart';
-import 'app_routes.dart';
 import 'exceptions/failure.dart';
 
 bool isTokenExpired(String token) {
@@ -22,7 +21,8 @@ bool isTokenExpired(String token) {
   return JwtDecoder.isExpired(token);
 }
 
-final baseUrl = 'https://api.ft.sector-soft.ru';
+// final baseUrl = 'https://api.ft.sector-soft.ru';
+final baseUrl = 'https://ab90a3d5fb10.ngrok-free.app';
 
 class RequestHelper {
   final logger = Logger();
@@ -99,14 +99,13 @@ class RequestHelper {
       Navigator.pushAndRemoveUntil(
         navigatorKey.currentState!.context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
-            (route) => false,
+        (route) => false,
       );
     });
   }
 
   Future<dynamic> _handleRequest(Future<Response> Function() request) async {
     log('Refresh_____$_token');
-
     try {
       if (isTokenExpired(_token ?? "")) {
         print("Try to refresh");
@@ -147,13 +146,11 @@ class RequestHelper {
     }
   }
 
-  // Public methods
-
   Future<dynamic> get(
-      String path, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     try {
       final response = await dio.get(
         baseUrl + path,
@@ -180,12 +177,12 @@ class RequestHelper {
   }
 
   Future<dynamic> post(
-      String path,
-      Map<String, dynamic> body, {
-        FormData? formData,
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path,
+    Map<String, dynamic> body, {
+    FormData? formData,
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     try {
       final response = await dio.post(
         baseUrl + path,
@@ -220,12 +217,12 @@ class RequestHelper {
   }
 
   Future<dynamic> getWithAuth(
-      String path, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.get(
           baseUrl + path,
           cancelToken: cancelToken,
@@ -253,13 +250,13 @@ class RequestHelper {
   }
 
   Future<dynamic> getWithAuthMap(
-      String path, {
-        bool log = false,
-        CancelToken? cancelToken,
-        Map<String, dynamic>? data,
-      }) async {
+    String path, {
+    bool log = false,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? data,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.get(
           data: data,
           baseUrl + path,
@@ -287,7 +284,7 @@ class RequestHelper {
 
   Future<dynamic> postWithF(String path, FormData fromData) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.post(
           baseUrl + path,
           data: fromData,
@@ -305,13 +302,13 @@ class RequestHelper {
   }
 
   Future<dynamic> postWithAuth(
-      String path,
-      Map<String, dynamic> body, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path,
+    Map<String, dynamic> body, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.post(
           baseUrl + path,
           data: body,
@@ -356,13 +353,13 @@ class RequestHelper {
   }
 
   Future<dynamic> putWithAuth(
-      String path,
-      Map<String, dynamic> body, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path,
+    Map<String, dynamic> body, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.put(
           baseUrl + path,
           data: body,
@@ -399,7 +396,7 @@ class RequestHelper {
     CancelToken? cancelToken,
   }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.put(
           baseUrl + path,
           data: body,
@@ -430,13 +427,13 @@ class RequestHelper {
   }
 
   Future<dynamic> patchWithAuth(
-      String path,
-      Map<String, dynamic> body, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path,
+    Map<String, dynamic> body, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.patch(
           baseUrl + path,
           data: body,
@@ -467,12 +464,12 @@ class RequestHelper {
   }
 
   Future<dynamic> deleteWithAuth(
-      String path, {
-        bool log = false,
-        CancelToken? cancelToken,
-      }) async {
+    String path, {
+    bool log = false,
+    CancelToken? cancelToken,
+  }) async {
     return _handleRequest(
-          () async {
+      () async {
         final response = await dio.delete(
           baseUrl + path,
           cancelToken: cancelToken,
@@ -510,8 +507,8 @@ class RequestHelper {
             'Accept': 'application/json',
           },
         ), onReceiveProgress: (progress, _) {
-          print(progress);
-        });
+      print(progress);
+    });
   }
 }
 
@@ -520,14 +517,12 @@ final requestHelper = RequestHelper();
 class DurationLoggingInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // Add a timestamp to the request options
     options.extra['startTime'] = DateTime.now();
     return handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // Calculate the duration using the startTime from the request
     final startTime = response.requestOptions.extra['startTime'] as DateTime?;
     if (startTime != null) {
       final duration = DateTime.now().difference(startTime);
@@ -539,7 +534,6 @@ class DurationLoggingInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Calculate the duration even on error
     final startTime = err.requestOptions.extra['startTime'] as DateTime?;
     if (startTime != null) {
       final duration = DateTime.now().difference(startTime);

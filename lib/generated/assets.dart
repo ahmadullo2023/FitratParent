@@ -4,6 +4,7 @@ class Assets {
 
   static const String assetsIconsIcVideo = 'assets/icons/ic_video.svg';
   static const String icons23 = 'assets/icons/23.svg';
+  static const String icons26 = 'assets/icons/26.svg';
   static const String iconsBloodReport = 'assets/icons/blood_report.png';
   static const String iconsBook = 'assets/icons/book.svg';
   static const String iconsBooksHome = 'assets/icons/books_home.png';
@@ -36,6 +37,7 @@ class Assets {
   static const String iconsLogo2 = 'assets/icons/logo2.svg';
   static const String iconsLogout = 'assets/icons/logout.svg';
   static const String iconsMail = 'assets/icons/Mail.svg';
+  static const String iconsMessageEmpty = 'assets/icons/message_empty.svg';
   static const String iconsNoInternet = 'assets/icons/no_internet.svg';
   static const String iconsNoNotification = 'assets/icons/no_notification.svg';
   static const String iconsNotifications = 'assets/icons/notifications.svg';

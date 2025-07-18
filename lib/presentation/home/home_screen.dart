@@ -24,6 +24,7 @@ import '../results/results_screen.dart';
 import '../story/story_screen.dart';
 import '../widgets/custom_app_bar.dart';
 import 'bloc/home_bloc.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<MainBloc>().add(LoadStudent());
     context.read<HomeBloc>().add(LoadStories());
     // context.read<HomeBloc>().add(LoadCourses());
-    // context.read<HomeBloc>().add(LoadLearnings());
+    context.read<HomeBloc>().add(LoadLearnings());
     getResults();
     getEvents();
   }
@@ -81,271 +82,292 @@ class _HomeScreenState extends State<HomeScreen> {
                     context.read<MainBloc>().add(LoadStudent());
                     context.read<HomeBloc>().add(LoadStories());
                     // context.read<HomeBloc>().add(LoadCourses());
-                    // context.read<HomeBloc>().add(LoadLearnings());
+                    context.read<HomeBloc>().add(LoadLearnings());
                     getResults();
                   },
                   child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 8),
-                                BlocBuilder<HomeBloc, HomeState>(
-                                  buildWhen: (previous, current) =>
-                                      previous.status != current.status ||
-                                      previous.storiesModel !=
-                                          current.storiesModel,
-                                  builder: (context, homeState) {
-                                    if (homeState.status ==
-                                        StoriesStatus.loading) {
-                                      return _buildStoriesShimmer();
-                                    } else if (homeState.status ==
-                                        StoriesStatus.error) {
-                                      return const SizedBox(
-                                        height: 80,
-                                        child: Center(
-                                            child: Text("Xatolik yuz berdi")),
-                                      );
-                                    }
+                      child: BlocBuilder<HomeBloc, HomeState>(
+                        builder: (homeContext1, homeState1) {
+                          return Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 8),
+                                    BlocBuilder<HomeBloc, HomeState>(
+                                      buildWhen: (previous, current) =>
+                                          previous.status != current.status ||
+                                          previous.storiesModel !=
+                                              current.storiesModel,
+                                      builder: (context, homeState2) {
+                                        if (homeState2.status ==
+                                            StoriesStatus.loading) {
+                                          return _buildStoriesShimmer();
+                                        } else if (homeState2.status ==
+                                            StoriesStatus.error) {
+                                          return const SizedBox(
+                                            height: 80,
+                                            child: Center(
+                                                child:
+                                                    Text("Xatolik yuz berdi")),
+                                          );
+                                        }
 
-                                    final stories = homeState.storiesModel;
-                                    return stories != null && stories.isNotEmpty
-                                        ? _buildStoriesSection(stories)
-                                        : const SizedBox();
-                                  },
-                                ),
-                                const SizedBox(height: 12),
-                                12.vertical,
-                                if (events.isNotEmpty) ...[
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Tadbirlar",
-                                              style: TextStyle(
-                                                  color: Color(0xff0D121C),
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                  fontFamily: "outfitMedium"),
-                                            ),
-                                            InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EventsScreen()));
-                                                },
-                                                child: Text("Barchasi",
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors.emerald500,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 14,
-                                                    )))
-                                          ])),
-                                  12.vertical,
-                                  CarouselSlider(
-                                    options: CarouselOptions(
-                                      autoPlay: true,
-                                      height: 126,
-                                      viewportFraction: 0.8,
-                                      enlargeCenterPage: true,
-                                      enlargeStrategy:
-                                          CenterPageEnlargeStrategy.height,
-                                      enableInfiniteScroll: true,
-                                      padEnds: true,
-                                      initialPage: 0,
-                                      autoPlayAnimationDuration:
-                                          Duration(milliseconds: 600),
-                                      autoPlayCurve: Curves.easeInOut,
+                                        final stories = homeState2.storiesModel;
+                                        return stories != null &&
+                                                stories.isNotEmpty
+                                            ? _buildStoriesSection(stories)
+                                            : const SizedBox();
+                                      },
                                     ),
-                                    items:
-                                        List.generate(events.length, (index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: ItemEvents(
-                                          backgroundImage:
-                                              events[index].photo?.file,
-                                          title: events[index].comment ??
-                                              "No comment yet",
-                                          time: events[index].endDate ?? "",
-                                          onTab: () {
-                                            Navigator.push(
+                                    const SizedBox(height: 12),
+                                    12.vertical,
+                                    if (events.isNotEmpty) ...[
+                                      Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Tadbirlar",
+                                                  style: TextStyle(
+                                                      color: Color(0xff0D121C),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 18,
+                                                      fontFamily:
+                                                          "outfitMedium"),
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  EventsScreen()));
+                                                    },
+                                                    child: Text("Barchasi",
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .emerald500,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 14,
+                                                        )))
+                                              ])),
+                                      12.vertical,
+                                      CarouselSlider(
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          height: 126,
+                                          viewportFraction: 0.8,
+                                          enlargeCenterPage: true,
+                                          enlargeStrategy:
+                                              CenterPageEnlargeStrategy.height,
+                                          enableInfiniteScroll: true,
+                                          padEnds: true,
+                                          initialPage: 0,
+                                          autoPlayAnimationDuration:
+                                              Duration(milliseconds: 600),
+                                          autoPlayCurve: Curves.easeInOut,
+                                        ),
+                                        items: List.generate(events.length,
+                                            (index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6),
+                                            child: ItemEvents(
+                                              backgroundImage:
+                                                  events[index].photo?.file,
+                                              title: events[index].comment ??
+                                                  "No comment yet",
+                                              time: events[index].endDate ?? "",
+                                              onTab: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EventDetail(
+                                                            event:
+                                                                events[index]),
+                                                  ),
+                                                );
+                                              },
+                                              isEvent: true,
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                      const SizedBox(height: 12),
+                                    ],
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12),
+                                      child: _buildSectionTitle('Farzandlarim'),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EventDetail(
-                                                        event: events[index]),
-                                              ),
-                                            );
-                                          },
-                                          isEvent: true,
+                                                  builder: (context) =>
+                                                      ChildernPage()));
+                                        },
+                                        child: _buildChildCard(
+                                          name: homeState1.learningResponse
+                                              ?.first.fullName
+                                              ?.toString() ??
+                                              "",
+                                          subjects: "Kimyo noldan",
+                                          balance: homeState1.learningResponse
+                                              ?.first.balance
+                                              ?.toString() ??
+                                              "0",
+                                          progress: homeState1
+                                              .learningResponse
+                                              ?.first
+                                              .overallLearning
+                                              ?.toInt() ??
+                                              0,
+                                          avatar: Icons.person,
+                                          balanceColor: Colors.green,
                                         ),
-                                      );
-                                    }),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    child: _buildSectionTitle('Farzandlarim'),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ChildernPage()));
-                                      },
-                                      child: _buildChildCard(
-                                        name: "James Wilson",
-                                        subjects: "Ingliz tili, Matematika",
-                                        balance: "300,000",
-                                        progress: 88,
-                                        avatar: Icons.person,
-                                        balanceColor: Colors.green,
                                       ),
                                     ),
-                                  ),
-                                  // const SizedBox(height: 12),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //       horizontal: 12),
-                                  //   child: _buildChildCard(
-                                  //     name: "Isabella Moore",
-                                  //     subjects: "UX/UI DIZAYN",
-                                  //     balance: "-100,000",
-                                  //     progress: 64,
-                                  //     avatar: Icons.person,
-                                  //     balanceColor: Colors.red,
-                                  //   ),
-                                  // ),
-                                ],
-                                if (results.isNotEmpty) ...[
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0, vertical: 10),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Faxrli o’quvchilarimiz",
-                                              style: TextStyle(
-                                                  color: Color(0xff0D121C),
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                  fontFamily: "outfitMedium"),
-                                            ),
-                                            InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ResultsScreen(),
-                                                      ));
-                                                },
-                                                child: Text("Barchasi",
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors.emerald500,
+                                    if (results.isNotEmpty) ...[
+                                      Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 10),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Faxrli o’quvchilarimiz",
+                                                  style: TextStyle(
+                                                      color: Color(0xff0D121C),
                                                       fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 14,
-                                                    )))
-                                          ])),
-                                  12.vertical,
-                                  SizedBox(
-                                    height: 242,
-                                    child: ListView.separated(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 16),
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: results.length,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 12),
-                                      itemBuilder: (context, index) {
-                                        return ItemResults(
-                                          isBig: false,
-                                          topImageUrl:
-                                              results[index].file?.file,
-                                          studentImageUrl:
-                                              results[index].studentPhoto?.file,
-                                          studentName:
-                                              results[index].fullName ?? "Ann",
-                                          resultType: results[index].type ?? "",
-                                          score: results[index].point ?? "",
-                                          onTap: () {
-                                            results[index].file?.file != null &&
-                                                    (results[index]
+                                                          FontWeight.w600,
+                                                      fontSize: 18,
+                                                      fontFamily:
+                                                          "outfitMedium"),
+                                                ),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ResultsScreen(),
+                                                          ));
+                                                    },
+                                                    child: Text("Barchasi",
+                                                        style: TextStyle(
+                                                          color: AppColors
+                                                              .emerald500,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 14,
+                                                        )))
+                                              ])),
+                                      12.vertical,
+                                      SizedBox(
+                                        height: 242,
+                                        child: ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: results.length,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 12),
+                                          itemBuilder: (context, index) {
+                                            return ItemResults(
+                                              isBig: false,
+                                              topImageUrl:
+                                                  results[index].file?.file,
+                                              studentImageUrl: results[index]
+                                                  .studentPhoto
+                                                  ?.file,
+                                              studentName:
+                                                  results[index].fullName ??
+                                                      "Ann",
+                                              resultType:
+                                                  results[index].type ?? "",
+                                              score: results[index].point ?? "",
+                                              onTap: () {
+                                                results[index].file?.file !=
+                                                            null &&
+                                                        (results[index]
+                                                                .file!
+                                                                .file!
+                                                                .endsWith(
+                                                                    ".png") ||
+                                                            results[index]
+                                                                .file!
+                                                                .file!
+                                                                .endsWith(
+                                                                    ".jpg") ||
+                                                            results[index]
+                                                                .file!
+                                                                .file!
+                                                                .endsWith(
+                                                                    ".jpeg"))
+                                                    ? Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                Scaffold(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .black,
+                                                                    appBar:
+                                                                        AppBar(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .black,
+                                                                      // Black background
+                                                                      iconTheme:
+                                                                          IconThemeData(
+                                                                              color: Colors.white), // White back button
+                                                                    ),
+                                                                    body: Center(
+                                                                        child: InteractiveViewer(
+                                                                            child: Image.network(results[index]
+                                                                                .file!
+                                                                                .file!))))))
+                                                    : FileDownloadService()
+                                                        .downloadAndOpenFile(
+                                                        context: context,
+                                                        url: results[index]
                                                             .file!
-                                                            .file!
-                                                            .endsWith(".png") ||
-                                                        results[index]
-                                                            .file!
-                                                            .file!
-                                                            .endsWith(".jpg") ||
-                                                        results[index]
-                                                            .file!
-                                                            .file!
-                                                            .endsWith(".jpeg"))
-                                                ? Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            Scaffold(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .black,
-                                                                appBar: AppBar(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .black,
-                                                                  // Black background
-                                                                  iconTheme: IconThemeData(
-                                                                      color: Colors
-                                                                          .white), // White back button
-                                                                ),
-                                                                body: Center(
-                                                                    child: InteractiveViewer(
-                                                                        child: Image.network(results[index]
-                                                                            .file!
-                                                                            .file!))))))
-                                                : FileDownloadService()
-                                                    .downloadAndOpenFile(
-                                                    context: context,
-                                                    url: results[index]
-                                                        .file!
-                                                        .file!,
-                                                  );
+                                                            .file!,
+                                                      );
+                                              },
+                                            );
                                           },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                ],
-                              ]))))));
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                    ],
+                                  ]));
+                        },
+                      )))));
     });
   }
 
   Widget _buildSectionTitle(String title) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         title == 'Faxrli o’quvchilarimiz'
             ? SvgPicture.asset("assets/images/Iconex.svg")
@@ -353,14 +375,6 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(width: 8),
         Text(title,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-        Spacer(),
-        GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EventsScreen()));
-            },
-            child:
-                const Text('Barchasi', style: TextStyle(color: Colors.green))),
       ],
     );
   }
@@ -440,7 +454,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "500,000",
+                              formatMoney(balance),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -501,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "88%",
+                              "${progress}%",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -605,4 +619,12 @@ class _HomeScreenState extends State<HomeScreen> {
           separatorBuilder: (context, index) => const SizedBox(width: 4)),
     );
   }
+}
+
+String formatMoney(String input) {
+  final number = double.tryParse(input);
+  if (number == null) return input;
+
+  final formatter = NumberFormat('#,##0.###');
+  return formatter.format(number);
 }

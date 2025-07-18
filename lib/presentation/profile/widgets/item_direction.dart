@@ -31,7 +31,7 @@ class ItemDirections extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6),
+              color: const Color(0xFFeefff3),
               borderRadius: BorderRadius.circular(12),
             ),
             child: ClipRRect(
@@ -40,14 +40,13 @@ class ItemDirections extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: SvgPicture.asset(
                   imageUrl,
-                  color: Colors.black,
+                  color: Color(0xFF35B26A),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 12),
 
-          // Title and Description
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -4,6 +4,7 @@ import 'package:fitrat_parent2/presentation/balance/widgets/item_balance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../balance/bloc/balance_bloc.dart';
 import '../main/bloc/main_bloc.dart';
 import 'model/balance_model.dart';
@@ -59,6 +60,7 @@ class _BalanceScreenState extends State<BalanceScreen>
     return BlocBuilder<MainBloc, MainState>(
       builder: (context, mainState) {
         return Scaffold(
+          backgroundColor: Color(0xffF9FAFB),
           appBar: AppBar(
             centerTitle: true,
             backgroundColor: Colors.white,
@@ -108,62 +110,78 @@ class _BalanceScreenState extends State<BalanceScreen>
                               isSelected: _tabController.index == index,
                               onTap: () => _tabController.animateTo(index),
                             ),*/
-                            CustomChip(
+                                CustomChip(
                               label: chipLabels[index],
                               isSelected: index == _tabController.index,
                               onTap: () => _tabController.animateTo(index),
+                              withWhiteBackground: true,
                             ),
                           );
                         }),
                       ),
                     ),
                     const SizedBox(height: 16),
-
                     Expanded(
                       child: state.status == BalanceStatus.loading
                           ? const Center(child: CupertinoActivityIndicator())
                           : state.status == BalanceStatus.failure
-                          ? const Center(child: Text("Xatolik yuz berdi"))
-                          : TabBarView(
-                        controller: _tabController,
-                        children: List.generate(chipLabels.length,
-                                (index) {
-                              final filteredItems = getFiltered(index);
-                              if (filteredItems.isEmpty) {
-                                return const Center(
-                                  child: Text(
-                                    "Ma'lumot topilmadi",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                );
-                              }
-                              return ListView.separated(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16),
-                                itemCount: filteredItems.length,
-                                separatorBuilder: (_, __) =>
-                                const SizedBox(height: 10),
-                                itemBuilder: (_, i) {
-                                  final item = filteredItems[i];
-                                  return ItemBalance(
-                                    reason: item.comment ?? '',
-                                    description:
-                                    item.paymentMethod ?? '',
-                                    balance:
-                                    item.amount?.toString() ?? '',
-                                    date: item.createdAt
-                                        ?.substring(0, 10) ??
-                                        '',
-                                    isIncreasing:
-                                    item.action == "INCOME",
-                                  );
-                                },
-                              );
-                            }),
-                      ),
+                              ? const Center(child: Text("Xatolik yuz berdi"))
+                              : TabBarView(
+                                  controller: _tabController,
+                                  children:
+                                      List.generate(chipLabels.length, (index) {
+                                    final filteredItems = getFiltered(index);
+                                    if (filteredItems.isEmpty) {
+                                      return Center(
+                                        child: Column(
+                                          // mainAxisAlignment: MainAxisAlignment.center,
+                                          // crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Spacer(),
+                                            SvgPicture.asset(
+                                                "assets/icons/26.svg"),
+                                            Text(
+                                              "To’lovlar mavjud emas",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Color(0xFF1F2A37),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xFF6C737F),
+                                              ),
+                                            ),
+                                            SizedBox(height: 100),
+                                            Spacer(),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return ListView.separated(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16),
+                                      itemCount: filteredItems.length,
+                                      separatorBuilder: (_, __) =>
+                                          const SizedBox(height: 10),
+                                      itemBuilder: (_, i) {
+                                        final item = filteredItems[i];
+                                        return ItemBalance(
+                                          reason: item.comment ?? '',
+                                          description: item.paymentMethod ?? '',
+                                          balance:
+                                              item.amount?.toString() ?? '',
+                                          date: item.createdAt
+                                                  ?.substring(0, 10) ??
+                                              '',
+                                          isIncreasing: item.action == "INCOME",
+                                        );
+                                      },
+                                    );
+                                  }),
+                                ),
                     ),
                   ],
                 ),
@@ -175,4 +193,3 @@ class _BalanceScreenState extends State<BalanceScreen>
     );
   }
 }
-

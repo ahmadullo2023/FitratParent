@@ -69,17 +69,19 @@ class HomeRepository {
    }
   }
 
-  // Future<LearningResponse> getLearning () async {
-  //   try {
-  //     final response = await requestHelper.getWithAuth(
-  //       "/appsettings/learning/", log: true
-  //     );
-  //     return LearningResponse.fromJson(response);
-  //   } catch (e,s) {
-  //     Logger().e(["ERROR", e, s]);
-  //     rethrow;
-  //   }
-  // }
+
+  Future<List<LearningResponse>> getLearning () async {
+    try {
+      final response = await requestHelper.getWithAuth(
+        "/parents/childrens/", log: true
+      );
+      List list = response;
+      return list.map((e) => LearningResponse.fromJson(e)).toList();
+    } catch (e,s) {
+      Logger().e(["ERROR", e, s]);
+      rethrow;
+    }
+  }
 
 }
 

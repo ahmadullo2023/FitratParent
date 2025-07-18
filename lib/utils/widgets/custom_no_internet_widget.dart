@@ -22,7 +22,7 @@ class CustomNoInternetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var errorText = S.of(context).somethingWentWrong;
+    var errorText = "Nimadir xato ketdi";
     if (error is ConnectionFailure) {
       errorText = (error as ConnectionFailure).getLocalizedMessage(context);
     } else if (error is ServerFailure) {

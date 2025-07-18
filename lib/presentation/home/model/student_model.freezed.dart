@@ -8823,6 +8823,8 @@ LearningResponse _$LearningResponseFromJson(Map<String, dynamic> json) {
 mixin _$LearningResponse {
   String? get studentId => throw _privateConstructorUsedError;
   String? get fullName => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
+  double? get balance => throw _privateConstructorUsedError;
   double? get overallLearning => throw _privateConstructorUsedError;
   List<dynamic>? get courseScores => throw _privateConstructorUsedError;
 
@@ -8845,6 +8847,8 @@ abstract class $LearningResponseCopyWith<$Res> {
   $Res call(
       {String? studentId,
       String? fullName,
+      String? phone,
+      double? balance,
       double? overallLearning,
       List<dynamic>? courseScores});
 }
@@ -8866,6 +8870,8 @@ class _$LearningResponseCopyWithImpl<$Res, $Val extends LearningResponse>
   $Res call({
     Object? studentId = freezed,
     Object? fullName = freezed,
+    Object? phone = freezed,
+    Object? balance = freezed,
     Object? overallLearning = freezed,
     Object? courseScores = freezed,
   }) {
@@ -8878,6 +8884,14 @@ class _$LearningResponseCopyWithImpl<$Res, $Val extends LearningResponse>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String?,
+      phone: freezed == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      balance: freezed == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double?,
       overallLearning: freezed == overallLearning
           ? _value.overallLearning
           : overallLearning // ignore: cast_nullable_to_non_nullable
@@ -8901,6 +8915,8 @@ abstract class _$$LearningResponseImplCopyWith<$Res>
   $Res call(
       {String? studentId,
       String? fullName,
+      String? phone,
+      double? balance,
       double? overallLearning,
       List<dynamic>? courseScores});
 }
@@ -8920,6 +8936,8 @@ class __$$LearningResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? studentId = freezed,
     Object? fullName = freezed,
+    Object? phone = freezed,
+    Object? balance = freezed,
     Object? overallLearning = freezed,
     Object? courseScores = freezed,
   }) {
@@ -8932,6 +8950,14 @@ class __$$LearningResponseImplCopyWithImpl<$Res>
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
               as String?,
+      phone: freezed == phone
+          ? _value.phone
+          : phone // ignore: cast_nullable_to_non_nullable
+              as String?,
+      balance: freezed == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double?,
       overallLearning: freezed == overallLearning
           ? _value.overallLearning
           : overallLearning // ignore: cast_nullable_to_non_nullable
@@ -8951,6 +8977,8 @@ class _$LearningResponseImpl implements _LearningResponse {
   const _$LearningResponseImpl(
       {this.studentId,
       this.fullName,
+      this.phone,
+      this.balance,
       this.overallLearning,
       final List<dynamic>? courseScores})
       : _courseScores = courseScores;
@@ -8962,6 +8990,10 @@ class _$LearningResponseImpl implements _LearningResponse {
   final String? studentId;
   @override
   final String? fullName;
+  @override
+  final String? phone;
+  @override
+  final double? balance;
   @override
   final double? overallLearning;
   final List<dynamic>? _courseScores;
@@ -8976,7 +9008,7 @@ class _$LearningResponseImpl implements _LearningResponse {
 
   @override
   String toString() {
-    return 'LearningResponse(studentId: $studentId, fullName: $fullName, overallLearning: $overallLearning, courseScores: $courseScores)';
+    return 'LearningResponse(studentId: $studentId, fullName: $fullName, phone: $phone, balance: $balance, overallLearning: $overallLearning, courseScores: $courseScores)';
   }
 
   @override
@@ -8988,6 +9020,8 @@ class _$LearningResponseImpl implements _LearningResponse {
                 other.studentId == studentId) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
+            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.balance, balance) || other.balance == balance) &&
             (identical(other.overallLearning, overallLearning) ||
                 other.overallLearning == overallLearning) &&
             const DeepCollectionEquality()
@@ -8996,8 +9030,14 @@ class _$LearningResponseImpl implements _LearningResponse {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, studentId, fullName,
-      overallLearning, const DeepCollectionEquality().hash(_courseScores));
+  int get hashCode => Object.hash(
+      runtimeType,
+      studentId,
+      fullName,
+      phone,
+      balance,
+      overallLearning,
+      const DeepCollectionEquality().hash(_courseScores));
 
   /// Create a copy of LearningResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -9020,6 +9060,8 @@ abstract class _LearningResponse implements LearningResponse {
   const factory _LearningResponse(
       {final String? studentId,
       final String? fullName,
+      final String? phone,
+      final double? balance,
       final double? overallLearning,
       final List<dynamic>? courseScores}) = _$LearningResponseImpl;
 
@@ -9030,6 +9072,10 @@ abstract class _LearningResponse implements LearningResponse {
   String? get studentId;
   @override
   String? get fullName;
+  @override
+  String? get phone;
+  @override
+  double? get balance;
   @override
   double? get overallLearning;
   @override

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
-import '../../utils/widgets/loading_widget.dart';
 import '../home/bloc/home_bloc.dart';
 import '../home/repository/home_repository.dart';
 
@@ -26,6 +26,8 @@ class StoryScreen extends StatefulWidget {
 class _StoryScreenState extends State<StoryScreen> {
   late PageController _outerPageController;
   late PageController _innerPageController;
+  bool _isLongPressing = false;
+  bool _isAnimating = false;
 
   int currentOuterIndex = 0;
   int currentInnerIndex = 0;
@@ -48,7 +50,7 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   void _startProgress() {
-    if (isPaused) return;
+    if (isPaused || _isAnimating) return; // Also check if animating
 
     _timer?.cancel();
     if (!isPaused && pausedProgress > 0.0) {
@@ -58,7 +60,7 @@ class _StoryScreenState extends State<StoryScreen> {
 
     const tick = Duration(milliseconds: 50);
     _timer = Timer.periodic(tick, (timer) {
-      if (!isPaused) {
+      if (!isPaused && !_isAnimating) { // Check both conditions
         setState(() {
           progress += tick.inMilliseconds / storyDuration.inMilliseconds;
           if (progress >= 1.0) {
@@ -194,13 +196,18 @@ class _StoryScreenState extends State<StoryScreen> {
     );
   }
 
-  Widget buildMedia(String url) {
+  Widget buildMedia(String url, int storyIndex) {
+    bool isCurrentStory = storyIndex == currentOuterIndex;
+
     if (url.endsWith('.mp4')) {
       return VideoPlayerWidget(
         videoUrl: url,
-        isPaused: isPaused,
+        isPaused: isPaused || _isAnimating || !isCurrentStory, // Also pause if not current story
         onInitialized: (duration) {
-          _updateStoryDuration(duration);
+          // Only update duration if this is the current story
+          if (isCurrentStory) {
+            _updateStoryDuration(duration);
+          }
         },
       );
     }
@@ -211,15 +218,9 @@ class _StoryScreenState extends State<StoryScreen> {
       width: double.infinity,
       height: double.infinity,
       color: Colors.black,
-      child: Image.network(
-        url,
+      child: CachedNetworkImage(
+        imageUrl: url,
         fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) =>
-            const Icon(Icons.broken_image, color: Colors.white),
-        loadingBuilder: (context, child, loadingProgress) =>
-            loadingProgress == null
-                ? child
-                : const Center(child: LoadingWidget()),
       ),
     );
   }
@@ -240,12 +241,6 @@ class _StoryScreenState extends State<StoryScreen> {
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
             setState(() {
-              // print("WWWWWWWWWWWWWWWWWW");
-              // print(index);
-              // print("WWWWWWWWWWWWWWWWWW");
-              // print(widget.stories[index].id);
-              // print("WWWWWWWWWWWWWWWWWW");
-
               context.read<HomeBloc>().add(LoadStories());
               homeRepository.setStorySeen(id: widget.stories[index].id);
 
@@ -260,6 +255,7 @@ class _StoryScreenState extends State<StoryScreen> {
               progress = 0.0;
               pausedProgress = 0.0;
               isPaused = false;
+              _isAnimating = false; // Reset animation state
               _timer?.cancel();
             });
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -276,6 +272,30 @@ class _StoryScreenState extends State<StoryScreen> {
                 }
                 value = value.clamp(-1.0, 1.0);
 
+                // Check if we're in the middle of an animation
+                bool isCurrentlyAnimating = value.abs() > 0.01;
+
+                // Update animation state if it changed
+                if (isCurrentlyAnimating != _isAnimating) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      _isAnimating = isCurrentlyAnimating;
+                      if (_isAnimating) {
+                        // Store current progress when animation starts
+                        if (!isPaused) {
+                          pausedProgress = progress;
+                        }
+                        _timer?.cancel();
+                      } else {
+                        // Resume progress when animation ends
+                        if (!isPaused) {
+                          _startProgress();
+                        }
+                      }
+                    });
+                  });
+                }
+
                 final Matrix4 transform = Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
                   ..rotateY(pi / 3 * value);
@@ -288,22 +308,41 @@ class _StoryScreenState extends State<StoryScreen> {
                       const SizedBox(height: 12),
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
-                        onLongPress: () {
-                          if (!isPaused) {
-                            _pauseStory();
-                          }
+                        onLongPressStart: (_) {
+                          setState(() {
+                            _isLongPressing = true;
+                            if (!isPaused) {
+                              _pauseStory();
+                            }
+                          });
                         },
-                        onLongPressEnd: (details) {
-                          if (isPaused) {
-                            _resumeStory();
-                          }
+                        onLongPressEnd: (_) {
+                          setState(() {
+                            _isLongPressing = false;
+                            if (isPaused && !_isAnimating) {
+                              _resumeStory();
+                            }
+                          });
                         },
-                        onTapDown: (details) {
+                        onTapUp: (details) {
+                          if (_isLongPressing || _isAnimating) return;
                           final width = MediaQuery.of(context).size.width;
-                          if (details.globalPosition.dx < width / 2) {
+                          final tapPosition = details.globalPosition.dx;
+                          final third = width / 3;
+
+                          if (tapPosition < third) {
+                            // Left third: Previous story
                             _goToPreviousStory();
-                          } else {
+                          } else if (tapPosition > 2 * third) {
+                            // Right third: Next story
                             _goToNextStory();
+                          } else {
+                            // Middle third: Toggle pause/resume
+                            if (isPaused) {
+                              _resumeStory();
+                            } else {
+                              _pauseStory();
+                            }
                           }
                         },
                         child: PageView.builder(
@@ -311,7 +350,7 @@ class _StoryScreenState extends State<StoryScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: widget.storiesData[index].length,
                           itemBuilder: (context, i) =>
-                              buildMedia(widget.storiesData[index][i]),
+                              buildMedia(widget.storiesData[index][i], index),
                         ),
                       ),
                       Padding(
@@ -393,9 +432,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       child: Center(
         child: _initialized
             ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
+          aspectRatio: _controller.value.aspectRatio,
+          child: VideoPlayer(_controller),
+        )
             : const CircularProgressIndicator(),
       ),
     );

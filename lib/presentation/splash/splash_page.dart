@@ -14,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     _navigateToNextScreen();
@@ -27,15 +26,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) => isLoggedIn ? const HolderScreen() : const OnboardingScreen(),
+        builder: (_) =>
+            isLoggedIn ? const HolderScreen() : const OnboardingScreen(),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,4 +62,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-

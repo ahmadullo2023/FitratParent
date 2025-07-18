@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../../utils/app_colors.dart';
 
 class ItemCourses extends StatelessWidget {
   final VoidCallback onClick;
@@ -25,10 +28,10 @@ class ItemCourses extends StatelessWidget {
       height: 72,
       decoration: BoxDecoration(
         border: const Border(
-          top: BorderSide(color: Color(0xFFE5E7EB), width: 3),
-          left: BorderSide(color: Color(0xFFE5E7EB), width: 3),
-          right: BorderSide(color: Color(0xFFE5E7EB), width: 3),
-          bottom: BorderSide(color: Color(0xFFE5E7EB), width: 6),
+          top: BorderSide(color: Color(0xFFE5E7EB), width: 2.5),
+          left: BorderSide(color: Color(0xFFE5E7EB), width: 2.5),
+          right: BorderSide(color: Color(0xFFE5E7EB), width: 2.5),
+          bottom: BorderSide(color: Color(0xFFE5E7EB), width: 5),
         ),
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -37,7 +40,7 @@ class ItemCourses extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          onTap: (){
+          onTap: () {
             Future.delayed(const Duration(milliseconds: 100), onClick);
           },
           borderRadius: BorderRadius.circular(12),
@@ -51,21 +54,21 @@ class ItemCourses extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.15),
+                    color: Color(0xFFEFF7FF),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: imageUrl != null
-                      ? Image.network(
-                    imageUrl!,
-                    height: 24,
-                    width: 24,
-                    fit: BoxFit.cover,
-                  )
+                      ? CachedNetworkImage(
+                          imageUrl: imageUrl!,
+                          height: 24,
+                          width: 24,
+                          fit: BoxFit.cover,
+                        )
                       : Icon(
-                    Icons.book,
-                    color: color,
-                    size: 24,
-                  ),
+                          Icons.book,
+                          color: Colors.blue,
+                          size: 24,
+                        ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -81,16 +84,43 @@ class ItemCourses extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 4),
                       Text(
                         name,
                         style: const TextStyle(
-                          fontSize: 10,
                           fontWeight: FontWeight.w400,
                           color: Colors.grey,
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: SizedBox(
+                    height: 32,
+                    width: 32,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          strokeCap: StrokeCap.round,
+                          value: percentage / 100.0,
+                          strokeWidth: 4.5,
+                          backgroundColor: const Color(0xFFE5E7EB),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            Color(0xff35B26A),
+                          ),
+                        ),
+                        Text(
+                          '${percentage.toInt()}%',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.emerald500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
