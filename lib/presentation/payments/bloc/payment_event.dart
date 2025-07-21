@@ -15,3 +15,5 @@ class PayEvent extends PaymentEvent {
       required this.amount,
       required this.type});
 }
+
+class PaymentHistoryEvent extends PaymentEvent {}

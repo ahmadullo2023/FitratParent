@@ -1,7 +1,7 @@
-import 'dart:async';
-
 import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/widgets/dialogs.dart';
+import 'package:fitrat_parent2/presentation/profile/widgets/edit_profile/bloc/edit_profile_bloc.dart';
+import 'package:fitrat_parent2/presentation/profile/widgets/edit_profile/edit_profile_screen.dart';
 import 'package:fitrat_parent2/presentation/profile/widgets/item_direction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import '../../utils/app_colors.dart';
 import '../../utils/theme.dart' hide AppColors;
 import '../children/childern_page.dart';
 import 'bloc/profile_bloc.dart';
-import 'edit_profile_screen.dart';
 import '../home/home_screen.dart';
 import '../login/pages/login_screen.dart';
 import '../main/bloc/main_bloc.dart';
@@ -29,14 +28,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-      context.read<ProfileBloc>().add(GetMeEvent());
+    context.read<MainBloc>().add(LoadMe());
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final student = context.watch<MainBloc>().state.studentModel;
+    // final student = context.watch<MainBloc>().state.studentModel;
+    final student = context.watch<MainBloc>().state.meModel;
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return BlocBuilder<ProfileBloc, ProfileState>(
@@ -92,6 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 body: RefreshIndicator(
                   onRefresh: () async {
+                    context.read<MainBloc>().add(LoadMe());
                     context.read<ProfileBloc>().add(GetMeEvent());
                   },
                   child: ListView(
@@ -101,11 +101,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.only(top: 16.0),
                         child: GestureDetector(
                           onTap: () async {
-                            final shouldReload = await Navigator.push<bool>(
+                            final shouldReload = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => EditProfileScreen()),
+                                builder: (context) => BlocProvider(
+                                  create: (context) => EditProfileBloc(),
+                                  child: const EditProfileScreen(),
+                                ),
+                              ),
                             );
+
+                            // final shouldReload = await Navigator.push<bool>(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (_) => EditProfileScreen()),
+                            // );
+
                             if (shouldReload == true) {
                               context.read<MainBloc>().add(LoadStudent());
                             }
@@ -119,22 +130,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: SizedBox(
                                       height: 88,
                                       width: 88,
-                                      child: (student?.photo?.url?.isNotEmpty ??
-                                              false)
-                                          ? SvgPicture.network(
-                                              student!.photo!.url!,
-                                              fit: BoxFit.cover,
-                                              placeholderBuilder: (context) =>
-                                                  const Center(
-                                                child:
-                                                    CupertinoActivityIndicator(),
-                                              ),
-                                              clipBehavior: Clip.none,
-                                            )
-                                          : SvgPicture.asset(
-                                              AppIcons.person,
-                                              fit: BoxFit.cover,
-                                            ),
+                                      child:
+                                          (student?.photo?.file?.isNotEmpty ??
+                                                  false)
+                                              ? Image.network(
+                                                  student!.photo!.file!,
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : SvgPicture.asset(
+                                                  AppIcons.person,
+                                                  fit: BoxFit.cover,
+                                                ),
                                     ),
                                   ),
                                   Positioned(
@@ -183,10 +189,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               context.read<ProfileBloc>().add(GetMeEvent());
+
                               Navigator.push(
                                 context,
+
                                 MaterialPageRoute(
-                                    builder: (context) => EditProfileScreen()),
+                                  builder: (context) => BlocProvider(
+                                    create: (context) => EditProfileBloc(),
+                                    child: const EditProfileScreen(),
+                                  ),
+                                ),
+
+                                // MaterialPageRoute(
+                                //     builder: (context) => EditProfileScreen()),
                               );
                             },
                             child: ItemDirections(
@@ -279,10 +294,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ClipOval(
                 child: Container(
                   height: 46,
-                  width: 56,
+                  width: 46,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: Colors.red.shade100,
+                    color: Colors.grey.shade300,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(4),

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:chuck_interceptor/chuck.dart';
+import 'package:chuck_interceptor/chuck_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ bool isTokenExpired(String token) {
   return JwtDecoder.isExpired(token);
 }
 
-  final baseUrl = 'https://api.ft.sector-soft.ru';
+final baseUrl = 'https://api.ft.sector-soft.ru';
 
 class RequestHelper {
   final logger = Logger();

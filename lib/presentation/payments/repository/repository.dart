@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import '../../../utils/request_helper.dart';
+import '../model/payment_history_model.dart';
 import '../model/payment_model.dart';
 
 class PaymentRepository {
@@ -16,9 +17,7 @@ class PaymentRepository {
         "amount": amount,
         "type": type
       };
-
-      final response =
-          await requestHelper.postWithAuth("/clickuz/order/", body, log: true);
+      final response = await requestHelper.postWithAuth("/clickuz/order/", body, log: true);
 
       print("BU payment ===> ${response}");
 
@@ -28,6 +27,23 @@ class PaymentRepository {
       rethrow;
     }
   }
+
+
+
+  Future<PaymentHistoryModel> paymentHistory() async {
+    try {
+
+      final response = await requestHelper.getWithAuth("/finance/", log: true);
+
+      print("BU payment history ===> ${response}");
+
+      return PaymentHistoryModel.fromJson(response);
+    } catch (e, s) {
+      Logger().e(["ERROR", e, s]);
+      rethrow;
+    }
+  }
+
 }
 
 final paymentRepository = PaymentRepository();

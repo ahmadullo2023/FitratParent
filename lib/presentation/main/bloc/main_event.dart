@@ -14,3 +14,4 @@ class ChangeTab extends MainEvent {
 
 class LoadStudent extends MainEvent {}
 
+class LoadMe extends MainEvent {}

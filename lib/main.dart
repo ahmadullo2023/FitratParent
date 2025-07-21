@@ -5,6 +5,7 @@ import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/main/bloc/main_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
+import 'package:fitrat_parent2/presentation/profile/widgets/edit_profile/bloc/edit_profile_bloc.dart';
 // import 'package:fitrat_parent2/presentation/main/pages/main_page.dart';
 import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
 import 'package:fitrat_parent2/utils/servise/no_internet.dart';
@@ -34,6 +35,12 @@ void main() async {
         ),
         BlocProvider<BalanceBloc>(
           create: (_) => BalanceBloc()..add(GetBalances()),
+        ),
+        // BlocProvider<EditProfileBloc>(
+        //   create: (_) => EditProfileBloc()..add(EditData(name: '', lastName: '', phone: '')),
+        // ),
+        BlocProvider<MainBloc>(
+          create: (_) => MainBloc()..add(LoadMe()),
         ),
         BlocProvider<PaymentBloc>(
           create: (_) => PaymentBloc()

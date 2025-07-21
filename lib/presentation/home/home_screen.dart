@@ -1,14 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitrat_parent2/presentation/home/repository/home_repository.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/item_story.dart';
-import 'package:fitrat_parent2/presentation/home/widgets/points_widget.dart';
 import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../data/hive/hive_helper.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/servise/file_download_service.dart';
@@ -85,9 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onRefresh: () async {
                         context.read<MainBloc>().add(LoadStudent());
                         context.read<HomeBloc>().add(LoadStories());
-                        context
-                            .read<ProfileBloc>()
-                            .add(GetMeEvent());
+                        context.read<ProfileBloc>().add(GetMeEvent());
                         // context.read<HomeBloc>().add(LoadCourses());
                         context.read<HomeBloc>().add(LoadLearnings());
                         getResults();
@@ -432,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 48,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: Colors.red.shade100,
+                    color: Colors.grey.shade300,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(4),

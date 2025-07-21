@@ -10,7 +10,7 @@ class ResultsRepository {
     String a = fkId ?? "";
     try {
       final response = await requestHelper.getWithAuth(
-        "/quiz-results/student-results/?fk_name=$a&page=$page",
+        "/quiz-results/student-results/?fk_name=$a&page=$page&status=Accepted",
         log: true,
       );
       return PaginationModel.fromJson(
@@ -26,7 +26,7 @@ class ResultsRepository {
   Future<List<ResultsModel>> getResultsNoPg() async {
     try {
       final response = await requestHelper.getWithAuth(
-        "/quiz-results/student-results/?page=1",
+        "/quiz-results/student-results/?page=1&status=Accepted",
         log: true,
       );
 

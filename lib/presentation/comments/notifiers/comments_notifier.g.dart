@@ -63,8 +63,8 @@ class CommentsNotifierFamily
 
   @override
   CommentsNotifierProvider getProviderOverride(
-    covariant CommentsNotifierProvider provider,
-  ) {
+      covariant CommentsNotifierProvider provider,
+      ) {
     return call(
       userId: provider.userId,
       page: provider.page,
@@ -94,40 +94,40 @@ class CommentsNotifierProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required String userId,
     required int page,
   }) : this._internal(
-          () => CommentsNotifier()
-            ..userId = userId
-            ..page = page,
-          from: commentsNotifierProvider,
-          name: r'commentsNotifierProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$commentsNotifierHash,
-          dependencies: CommentsNotifierFamily._dependencies,
-          allTransitiveDependencies:
-              CommentsNotifierFamily._allTransitiveDependencies,
-          userId: userId,
-          page: page,
-        );
+        () => CommentsNotifier()
+      ..userId = userId
+      ..page = page,
+    from: commentsNotifierProvider,
+    name: r'commentsNotifierProvider',
+    debugGetCreateSourceHash:
+    const bool.fromEnvironment('dart.vm.product')
+        ? null
+        : _$commentsNotifierHash,
+    dependencies: CommentsNotifierFamily._dependencies,
+    allTransitiveDependencies:
+    CommentsNotifierFamily._allTransitiveDependencies,
+    userId: userId,
+    page: page,
+  );
 
   CommentsNotifierProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.userId,
-    required this.page,
-  }) : super.internal();
+      super._createNotifier, {
+        required super.name,
+        required super.dependencies,
+        required super.allTransitiveDependencies,
+        required super.debugGetCreateSourceHash,
+        required super.from,
+        required this.userId,
+        required this.page,
+      }) : super.internal();
 
   final String userId;
   final int page;
 
   @override
   FutureOr<PaginationModel<CommentModel>> runNotifierBuild(
-    covariant CommentsNotifier notifier,
-  ) {
+      covariant CommentsNotifier notifier,
+      ) {
     return notifier.build(
       userId: userId,
       page: page,
@@ -139,7 +139,7 @@ class CommentsNotifierProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: CommentsNotifierProvider._internal(
-        () => create()
+            () => create()
           ..userId = userId
           ..page = page,
         from: from,
@@ -179,7 +179,7 @@ class CommentsNotifierProvider extends AutoDisposeAsyncNotifierProviderImpl<
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 mixin CommentsNotifierRef
-    on AutoDisposeAsyncNotifierProviderRef<PaginationModel<CommentModel>> {
+on AutoDisposeAsyncNotifierProviderRef<PaginationModel<CommentModel>> {
   /// The parameter `userId` of this provider.
   String get userId;
 

@@ -21,7 +21,7 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProfileModel {
   String? get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  String? get firstName => throw _privateConstructorUsedError;
   Photo? get photo => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
   String? get middleName => throw _privateConstructorUsedError;
@@ -81,7 +81,7 @@ abstract class $ProfileModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String? name,
+      String? firstName,
       Photo? photo,
       String? lastName,
       String? middleName,
@@ -151,7 +151,7 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? firstName = freezed,
     Object? photo = freezed,
     Object? lastName = freezed,
     Object? middleName = freezed,
@@ -197,9 +197,9 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -526,7 +526,7 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String? name,
+      String? firstName,
       Photo? photo,
       String? lastName,
       String? middleName,
@@ -605,7 +605,7 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = freezed,
+    Object? firstName = freezed,
     Object? photo = freezed,
     Object? lastName = freezed,
     Object? middleName = freezed,
@@ -651,9 +651,9 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      firstName: freezed == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
               as String?,
       photo: freezed == photo
           ? _value.photo
@@ -821,7 +821,7 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
 class _$ProfileModelImpl implements _ProfileModel {
   const _$ProfileModelImpl(
       {this.id,
-      this.name,
+      this.firstName,
       this.photo,
       this.lastName,
       this.middleName,
@@ -872,7 +872,7 @@ class _$ProfileModelImpl implements _ProfileModel {
   @override
   final String? id;
   @override
-  final String? name;
+  final String? firstName;
   @override
   final Photo? photo;
   @override
@@ -986,7 +986,7 @@ class _$ProfileModelImpl implements _ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, name: $name, photo: $photo, lastName: $lastName, middleName: $middleName, phone: $phone, learning: $learning, dateOfBirth: $dateOfBirth, educationLang: $educationLang, studentType: $studentType, eduClass: $eduClass, eduLevel: $eduLevel, studentId: $studentId, subject: $subject, sales: $sales, voucher: $voucher, ball: $ball, filial: $filial, marketingChannel: $marketingChannel, studentStageType: $studentStageType, balanceStatus: $balanceStatus, balance: $balance, serviceManager: $serviceManager, course: $course, group: $group, teacher: $teacher, callOperator: $callOperator, salesManager: $salesManager, isArchived: $isArchived, isFrozen: $isFrozen, attendanceCount: $attendanceCount, relatives: $relatives, file: $file, strike: $strike, secondaryGroup: $secondaryGroup, secondaryTeacher: $secondaryTeacher, newStudentStages: $newStudentStages, newStudentDate: $newStudentDate, activeDate: $activeDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'ProfileModel(id: $id, firstName: $firstName, photo: $photo, lastName: $lastName, middleName: $middleName, phone: $phone, learning: $learning, dateOfBirth: $dateOfBirth, educationLang: $educationLang, studentType: $studentType, eduClass: $eduClass, eduLevel: $eduLevel, studentId: $studentId, subject: $subject, sales: $sales, voucher: $voucher, ball: $ball, filial: $filial, marketingChannel: $marketingChannel, studentStageType: $studentStageType, balanceStatus: $balanceStatus, balance: $balance, serviceManager: $serviceManager, course: $course, group: $group, teacher: $teacher, callOperator: $callOperator, salesManager: $salesManager, isArchived: $isArchived, isFrozen: $isFrozen, attendanceCount: $attendanceCount, relatives: $relatives, file: $file, strike: $strike, secondaryGroup: $secondaryGroup, secondaryTeacher: $secondaryTeacher, newStudentStages: $newStudentStages, newStudentDate: $newStudentDate, activeDate: $activeDate, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -995,7 +995,8 @@ class _$ProfileModelImpl implements _ProfileModel {
         (other.runtimeType == runtimeType &&
             other is _$ProfileModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
             (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.lastName, lastName) ||
                 other.lastName == lastName) &&
@@ -1068,7 +1069,7 @@ class _$ProfileModelImpl implements _ProfileModel {
   int get hashCode => Object.hashAll([
         runtimeType,
         id,
-        name,
+        firstName,
         photo,
         lastName,
         middleName,
@@ -1129,7 +1130,7 @@ class _$ProfileModelImpl implements _ProfileModel {
 abstract class _ProfileModel implements ProfileModel {
   const factory _ProfileModel(
       {final String? id,
-      final String? name,
+      final String? firstName,
       final Photo? photo,
       final String? lastName,
       final String? middleName,
@@ -1176,7 +1177,7 @@ abstract class _ProfileModel implements ProfileModel {
   @override
   String? get id;
   @override
-  String? get name;
+  String? get firstName;
   @override
   Photo? get photo;
   @override
