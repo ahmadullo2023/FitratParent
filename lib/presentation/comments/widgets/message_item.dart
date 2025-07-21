@@ -2,12 +2,15 @@ import 'package:fitrat_parent2/utils/extensions/extensions.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../data/db/cache.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/widgets/custom_cached_network.dart';
+import '../../comments2/models/comment_model.dart';
 import '../models/comment_model.dart';
+
 
 class MessageItem extends StatelessWidget {
   const MessageItem({
@@ -29,7 +32,7 @@ class MessageItem extends StatelessWidget {
             : const EdgeInsets.only(right: 50),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isByMine ? AppColors.blackRose200 : AppColors.grayWaikawa400,
+          color: isByMine ? AppColors.primaryColorOpacity : AppColors.grayLight,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Stack(
@@ -44,10 +47,10 @@ class MessageItem extends StatelessWidget {
                       child: Container(
                         height: 24,
                         width: 24,
-                        color: AppColors.blackRose200.withAlpha(20),
-                        child: model.photo?.file != null
+                        color: AppColors.grayDark.withAlpha(20),
+                        child: model.creatorPhoto?.file != null
                             ? CustomCachedNetworkImage(
-                                imageUrl: model.photo!.file!)
+                                imageUrl: model.creatorPhoto!.file!)
                             : SvgPicture.asset(
                                 AppIcons.person,
                               ).paddingOnly(top: 4),
@@ -60,6 +63,19 @@ class MessageItem extends StatelessWidget {
                     ),
                   ],
                 ),
+                // Add photo between name and comment
+                /*if (model.photo?.file != null)*/ ...[
+                  8.vertical,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CustomCachedNetworkImage(
+                      imageUrl: model.photo!.file!,
+                      // imageUrl:
+                      //     "https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2150879290.jpg?c=16x9&q=h_833,w_1480,c_fill",
+                      // fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
                 8.vertical,
                 Text(
                   model.comment ?? "",
@@ -76,7 +92,7 @@ class MessageItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.redCerise100,
+                  color: AppColors.grayNormal,
                 ),
               ),
             )

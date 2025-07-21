@@ -21,6 +21,9 @@ _$CommentModelImpl _$$CommentModelImplFromJson(Map<String, dynamic> json) =>
       photo: json['photo'] == null
           ? null
           : Photo.fromJson(json['photo'] as Map<String, dynamic>),
+      creatorPhoto: json['creature_photo'] == null
+          ? null
+          : Photo.fromJson(json['creature_photo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$CommentModelImplToJson(_$CommentModelImpl instance) =>
@@ -36,4 +39,5 @@ Map<String, dynamic> _$$CommentModelImplToJson(_$CommentModelImpl instance) =>
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'photo': instance.photo,
+      'creature_photo': instance.creatorPhoto,
     };

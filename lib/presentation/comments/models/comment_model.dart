@@ -1,5 +1,7 @@
+import 'package:fitrat_parent2/presentation/comments/models/me_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../home/model/student_model.dart';
+
+
 
 part 'comment_model.freezed.dart';
 part 'comment_model.g.dart';
@@ -18,6 +20,7 @@ class CommentModel with _$CommentModel {
     @JsonKey(name: 'first_name') dynamic firstName,
     @JsonKey(name: 'last_name') dynamic lastName,
     @JsonKey(name: 'photo') Photo? photo,
+    @JsonKey(name: 'creature_photo') Photo? creatorPhoto,
   }) = _CommentModel;
 
   factory CommentModel.fromJson(Map<String, Object?> json) => _$CommentModelFromJson(json);

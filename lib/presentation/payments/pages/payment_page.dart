@@ -2,6 +2,8 @@ import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/pages/payment_single.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 
 class PaymentsPage extends StatelessWidget {
@@ -29,24 +31,28 @@ class PaymentsPage extends StatelessWidget {
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 1,
-                      itemBuilder: (context, index) =>
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child: SizedBox(
-                              width: 330,
-                              child:
-                              _buildChildCard(
-                                name: state.learningResponse?.first.fullName?.toString() ?? "",
-                                subjects: "Kimyo noldan",
-                                balance: state.learningResponse?.first.balance?.toString() ?? "0",
-                                progress: state.learningResponse?.first.overallLearning?.toInt() ?? 0,
-                                avatar: Icons.person,
-                                balanceColor: Colors.green,
-                                context: context,
-                              ),
-
-                            ),
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        child: SizedBox(
+                          width: 330,
+                          child: _buildChildCard(
+                            name: state.learningResponse?.first.fullName
+                                    ?.toString() ??
+                                "",
+                            subjects: "Kimyo noldan",
+                            balance: state.learningResponse?.first.balance
+                                    ?.toString() ??
+                                "0",
+                            progress: state
+                                    .learningResponse?.first.overallLearning
+                                    ?.toInt() ??
+                                0,
+                            avatar: Icons.person,
+                            balanceColor: Colors.green,
+                            context: context,
                           ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -141,8 +147,23 @@ class PaymentsPage extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 24, child: Icon(avatar)),
-              const SizedBox(width: 12),
+              ClipOval(
+                child: Container(
+                  height: 46,
+                  width: 46,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.red.shade100,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: SvgPicture.asset(
+                      AppIcons.person,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),              const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -216,7 +237,7 @@ class PaymentsPage extends StatelessWidget {
                           right: BorderSide(
                               color: AppColors.emerald600, width: 1.5),
                           bottom:
-                          BorderSide(color: AppColors.emerald600, width: 3),
+                              BorderSide(color: AppColors.emerald600, width: 3),
                         ),
                       ),
                       child: Center(

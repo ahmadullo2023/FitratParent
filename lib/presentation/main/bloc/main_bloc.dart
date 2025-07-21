@@ -19,9 +19,15 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     });
 
     on<LoadStudent>((event, emit) async {
+
+      print("LoadStudent ===> bloc ishga tushdi");
+
       emit(state.copyWith(status: StudentStatus.loading));
       try {
         final result = await homeRepository.getStudent(id: HiveHelper.getUserId());
+
+        print("result +> $result");
+
         emit(state.copyWith(
           status: StudentStatus.success,
           studentModel: result,

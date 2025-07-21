@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/widgets/dialogs.dart';
 import 'package:fitrat_parent2/presentation/profile/widgets/item_direction.dart';
@@ -8,9 +10,11 @@ import 'package:flutter_svg/svg.dart';
 import '../../data/db/cache.dart';
 import '../../data/hive/hive_helper.dart';
 import '../../utils/app_assets.dart';
-import '../../utils/theme.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/theme.dart' hide AppColors;
 import '../children/childern_page.dart';
-import '../edit_profile/edit_profile_screen.dart';
+import 'bloc/profile_bloc.dart';
+import 'edit_profile_screen.dart';
 import '../home/home_screen.dart';
 import '../login/pages/login_screen.dart';
 import '../main/bloc/main_bloc.dart';
@@ -24,67 +28,76 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void initState() {
+      context.read<ProfileBloc>().add(GetMeEvent());
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     final student = context.watch<MainBloc>().state.studentModel;
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        return Scaffold(
-            backgroundColor: Color(0xffF9FAFB),
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-              title: Text(
-                "Profil",
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
-                  color: AppColors.grayDarker,
-                ),
-              ),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    showConfirmDialog(
-                        context: context,
-                        onConfirm: () {
-                          cache.clear();
-                          HiveHelper.clearAuthBox();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
-                        },
-                        title: 'Chiqish',
-                        description: 'Profilingizdan chiqmoqchimisiz?',
-                        confirmButtonText: 'Chiqish',
-                        isDestructive: true);
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    margin: const EdgeInsets.only(right: 14),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF9FAFB),
-                      border: Border.all(
-                          color: const Color(0xFFF3F4F6), width: 1.5),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset("assets/icons/logout.svg"),
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (proContext, ptoState) {
+            return Scaffold(
+                backgroundColor: Color(0xffF9FAFB),
+                appBar: AppBar(
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                    "Profil",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                      color: AppColors.grayDarker,
                     ),
                   ),
+                  actions: [
+                    GestureDetector(
+                      onTap: () {
+                        showConfirmDialog(
+                            context: context,
+                            onConfirm: () {
+                              cache.clear();
+                              HiveHelper.clearAuthBox();
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()));
+                            },
+                            title: 'Chiqish',
+                            description: 'Profilingizdan chiqmoqchimisiz?',
+                            confirmButtonText: 'Chiqish',
+                            isDestructive: true);
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        margin: const EdgeInsets.only(right: 14),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF9FAFB),
+                          border: Border.all(
+                              color: const Color(0xFFF3F4F6), width: 1.5),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.asset("assets/icons/logout.svg"),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            body: Container(
-                height: double.infinity,
-                width: double.infinity,
-                color: Color(0xffF3F4F6),
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    Padding(
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<ProfileBloc>().add(GetMeEvent());
+                  },
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: GestureDetector(
                           onTap: () async {
@@ -93,153 +106,153 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               MaterialPageRoute(
                                   builder: (_) => EditProfileScreen()),
                             );
-
                             if (shouldReload == true) {
                               context.read<MainBloc>().add(LoadStudent());
                             }
                           },
-                          child: Stack(
+                          child: Row(
                             children: [
-                              ClipOval(
-                                child: SizedBox(
-                                  height: 88,
-                                  width: 88,
-                                  child: (student?.photo?.url?.isNotEmpty ??
-                                          false)
-                                      ? SvgPicture.network(
-                                          student!.photo!.url!,
-                                          fit: BoxFit.cover,
-                                          placeholderBuilder: (context) =>
-                                              const Center(
-                                            child: CupertinoActivityIndicator(),
-                                          ),
-                                          // Handle error by showing fallback icon
-                                          clipBehavior: Clip.none,
-                                          height: 88,
-                                          width: 88,
-                                        )
-                                      : SvgPicture.asset(
-                                          AppIcons.person,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  width: 32,
-                                  height: 32,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
+                              Spacer(),
+                              Stack(
+                                children: [
+                                  ClipOval(
+                                    child: SizedBox(
+                                      height: 88,
+                                      width: 88,
+                                      child: (student?.photo?.url?.isNotEmpty ??
+                                              false)
+                                          ? SvgPicture.network(
+                                              student!.photo!.url!,
+                                              fit: BoxFit.cover,
+                                              placeholderBuilder: (context) =>
+                                                  const Center(
+                                                child:
+                                                    CupertinoActivityIndicator(),
+                                              ),
+                                              clipBehavior: Clip.none,
+                                            )
+                                          : SvgPicture.asset(
+                                              AppIcons.person,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
                                   ),
-                                  padding: const EdgeInsets.all(4),
-                                  child: SvgPicture.asset(
-                                    AppIcons.icEdit,
-                                    width: 20,
-                                    height: 20,
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      child: SvgPicture.asset(
+                                        AppIcons.icEdit,
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
+                              Spacer(),
                             ],
                           ),
-                        )),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "${student?.firstName} ${student?.lastName}",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
+                      const SizedBox(height: 16),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                            ptoState.getMe?.fullName ?? "",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.read<ProfileBloc>().add(GetMeEvent());
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => EditProfileScreen()));
-                          },
-                          child: ItemDirections(
-                            imageUrl: AppIcons.pupils,
-                            title: 'Shaxsiy maʼlumotlar',
-                            description: 'Ma’lumotlarni tahrirlash, ko’rish',
+                                    builder: (context) => EditProfileScreen()),
+                              );
+                            },
+                            child: ItemDirections(
+                              imageUrl: AppIcons.pupils,
+                              title: 'Shaxsiy maʼlumotlar',
+                              description: 'Ma’lumotlarni tahrirlash, ko’rish',
+                            ),
                           ),
-                        ),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => BalanceScreen()));
-                        //   },
-                        //   child: ItemDirections(
-                        //     imageUrl: AppIcons.wallet,
-                        //     title: 'Balans',
-                        //     description: 'To’ldirish, to’lovlar tarixi',
-                        //   ),
-                        // ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: ItemDirections(
-                            imageUrl: AppIcons.notifications,
-                            title: 'Eslatmalar',
-                            description: 'Eslatmalar, eslatma sozlamalari',
+                          GestureDetector(
+                            onTap: () {},
+                            child: ItemDirections(
+                              imageUrl: AppIcons.notifications,
+                              title: 'Eslatmalar',
+                              description: 'Eslatmalar, eslatma sozlamalari',
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Align(
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      const Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16),
+                          padding: EdgeInsets.only(left: 16),
                           child: Text(
                             "Farzandlarim",
                             style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
                           ),
-                        )),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChildernPage()));
-                        },
-                        child: _buildChildCard(
-                          name: state.learningResponse?.first.fullName
-                                  ?.toString() ??
-                              "",
-                          subjects: "Kimyo noldan",
-                          balance: state.learningResponse?.first.balance
-                                  ?.toString() ??
-                              "0",
-                          progress: state
-                                  .learningResponse?.first.overallLearning
-                                  ?.toInt() ??
-                              0,
-                          avatar: Icons.person,
-                          balanceColor: Colors.green,
                         ),
                       ),
-                    ),
-                  ],
-                ))));
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChildernPage()),
+                            );
+                          },
+                          child: _buildChildCard(
+                            name: state.learningResponse?.first.fullName
+                                    ?.toString() ??
+                                "",
+                            subjects: "Kimyo noldan",
+                            balance: state.learningResponse?.first.balance
+                                    ?.toString() ??
+                                "0",
+                            progress: state
+                                    .learningResponse?.first.overallLearning
+                                    ?.toInt() ??
+                                0,
+                            avatar: Icons.person,
+                            balanceColor: Colors.green,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
+          },
+        );
       },
     );
   }
@@ -263,7 +276,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 24, child: Icon(avatar)),
+              ClipOval(
+                child: Container(
+                  height: 46,
+                  width: 56,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.red.shade100,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: SvgPicture.asset(
+                      AppIcons.person,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

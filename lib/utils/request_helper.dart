@@ -21,8 +21,7 @@ bool isTokenExpired(String token) {
   return JwtDecoder.isExpired(token);
 }
 
-// final baseUrl = 'https://api.ft.sector-soft.ru';
-final baseUrl = 'https://ab90a3d5fb10.ngrok-free.app';
+  final baseUrl = 'https://api.ft.sector-soft.ru';
 
 class RequestHelper {
   final logger = Logger();

@@ -4,6 +4,7 @@ import 'package:fitrat_parent2/presentation/balance/bloc/balance_bloc.dart';
 import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/main/bloc/main_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
+import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
 // import 'package:fitrat_parent2/presentation/main/pages/main_page.dart';
 import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
 import 'package:fitrat_parent2/utils/servise/no_internet.dart';
@@ -37,6 +38,23 @@ void main() async {
         BlocProvider<PaymentBloc>(
           create: (_) => PaymentBloc()
             ..add(PayEvent(lid: '', student: '', amount: '', type: '')),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (_) => ProfileBloc()
+            ..add(UpdateEvent(
+                id: '',
+                full_name: '',
+                first_name: '',
+                last_name: '',
+                role: '',
+                salary: 0,
+                password: 0,
+                pages: [],
+                files: [],
+                is_archived: false,
+                filial: [],
+                bonus: [],
+                compensation: [])),
         ),
       ],
       child: MyApp(),

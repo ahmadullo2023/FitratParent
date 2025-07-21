@@ -11,10 +11,14 @@ class HomeRepository {
   Future<ProfileModel> getStudent({
     required String id,
   }) async {
+    print("retriveId >> $id");
+
     final response = await requestHelper.getWithAuth(
       "/parents/retrive/$id",
       log: true,
     );
+
+    print("response ==> > $response");
 
     return ProfileModel.fromJson(response as Map<String, dynamic>);
   }

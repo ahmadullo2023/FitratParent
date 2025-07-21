@@ -42,6 +42,8 @@ mixin _$CommentModel {
   dynamic get lastName => throw _privateConstructorUsedError;
   @JsonKey(name: 'photo')
   Photo? get photo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'creature_photo')
+  Photo? get creatorPhoto => throw _privateConstructorUsedError;
 
   /// Serializes this CommentModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -70,9 +72,11 @@ abstract class $CommentModelCopyWith<$Res> {
       @JsonKey(name: 'full_name') String? fullName,
       @JsonKey(name: 'first_name') dynamic firstName,
       @JsonKey(name: 'last_name') dynamic lastName,
-      @JsonKey(name: 'photo') Photo? photo});
+      @JsonKey(name: 'photo') Photo? photo,
+      @JsonKey(name: 'creature_photo') Photo? creatorPhoto});
 
   $PhotoCopyWith<$Res>? get photo;
+  $PhotoCopyWith<$Res>? get creatorPhoto;
 }
 
 /// @nodoc
@@ -101,6 +105,7 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? photo = freezed,
+    Object? creatorPhoto = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -147,6 +152,10 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as Photo?,
+      creatorPhoto: freezed == creatorPhoto
+          ? _value.creatorPhoto
+          : creatorPhoto // ignore: cast_nullable_to_non_nullable
+              as Photo?,
     ) as $Val);
   }
 
@@ -161,6 +170,20 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
 
     return $PhotoCopyWith<$Res>(_value.photo!, (value) {
       return _then(_value.copyWith(photo: value) as $Val);
+    });
+  }
+
+  /// Create a copy of CommentModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PhotoCopyWith<$Res>? get creatorPhoto {
+    if (_value.creatorPhoto == null) {
+      return null;
+    }
+
+    return $PhotoCopyWith<$Res>(_value.creatorPhoto!, (value) {
+      return _then(_value.copyWith(creatorPhoto: value) as $Val);
     });
   }
 }
@@ -184,10 +207,13 @@ abstract class _$$CommentModelImplCopyWith<$Res>
       @JsonKey(name: 'full_name') String? fullName,
       @JsonKey(name: 'first_name') dynamic firstName,
       @JsonKey(name: 'last_name') dynamic lastName,
-      @JsonKey(name: 'photo') Photo? photo});
+      @JsonKey(name: 'photo') Photo? photo,
+      @JsonKey(name: 'creature_photo') Photo? creatorPhoto});
 
   @override
   $PhotoCopyWith<$Res>? get photo;
+  @override
+  $PhotoCopyWith<$Res>? get creatorPhoto;
 }
 
 /// @nodoc
@@ -214,6 +240,7 @@ class __$$CommentModelImplCopyWithImpl<$Res>
     Object? firstName = freezed,
     Object? lastName = freezed,
     Object? photo = freezed,
+    Object? creatorPhoto = freezed,
   }) {
     return _then(_$CommentModelImpl(
       id: freezed == id
@@ -260,6 +287,10 @@ class __$$CommentModelImplCopyWithImpl<$Res>
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
               as Photo?,
+      creatorPhoto: freezed == creatorPhoto
+          ? _value.creatorPhoto
+          : creatorPhoto // ignore: cast_nullable_to_non_nullable
+              as Photo?,
     ));
   }
 }
@@ -278,7 +309,8 @@ class _$CommentModelImpl implements _CommentModel {
       @JsonKey(name: 'full_name') this.fullName,
       @JsonKey(name: 'first_name') this.firstName,
       @JsonKey(name: 'last_name') this.lastName,
-      @JsonKey(name: 'photo') this.photo});
+      @JsonKey(name: 'photo') this.photo,
+      @JsonKey(name: 'creature_photo') this.creatorPhoto});
 
   factory _$CommentModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentModelImplFromJson(json);
@@ -316,10 +348,13 @@ class _$CommentModelImpl implements _CommentModel {
   @override
   @JsonKey(name: 'photo')
   final Photo? photo;
+  @override
+  @JsonKey(name: 'creature_photo')
+  final Photo? creatorPhoto;
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, creator: $creator, lid: $lid, student: $student, comment: $comment, createdAt: $createdAt, updatedAt: $updatedAt, fullName: $fullName, firstName: $firstName, lastName: $lastName, photo: $photo)';
+    return 'CommentModel(id: $id, creator: $creator, lid: $lid, student: $student, comment: $comment, createdAt: $createdAt, updatedAt: $updatedAt, fullName: $fullName, firstName: $firstName, lastName: $lastName, photo: $photo, creatorPhoto: $creatorPhoto)';
   }
 
   @override
@@ -340,7 +375,9 @@ class _$CommentModelImpl implements _CommentModel {
                 other.fullName == fullName) &&
             const DeepCollectionEquality().equals(other.firstName, firstName) &&
             const DeepCollectionEquality().equals(other.lastName, lastName) &&
-            (identical(other.photo, photo) || other.photo == photo));
+            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.creatorPhoto, creatorPhoto) ||
+                other.creatorPhoto == creatorPhoto));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -357,7 +394,8 @@ class _$CommentModelImpl implements _CommentModel {
       fullName,
       const DeepCollectionEquality().hash(firstName),
       const DeepCollectionEquality().hash(lastName),
-      photo);
+      photo,
+      creatorPhoto);
 
   /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.
@@ -377,17 +415,19 @@ class _$CommentModelImpl implements _CommentModel {
 
 abstract class _CommentModel implements CommentModel {
   const factory _CommentModel(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'creator') final String? creator,
-      @JsonKey(name: 'lid') final dynamic lid,
-      @JsonKey(name: 'student') final String? student,
-      @JsonKey(name: 'comment') final String? comment,
-      @JsonKey(name: 'created_at') final String? createdAt,
-      @JsonKey(name: 'updated_at') final String? updatedAt,
-      @JsonKey(name: 'full_name') final String? fullName,
-      @JsonKey(name: 'first_name') final dynamic firstName,
-      @JsonKey(name: 'last_name') final dynamic lastName,
-      @JsonKey(name: 'photo') final Photo? photo}) = _$CommentModelImpl;
+          {@JsonKey(name: 'id') final String? id,
+          @JsonKey(name: 'creator') final String? creator,
+          @JsonKey(name: 'lid') final dynamic lid,
+          @JsonKey(name: 'student') final String? student,
+          @JsonKey(name: 'comment') final String? comment,
+          @JsonKey(name: 'created_at') final String? createdAt,
+          @JsonKey(name: 'updated_at') final String? updatedAt,
+          @JsonKey(name: 'full_name') final String? fullName,
+          @JsonKey(name: 'first_name') final dynamic firstName,
+          @JsonKey(name: 'last_name') final dynamic lastName,
+          @JsonKey(name: 'photo') final Photo? photo,
+          @JsonKey(name: 'creature_photo') final Photo? creatorPhoto}) =
+      _$CommentModelImpl;
 
   factory _CommentModel.fromJson(Map<String, dynamic> json) =
       _$CommentModelImpl.fromJson;
@@ -425,6 +465,9 @@ abstract class _CommentModel implements CommentModel {
   @override
   @JsonKey(name: 'photo')
   Photo? get photo;
+  @override
+  @JsonKey(name: 'creature_photo')
+  Photo? get creatorPhoto;
 
   /// Create a copy of CommentModel
   /// with the given fields replaced by the non-null parameter values.

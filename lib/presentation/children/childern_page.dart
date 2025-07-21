@@ -39,7 +39,7 @@ class _ChildernPageState extends State<ChildernPage> {
               GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CommentsPage(id: '92b0b156-a097-46c6-92d9-d92aaeda099b')));
+                        MaterialPageRoute(builder: (context) => CommentsPage(lidId: null, studentId: 'a63667b8-d991-4f8b-aae0-ca15927b2a46')));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
               SizedBox(width: 10),

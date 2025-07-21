@@ -2,11 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitrat_parent2/presentation/home/repository/home_repository.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/item_story.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/points_widget.dart';
+import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../data/hive/hive_helper.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/servise/file_download_service.dart';
@@ -41,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<MainBloc>().add(LoadStudent());
+    context.read<ProfileBloc>().add(GetMeEvent());
     context.read<HomeBloc>().add(LoadStories());
     // context.read<HomeBloc>().add(LoadCourses());
     context.read<HomeBloc>().add(LoadLearnings());
@@ -59,308 +62,333 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final student = context.watch<MainBloc>().state.studentModel;
-
     return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
-      return Scaffold(
-          appBar: CustomAppBar(
-            title: student?.firstName ?? "Asosiy",
-            points: mainState.status == StudentStatus.loading
-                ? 0
-                : student?.ball?.toDouble() ?? 0,
-            isLoading: mainState.status == StudentStatus.loading,
-            userImage: student?.photo?.file,
-          ),
-          body: Container(
-              height: double.infinity,
-              color: AppColors.white,
-              child: RefreshIndicator(
-                  color: AppColors.emerald500,
-                  backgroundColor: Colors.white,
-                  displacement: 40,
-                  strokeWidth: 3,
-                  onRefresh: () async {
-                    context.read<MainBloc>().add(LoadStudent());
-                    context.read<HomeBloc>().add(LoadStories());
-                    // context.read<HomeBloc>().add(LoadCourses());
-                    context.read<HomeBloc>().add(LoadLearnings());
-                    getResults();
-                  },
-                  child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: BlocBuilder<HomeBloc, HomeState>(
-                        builder: (homeContext1, homeState1) {
-                          return Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    BlocBuilder<HomeBloc, HomeState>(
-                                      buildWhen: (previous, current) =>
-                                          previous.status != current.status ||
-                                          previous.storiesModel !=
-                                              current.storiesModel,
-                                      builder: (context, homeState2) {
-                                        if (homeState2.status ==
-                                            StoriesStatus.loading) {
-                                          return _buildStoriesShimmer();
-                                        } else if (homeState2.status ==
-                                            StoriesStatus.error) {
-                                          return const SizedBox(
-                                            height: 80,
-                                            child: Center(
-                                                child:
-                                                    Text("Xatolik yuz berdi")),
-                                          );
-                                        }
+      return BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (proContext, proState) {
+          return Scaffold(
+              appBar: CustomAppBar(
+                title: proState.getMe?.fullName ?? '',
+                points: mainState.status == StudentStatus.loading
+                    ? 0
+                    : student?.ball?.toDouble() ?? 0,
+                isLoading: mainState.status == StudentStatus.loading,
+                userImage: student?.photo?.file,
+              ),
+              body: Container(
+                  height: double.infinity,
+                  color: AppColors.white,
+                  child: RefreshIndicator(
+                      color: AppColors.emerald500,
+                      backgroundColor: Colors.white,
+                      displacement: 40,
+                      strokeWidth: 3,
+                      onRefresh: () async {
+                        context.read<MainBloc>().add(LoadStudent());
+                        context.read<HomeBloc>().add(LoadStories());
+                        context
+                            .read<ProfileBloc>()
+                            .add(GetMeEvent());
+                        // context.read<HomeBloc>().add(LoadCourses());
+                        context.read<HomeBloc>().add(LoadLearnings());
+                        getResults();
+                      },
+                      child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: BlocBuilder<HomeBloc, HomeState>(
+                            builder: (homeContext1, homeState1) {
+                              return Padding(
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 8),
+                                        BlocBuilder<HomeBloc, HomeState>(
+                                          buildWhen: (previous, current) =>
+                                              previous.status !=
+                                                  current.status ||
+                                              previous.storiesModel !=
+                                                  current.storiesModel,
+                                          builder: (context, homeState2) {
+                                            if (homeState2.status ==
+                                                StoriesStatus.loading) {
+                                              return _buildStoriesShimmer();
+                                            } else if (homeState2.status ==
+                                                StoriesStatus.error) {
+                                              return const SizedBox(
+                                                height: 80,
+                                                child: Center(
+                                                    child: Text(
+                                                        "Xatolik yuz berdi")),
+                                              );
+                                            }
 
-                                        final stories = homeState2.storiesModel;
-                                        return stories != null &&
-                                                stories.isNotEmpty
-                                            ? _buildStoriesSection(stories)
-                                            : const SizedBox();
-                                      },
-                                    ),
-                                    const SizedBox(height: 12),
-                                    12.vertical,
-                                    if (events.isNotEmpty) ...[
-                                      Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "Tadbirlar",
-                                                  style: TextStyle(
-                                                      color: Color(0xff0D121C),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 18,
-                                                      fontFamily:
-                                                          "outfitMedium"),
-                                                ),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  EventsScreen()));
-                                                    },
-                                                    child: Text("Barchasi",
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .emerald500,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14,
-                                                        )))
-                                              ])),
-                                      12.vertical,
-                                      CarouselSlider(
-                                        options: CarouselOptions(
-                                          autoPlay: true,
-                                          height: 126,
-                                          viewportFraction: 0.8,
-                                          enlargeCenterPage: true,
-                                          enlargeStrategy:
-                                              CenterPageEnlargeStrategy.height,
-                                          enableInfiniteScroll: true,
-                                          padEnds: true,
-                                          initialPage: 0,
-                                          autoPlayAnimationDuration:
-                                              Duration(milliseconds: 600),
-                                          autoPlayCurve: Curves.easeInOut,
-                                        ),
-                                        items: List.generate(events.length,
-                                            (index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 6),
-                                            child: ItemEvents(
-                                              backgroundImage:
-                                                  events[index].photo?.file,
-                                              title: events[index].comment ??
-                                                  "No comment yet",
-                                              time: events[index].endDate ?? "",
-                                              onTab: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EventDetail(
-                                                            event:
-                                                                events[index]),
-                                                  ),
-                                                );
-                                              },
-                                              isEvent: true,
-                                            ),
-                                          );
-                                        }),
-                                      ),
-                                      const SizedBox(height: 12),
-                                    ],
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      child: _buildSectionTitle('Farzandlarim'),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ChildernPage()));
-                                        },
-                                        child: _buildChildCard(
-                                          name: homeState1.learningResponse
-                                              ?.first.fullName
-                                              ?.toString() ??
-                                              "",
-                                          subjects: "Kimyo noldan",
-                                          balance: homeState1.learningResponse
-                                              ?.first.balance
-                                              ?.toString() ??
-                                              "0",
-                                          progress: homeState1
-                                              .learningResponse
-                                              ?.first
-                                              .overallLearning
-                                              ?.toInt() ??
-                                              0,
-                                          avatar: Icons.person,
-                                          balanceColor: Colors.green,
-                                        ),
-                                      ),
-                                    ),
-                                    if (results.isNotEmpty) ...[
-                                      Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 10),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "Faxrli o’quvchilarimiz",
-                                                  style: TextStyle(
-                                                      color: Color(0xff0D121C),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 18,
-                                                      fontFamily:
-                                                          "outfitMedium"),
-                                                ),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ResultsScreen(),
-                                                          ));
-                                                    },
-                                                    child: Text("Barchasi",
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .emerald500,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontSize: 14,
-                                                        )))
-                                              ])),
-                                      12.vertical,
-                                      SizedBox(
-                                        height: 242,
-                                        child: ListView.separated(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: results.length,
-                                          separatorBuilder: (context, index) =>
-                                              const SizedBox(width: 12),
-                                          itemBuilder: (context, index) {
-                                            return ItemResults(
-                                              isBig: false,
-                                              topImageUrl:
-                                                  results[index].file?.file,
-                                              studentImageUrl: results[index]
-                                                  .studentPhoto
-                                                  ?.file,
-                                              studentName:
-                                                  results[index].fullName ??
-                                                      "Ann",
-                                              resultType:
-                                                  results[index].type ?? "",
-                                              score: results[index].point ?? "",
-                                              onTap: () {
-                                                results[index].file?.file !=
-                                                            null &&
-                                                        (results[index]
-                                                                .file!
-                                                                .file!
-                                                                .endsWith(
-                                                                    ".png") ||
-                                                            results[index]
-                                                                .file!
-                                                                .file!
-                                                                .endsWith(
-                                                                    ".jpg") ||
-                                                            results[index]
-                                                                .file!
-                                                                .file!
-                                                                .endsWith(
-                                                                    ".jpeg"))
-                                                    ? Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                Scaffold(
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .black,
-                                                                    appBar:
-                                                                        AppBar(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .black,
-                                                                      // Black background
-                                                                      iconTheme:
-                                                                          IconThemeData(
-                                                                              color: Colors.white), // White back button
-                                                                    ),
-                                                                    body: Center(
-                                                                        child: InteractiveViewer(
-                                                                            child: Image.network(results[index]
-                                                                                .file!
-                                                                                .file!))))))
-                                                    : FileDownloadService()
-                                                        .downloadAndOpenFile(
-                                                        context: context,
-                                                        url: results[index]
-                                                            .file!
-                                                            .file!,
-                                                      );
-                                              },
-                                            );
+                                            final stories =
+                                                homeState2.storiesModel;
+                                            return stories != null &&
+                                                    stories.isNotEmpty
+                                                ? _buildStoriesSection(stories)
+                                                : const SizedBox();
                                           },
                                         ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                    ],
-                                  ]));
-                        },
-                      )))));
+                                        const SizedBox(height: 12),
+                                        12.vertical,
+                                        if (events.isNotEmpty) ...[
+                                          Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Tadbirlar",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff0D121C),
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 18,
+                                                          fontFamily:
+                                                              "outfitMedium"),
+                                                    ),
+                                                    InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          EventsScreen()));
+                                                        },
+                                                        child: Text("Barchasi",
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .emerald500,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 14,
+                                                            )))
+                                                  ])),
+                                          12.vertical,
+                                          CarouselSlider(
+                                            options: CarouselOptions(
+                                              autoPlay: true,
+                                              height: 126,
+                                              viewportFraction: 0.8,
+                                              enlargeCenterPage: true,
+                                              enlargeStrategy:
+                                                  CenterPageEnlargeStrategy
+                                                      .height,
+                                              enableInfiniteScroll: true,
+                                              padEnds: true,
+                                              initialPage: 0,
+                                              autoPlayAnimationDuration:
+                                                  Duration(milliseconds: 600),
+                                              autoPlayCurve: Curves.easeInOut,
+                                            ),
+                                            items: List.generate(events.length,
+                                                (index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: ItemEvents(
+                                                  backgroundImage:
+                                                      events[index].photo?.file,
+                                                  title:
+                                                      events[index].comment ??
+                                                          "No comment yet",
+                                                  time: events[index].endDate ??
+                                                      "",
+                                                  onTab: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EventDetail(
+                                                                event: events[
+                                                                    index]),
+                                                      ),
+                                                    );
+                                                  },
+                                                  isEvent: true,
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                          const SizedBox(height: 12),
+                                        ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: _buildSectionTitle(
+                                              'Farzandlarim'),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChildernPage()));
+                                            },
+                                            child: _buildChildCard(
+                                              name: homeState1.learningResponse
+                                                      ?.first.fullName
+                                                      ?.toString() ??
+                                                  "",
+                                              subjects: "Kimyo noldan",
+                                              balance: homeState1
+                                                      .learningResponse
+                                                      ?.first
+                                                      .balance
+                                                      ?.toString() ??
+                                                  "0",
+                                              progress: homeState1
+                                                      .learningResponse
+                                                      ?.first
+                                                      .overallLearning
+                                                      ?.toInt() ??
+                                                  0,
+                                              avatar: Icons.person,
+                                              balanceColor: Colors.green,
+                                            ),
+                                          ),
+                                        ),
+                                        if (results.isNotEmpty) ...[
+                                          Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16.0,
+                                                      vertical: 10),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Faxrli o’quvchilarimiz",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff0D121C),
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 18,
+                                                          fontFamily:
+                                                              "outfitMedium"),
+                                                    ),
+                                                    InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ResultsScreen(),
+                                                              ));
+                                                        },
+                                                        child: Text("Barchasi",
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .emerald500,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 14,
+                                                            )))
+                                                  ])),
+                                          12.vertical,
+                                          SizedBox(
+                                            height: 242,
+                                            child: ListView.separated(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: results.length,
+                                              separatorBuilder:
+                                                  (context, index) =>
+                                                      const SizedBox(width: 12),
+                                              itemBuilder: (context, index) {
+                                                return ItemResults(
+                                                  isBig: false,
+                                                  topImageUrl:
+                                                      results[index].file?.file,
+                                                  studentImageUrl:
+                                                      results[index]
+                                                          .studentPhoto
+                                                          ?.file,
+                                                  studentName:
+                                                      results[index].fullName ??
+                                                          "Ann",
+                                                  resultType:
+                                                      results[index].type ?? "",
+                                                  score: results[index].point ??
+                                                      "",
+                                                  onTap: () {
+                                                    results[index].file?.file != null &&
+                                                            (results[index]
+                                                                    .file!
+                                                                    .file!
+                                                                    .endsWith(
+                                                                        ".png") ||
+                                                                results[index]
+                                                                    .file!
+                                                                    .file!
+                                                                    .endsWith(
+                                                                        ".jpg") ||
+                                                                results[index]
+                                                                    .file!
+                                                                    .file!
+                                                                    .endsWith(
+                                                                        ".jpeg"))
+                                                        ? Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (_) =>
+                                                                    Scaffold(
+                                                                        backgroundColor:
+                                                                            Colors
+                                                                                .black,
+                                                                        appBar:
+                                                                            AppBar(
+                                                                          backgroundColor:
+                                                                              Colors.black,
+                                                                          // Black background
+                                                                          iconTheme:
+                                                                              IconThemeData(color: Colors.white), // White back button
+                                                                        ),
+                                                                        body: Center(
+                                                                            child: InteractiveViewer(
+                                                                                child: Image.network(results[index]
+                                                                                    .file!
+                                                                                    .file!))))))
+                                                        : FileDownloadService()
+                                                            .downloadAndOpenFile(
+                                                            context: context,
+                                                            url: results[index]
+                                                                .file!
+                                                                .file!,
+                                                          );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                        ],
+                                      ]));
+                            },
+                          )))));
+        },
+      );
     });
   }
 
@@ -398,7 +426,23 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 24, child: Icon(avatar)),
+              ClipOval(
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.red.shade100,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: SvgPicture.asset(
+                      AppIcons.person,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

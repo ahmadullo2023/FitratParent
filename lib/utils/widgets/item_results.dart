@@ -11,23 +11,22 @@ class ItemResults extends StatelessWidget {
   final bool isBig;
   final VoidCallback onTap;
 
-  const ItemResults({
-    super.key,
-    required this.topImageUrl,
-    required this.studentImageUrl,
-    required this.studentName,
-    required this.resultType,
-    required this.score,
-    required this.onTap,
-    this.isBig = true
-  });
+  const ItemResults(
+      {super.key,
+      required this.topImageUrl,
+      required this.studentImageUrl,
+      required this.studentName,
+      required this.resultType,
+      required this.score,
+      required this.onTap,
+      this.isBig = true});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: isBig ? 175 :156,
+        width: isBig ? 175 : 156,
         height: isBig ? 257 : 242,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -79,7 +78,8 @@ class ItemResults extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  if (studentImageUrl != null && studentImageUrl!.isNotEmpty) ...[
+                  if (studentImageUrl != null &&
+                      studentImageUrl!.isNotEmpty) ...[
                     CircleAvatar(
                       radius: 12,
                       backgroundImage: NetworkImage(studentImageUrl!),

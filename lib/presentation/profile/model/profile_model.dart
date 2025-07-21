@@ -12,7 +12,7 @@ class ProfileModel with _$ProfileModel {
 
   const factory ProfileModel({
     String? id,
-    String? firstName,
+    String? name,
     Photo? photo,
     String? lastName,
     String? middleName,

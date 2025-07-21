@@ -372,7 +372,7 @@ class AppColors {
   static const redTorch950 = Color(0xFF47080a);
 
   //Studio
-  static const studio50  = Color(0xFFf5f4fe);
+  static const studio50 = Color(0xFFf5f4fe);
   static const studio100 = Color(0xFFedebfc);
   static const studio200 = Color(0xFFdddafa);
   static const studio300 = Color(0xFFc4bcf6);
@@ -385,7 +385,7 @@ class AppColors {
   static const studio950 = Color(0xFF2b185d);
 
   //Blue Chill
-  static const blueChill50  = Color(0xFFebfffc);
+  static const blueChill50 = Color(0xFFebfffc);
   static const blueChill100 = Color(0xFFccfffb);
   static const blueChill200 = Color(0xFF9ffff9);
   static const blueChill300 = Color(0xFF5efff8);
@@ -397,10 +397,49 @@ class AppColors {
   static const blueChill900 = Color(0xFF115c68);
   static const blueChill950 = Color(0xFF043f48);
 
-
   static const white = Colors.white;
   static const black = Colors.black;
   static const transparent = Colors.transparent;
+
+  static const primaryColor = Color(0xFF47c77d);
+  static const primaryColorOpacity = Color(0xFFedf9f2);
+  static const greyText = Color(0xFF808284);
+  static const grayDarker = Color(0xFF2E333A);
+  static const grayDark = Color(0xFF636D7C);
+  static const borderColor = Color(0xFFE5E6E7);
+  static const grayNormal = Color(0xFF8491A5);
+  static const grayLight = Color(0xFFF3F4F6);
+  static const red = Color(0xFFF55555);
+  static const redLight = Color(0xFFFEEEEE);
+  static const yellow = Color(0xFFFEB23A);
+  static const yellowLight = Color(0xFFFFF7EB);
+
+  static const primaryOpacity = Color.fromRGBO(1, 50, 131, 0.05);
+
+  static const grayBackground = Color(0xFFF0F0F5);
+
+  static const fafafa = Color(0xffFAFAFA);
+  static const greyHome = Color(0xff8E93A6);
+  static const text333333 = Color(0xff333333);
+
+  static const grey3 = Color(0xFF898E96);
+  static const grey5 = Color(0xFF374957);
+  static const grey2 = Color(0xFFCCCDCE);
+  static const grey1 = Color(0xFFE7E9EC);
+  static const gray = Color(0xffA6ADB9);
+  static const c9FAEA4 = Color(0xff9FAEA4);
+  static const cF0F0F5 = Color(0xffF0F0F5);
+  static const c2C2D30 = Color(0xff2C2D30);
+
+  static const cEEEE = Color(0xffEEEEEE);
+  static const green = Color(0xff36D488);
+
+  static const grey4 = Color(0xFF393F48);
+  static const dividerColor = Color(0xFFD7D8DD);
+  static const secondary = Color(0xFFF1F1F1);
+  static const secondary2 = Color(0xFFF8F8FA);
+  static const cff8989 = Color(0xFFFF8989);
+  static const c964A4A = Color(0xFF964A4A);
 }
 
 // final appThemeData = ThemeData(
