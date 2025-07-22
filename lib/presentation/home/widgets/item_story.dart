@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class StoryAvatar extends StatefulWidget {
   final String? imageUrl;
   final bool isRead;
+  final String? storyText;
   final double size;
   final VoidCallback onClick;
 
   const StoryAvatar({
     super.key,
     required this.imageUrl,
+    this.storyText,
     this.isRead = false,
     this.size = 68,
     required this.onClick,
@@ -91,12 +93,11 @@ class _StoryAvatarState extends State<StoryAvatar> {
                     ),
                   ),
                 ),
-                // 👇 Text on top of gradient
                 Positioned(
                   top: 45,
                   left: 5,
                   child: Text(
-                    "Story text...",
+                    widget.storyText ?? "Story text...",
                     style: TextStyle(fontSize: 10, color: Colors.white),
                   ),
                 ),

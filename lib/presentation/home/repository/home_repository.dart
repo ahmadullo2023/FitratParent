@@ -10,7 +10,6 @@ import '../model/story/story_model.dart';
 import '../model/student_model.dart';
 
 class HomeRepository {
-
   Future<ProfileModel> getStudent({
     required String id,
   }) async {
@@ -27,7 +26,7 @@ class HomeRepository {
   }
 
   Future<List<StoryModel>> getStories() async {
-   try {
+    try {
       final response =
           await requestHelper.getWithAuth("/appsettings/story", log: true);
 
@@ -36,17 +35,15 @@ class HomeRepository {
 
       List list = response;
       return list.map((e) => StoryModel.fromJson(e)).toList();
-    }catch (e,s) {
-    Logger().e(["ERROR", e, s]);
-    rethrow;
+    } catch (e, s) {
+      Logger().e(["ERROR", e, s]);
+      rethrow;
     }
   }
-
 
   Future<dynamic> setStorySeen({
     required String? id,
   }) async {
-
     try {
       final body = {
         "seen": true,
@@ -62,34 +59,30 @@ class HomeRepository {
     }
   }
 
-
-  Future<List<StudentModel>> getStudents () async {
-   try {
+  Future<List<StudentModel>> getStudents() async {
+    try {
       String studentId = cache.getString("studentIddddddd") ?? "";
       final response = await requestHelper
           .getWithAuth("/add-group/student-pg/$studentId", log: true);
       List list = response;
       return list.map((e) => StudentModel.fromJson(e)).toList();
-    } catch (e,s) {
-     Logger().e(["ERROR", e, s]);
-     rethrow;
-   }
-  }
-
-
-  Future<List<LearningResponse>> getLearning () async {
-    try {
-      final response = await requestHelper.getWithAuth(
-        "/parents/childrens/", log: true
-      );
-      List list = response;
-      return list.map((e) => LearningResponse.fromJson(e)).toList();
-    } catch (e,s) {
+    } catch (e, s) {
       Logger().e(["ERROR", e, s]);
       rethrow;
     }
   }
 
+  Future<List<LearningResponse>> getLearning() async {
+    try {
+      final response =
+          await requestHelper.getWithAuth("/parents/childrens/", log: true);
+      List list = response;
+      return list.map((e) => LearningResponse.fromJson(e)).toList();
+    } catch (e, s) {
+      Logger().e(["ERROR", e, s]);
+      rethrow;
+    }
+  }
 
   Future<FileModel> uploadFile(String path, String name) async {
     final FormData formData = FormData.fromMap({
@@ -102,8 +95,6 @@ class HomeRepository {
     return FileModel.fromJson(response);
   }
 
-
-
   Future<MeModel> getMe() async {
     final response = await requestHelper.getWithAuth(
       "/auth/me/",
@@ -112,10 +103,6 @@ class HomeRepository {
 
     return MeModel.fromJson(response as Map<String, dynamic>);
   }
-
-
-
-
 }
 
 final homeRepository = HomeRepository();

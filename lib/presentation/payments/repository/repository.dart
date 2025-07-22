@@ -17,7 +17,8 @@ class PaymentRepository {
         "amount": amount,
         "type": type
       };
-      final response = await requestHelper.postWithAuth("/clickuz/order/", body, log: true);
+      final response =
+          await requestHelper.postWithAuth("/clickuz/order/", body, log: true);
 
       print("BU payment ===> ${response}");
 
@@ -28,11 +29,10 @@ class PaymentRepository {
     }
   }
 
-
-
   Future<PaymentHistoryModel> paymentHistory() async {
-    try {
+    print("paymentHistory funksiya ishladi");
 
+    try {
       final response = await requestHelper.getWithAuth("/finance/", log: true);
 
       print("BU payment history ===> ${response}");
@@ -43,7 +43,6 @@ class PaymentRepository {
       rethrow;
     }
   }
-
 }
 
 final paymentRepository = PaymentRepository();

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 part 'payment_history_model.freezed.dart';
 part 'payment_history_model.g.dart';
 
@@ -31,6 +30,7 @@ class ResultsModel with _$ResultsModel {
       String? attendance,
       String? stuff,
       String? comment,
+      StudentInfo? studentInfo,
       String? created_at,
       String? updated_at,
       double? total,
@@ -53,4 +53,17 @@ class KindModel with _$KindModel {
 
   factory KindModel.fromJson(Map<String, dynamic> json) =>
       _$KindModelFromJson(json);
+}
+
+@freezed
+class StudentInfo with _$StudentInfo {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
+  const factory StudentInfo({
+    String? id,
+    String? first_name,
+    String? last_name,
+  }) = _StudentInfo;
+
+  factory StudentInfo.fromJson(Map<String, dynamic> json) =>
+      _$StudentInfoFromJson(json);
 }

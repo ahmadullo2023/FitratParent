@@ -34,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final student = context.watch<MainBloc>().state.studentModel;
     final student = context.watch<MainBloc>().state.meModel;
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
@@ -45,12 +44,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 appBar: AppBar(
                   backgroundColor: Colors.white,
                   automaticallyImplyLeading: false,
-                  title: Text(
-                    "Profil",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                      color: AppColors.grayDarker,
+                  title: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Profil",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                        color: AppColors.grayDarker,
+                      ),
                     ),
                   ),
                   actions: [

@@ -1,4 +1,3 @@
-import 'package:fitrat_parent2/presentation/children/chat_screen.dart';
 import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,8 +37,13 @@ class _ChildernPageState extends State<ChildernPage> {
             actions: [
               GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CommentsPage(lidId: null, studentId: 'a63667b8-d991-4f8b-aae0-ca15927b2a46')));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CommentsPage(
+                                lidId: null,
+                                studentId:
+                                    'a63667b8-d991-4f8b-aae0-ca15927b2a46')));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
               SizedBox(width: 10),
@@ -111,7 +115,23 @@ class _ChildernPageState extends State<ChildernPage> {
         children: [
           Row(
             children: [
-              CircleAvatar(radius: 24, child: Icon(avatar)),
+              ClipOval(
+                child: Container(
+                  height: 46,
+                  width: 46,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey.shade300,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SvgPicture.asset(
+                      AppIcons.person,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

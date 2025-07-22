@@ -4,7 +4,6 @@ import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:fitrat_parent2/utils/widgets/video_landscape_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../utils/app_colors.dart';
@@ -326,12 +325,12 @@ class _EventDetailState extends State<EventDetail> {
                           fontSize: 16,
                           fontFamily: "outfitMedium")),
                   Spacer(),
-                  Icon(
-                    Icons.calendar_month,
-                    color: AppColors.emerald500
-                  ),
+                  Icon(Icons.calendar_month, color: AppColors.emerald500),
                   4.horizontal,
-                  Text(widget.event.endDate ?? "No date",
+                  Text(
+                      widget.event.endDate == null
+                          ? "No date"
+                          : formatDate(widget.event.endDate!),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -366,24 +365,23 @@ class _EventDetailState extends State<EventDetail> {
             ),
             12.vertical,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CustomButton(
-                text: widget.event.linkPreview ?? "Qatnashish",
-                onPressed: () async {
-                  final url = widget.event.link;
-                  if (url != null && url.isNotEmpty) {
-                    final uri = Uri.parse(url);
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri, mode: LaunchMode.externalApplication);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("URL ochib bo'lmadi")),
-                      );
-                    }
-                  }
-                }
-              )
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CustomButton(
+                    text: widget.event.linkPreview ?? "Qatnashish",
+                    onPressed: () async {
+                      final url = widget.event.link;
+                      if (url != null && url.isNotEmpty) {
+                        final uri = Uri.parse(url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri,
+                              mode: LaunchMode.externalApplication);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("URL ochib bo'lmadi")),
+                          );
+                        }
+                      }
+                    })),
             12.vertical,
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -401,5 +399,13 @@ class _EventDetailState extends State<EventDetail> {
         ),
       ),
     );
+  }
+
+  String formatDate(String inputDate) {
+    DateTime date = DateTime.parse(inputDate);
+    String day = date.day.toString().padLeft(2, '0');
+    String month = date.month.toString().padLeft(2, '0');
+    String year = date.year.toString();
+    return "$day.$month.$year";
   }
 }

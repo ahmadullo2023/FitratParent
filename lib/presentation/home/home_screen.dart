@@ -60,6 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final student = context.watch<MainBloc>().state.studentModel;
+    final student2 = context.watch<MainBloc>().state.meModel;
+
     return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
       return BlocBuilder<ProfileBloc, ProfileState>(
         builder: (proContext, proState) {
@@ -70,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? 0
                     : student?.ball?.toDouble() ?? 0,
                 isLoading: mainState.status == StudentStatus.loading,
-                userImage: student?.photo?.file,
+                userImage: student2?.photo?.file,
               ),
               body: Container(
                   height: double.infinity,
@@ -623,6 +625,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context, index) {
             return StoryAvatar(
               imageUrl: stories[index].photo?.file,
+              storyText: stories[index].text,
               isRead: stories[index].seen,
               onClick: () {
                 context.read<HomeBloc>().add(LoadStories());

@@ -22,6 +22,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
     super.initState();
   }
 
+  String studentId = "07ed9628-1d05-41a3-b8c6-e347a0178294";
+
   String formatDate(String isoString) {
     final dateTime = DateTime.parse(isoString).toLocal();
     final formatter = DateFormat('dd.MM.yyyy, HH:mm');
@@ -88,17 +90,27 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           : SizedBox(
                               height: 410,
                               child: ListView.builder(
-                                itemCount: payState
-                                    .paymentHistoryModel!.results!.length,
-                                itemBuilder: (context, index) => _paymentItem(
-                                    payState.paymentHistoryModel!
-                                            .results![index].action !=
-                                        "INCOME",
-                                    "Click",
-                                    "${payState.paymentHistoryModel!.results![index].balance}",
-                                    formatDate(payState.paymentHistoryModel!
-                                        .results![index].created_at!)),
-                              ),
+                                  itemCount: payState.paymentHistoryModel!.results!.length,
+                                  itemBuilder: (context, index) =>
+                                      studentId ==
+                                          payState.paymentHistoryModel!.results![index].studentInfo?.id ?
+                                      _paymentItem(
+                                          payState.paymentHistoryModel!
+                                                  .results![index].action !=
+                                              "INCOME",
+                                          payState
+                                                  .paymentHistoryModel!
+                                                  .results![index]
+                                                  .payment_method ??
+                                              "",
+                                          payState.paymentHistoryModel!
+                                              .results![index].amount
+                                              .toString(),
+                                          formatDate(payState
+                                              .paymentHistoryModel!
+                                              .results![index]
+                                              .created_at!)) : SizedBox(),
+                                  ),
                             ),
                     ],
                   ),
@@ -197,9 +209,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(16),
-      ),
+          color: Color(0xFFF3F4F6), borderRadius: BorderRadius.circular(16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

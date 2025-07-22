@@ -40,6 +40,9 @@ _$ResultsModelImpl _$$ResultsModelImplFromJson(Map<String, dynamic> json) =>
       attendance: json['attendance'] as String?,
       stuff: json['stuff'] as String?,
       comment: json['comment'] as String?,
+      studentInfo: json['student_info'] == null
+          ? null
+          : StudentInfo.fromJson(json['student_info'] as Map<String, dynamic>),
       created_at: json['created_at'] as String?,
       updated_at: json['updated_at'] as String?,
       total: (json['total'] as num?)?.toDouble(),
@@ -58,6 +61,7 @@ Map<String, dynamic> _$$ResultsModelImplToJson(_$ResultsModelImpl instance) =>
       'attendance': instance.attendance,
       'stuff': instance.stuff,
       'comment': instance.comment,
+      'student_info': instance.studentInfo?.toJson(),
       'created_at': instance.created_at,
       'updated_at': instance.updated_at,
       'total': instance.total,
@@ -80,4 +84,18 @@ Map<String, dynamic> _$$KindModelImplToJson(_$KindModelImpl instance) =>
       'action': instance.action,
       'color': instance.color,
       'created_at': instance.created_at,
+    };
+
+_$StudentInfoImpl _$$StudentInfoImplFromJson(Map<String, dynamic> json) =>
+    _$StudentInfoImpl(
+      id: json['id'] as String?,
+      first_name: json['first_name'] as String?,
+      last_name: json['last_name'] as String?,
+    );
+
+Map<String, dynamic> _$$StudentInfoImplToJson(_$StudentInfoImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'first_name': instance.first_name,
+      'last_name': instance.last_name,
     };

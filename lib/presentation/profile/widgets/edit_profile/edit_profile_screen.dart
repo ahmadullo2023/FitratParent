@@ -237,7 +237,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     builder: (context, editState) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 16),
+                            horizontal: 16, vertical: 22),
                         child: CustomButton(
                           text: "Saqlash",
                           // isLoading: editState.status == PutStatus.loading,

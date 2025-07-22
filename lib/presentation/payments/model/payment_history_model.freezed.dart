@@ -252,6 +252,7 @@ mixin _$ResultsModel {
   String? get attendance => throw _privateConstructorUsedError;
   String? get stuff => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
+  StudentInfo? get studentInfo => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
   double? get total => throw _privateConstructorUsedError;
@@ -284,12 +285,14 @@ abstract class $ResultsModelCopyWith<$Res> {
       String? attendance,
       String? stuff,
       String? comment,
+      StudentInfo? studentInfo,
       String? created_at,
       String? updated_at,
       double? total,
       double? balance});
 
   $KindModelCopyWith<$Res>? get kind;
+  $StudentInfoCopyWith<$Res>? get studentInfo;
 }
 
 /// @nodoc
@@ -317,6 +320,7 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
     Object? attendance = freezed,
     Object? stuff = freezed,
     Object? comment = freezed,
+    Object? studentInfo = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? total = freezed,
@@ -363,6 +367,10 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      studentInfo: freezed == studentInfo
+          ? _value.studentInfo
+          : studentInfo // ignore: cast_nullable_to_non_nullable
+              as StudentInfo?,
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -395,6 +403,20 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
       return _then(_value.copyWith(kind: value) as $Val);
     });
   }
+
+  /// Create a copy of ResultsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $StudentInfoCopyWith<$Res>? get studentInfo {
+    if (_value.studentInfo == null) {
+      return null;
+    }
+
+    return $StudentInfoCopyWith<$Res>(_value.studentInfo!, (value) {
+      return _then(_value.copyWith(studentInfo: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -416,6 +438,7 @@ abstract class _$$ResultsModelImplCopyWith<$Res>
       String? attendance,
       String? stuff,
       String? comment,
+      StudentInfo? studentInfo,
       String? created_at,
       String? updated_at,
       double? total,
@@ -423,6 +446,8 @@ abstract class _$$ResultsModelImplCopyWith<$Res>
 
   @override
   $KindModelCopyWith<$Res>? get kind;
+  @override
+  $StudentInfoCopyWith<$Res>? get studentInfo;
 }
 
 /// @nodoc
@@ -448,6 +473,7 @@ class __$$ResultsModelImplCopyWithImpl<$Res>
     Object? attendance = freezed,
     Object? stuff = freezed,
     Object? comment = freezed,
+    Object? studentInfo = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? total = freezed,
@@ -494,6 +520,10 @@ class __$$ResultsModelImplCopyWithImpl<$Res>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      studentInfo: freezed == studentInfo
+          ? _value.studentInfo
+          : studentInfo // ignore: cast_nullable_to_non_nullable
+              as StudentInfo?,
       created_at: freezed == created_at
           ? _value.created_at
           : created_at // ignore: cast_nullable_to_non_nullable
@@ -529,6 +559,7 @@ class _$ResultsModelImpl implements _ResultsModel {
       this.attendance,
       this.stuff,
       this.comment,
+      this.studentInfo,
       this.created_at,
       this.updated_at,
       this.total,
@@ -558,6 +589,8 @@ class _$ResultsModelImpl implements _ResultsModel {
   @override
   final String? comment;
   @override
+  final StudentInfo? studentInfo;
+  @override
   final String? created_at;
   @override
   final String? updated_at;
@@ -568,7 +601,7 @@ class _$ResultsModelImpl implements _ResultsModel {
 
   @override
   String toString() {
-    return 'ResultsModel(id: $id, action: $action, casher: $casher, amount: $amount, kind: $kind, payment_method: $payment_method, lid: $lid, attendance: $attendance, stuff: $stuff, comment: $comment, created_at: $created_at, updated_at: $updated_at, total: $total, balance: $balance)';
+    return 'ResultsModel(id: $id, action: $action, casher: $casher, amount: $amount, kind: $kind, payment_method: $payment_method, lid: $lid, attendance: $attendance, stuff: $stuff, comment: $comment, studentInfo: $studentInfo, created_at: $created_at, updated_at: $updated_at, total: $total, balance: $balance)';
   }
 
   @override
@@ -588,6 +621,8 @@ class _$ResultsModelImpl implements _ResultsModel {
                 other.attendance == attendance) &&
             (identical(other.stuff, stuff) || other.stuff == stuff) &&
             (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.studentInfo, studentInfo) ||
+                other.studentInfo == studentInfo) &&
             (identical(other.created_at, created_at) ||
                 other.created_at == created_at) &&
             (identical(other.updated_at, updated_at) ||
@@ -610,6 +645,7 @@ class _$ResultsModelImpl implements _ResultsModel {
       attendance,
       stuff,
       comment,
+      studentInfo,
       created_at,
       updated_at,
       total,
@@ -643,6 +679,7 @@ abstract class _ResultsModel implements ResultsModel {
       final String? attendance,
       final String? stuff,
       final String? comment,
+      final StudentInfo? studentInfo,
       final String? created_at,
       final String? updated_at,
       final double? total,
@@ -671,6 +708,8 @@ abstract class _ResultsModel implements ResultsModel {
   String? get stuff;
   @override
   String? get comment;
+  @override
+  StudentInfo? get studentInfo;
   @override
   String? get created_at;
   @override
@@ -916,5 +955,192 @@ abstract class _KindModel implements KindModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KindModelImplCopyWith<_$KindModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+StudentInfo _$StudentInfoFromJson(Map<String, dynamic> json) {
+  return _StudentInfo.fromJson(json);
+}
+
+/// @nodoc
+mixin _$StudentInfo {
+  String? get id => throw _privateConstructorUsedError;
+  String? get first_name => throw _privateConstructorUsedError;
+  String? get last_name => throw _privateConstructorUsedError;
+
+  /// Serializes this StudentInfo to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of StudentInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $StudentInfoCopyWith<StudentInfo> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $StudentInfoCopyWith<$Res> {
+  factory $StudentInfoCopyWith(
+          StudentInfo value, $Res Function(StudentInfo) then) =
+      _$StudentInfoCopyWithImpl<$Res, StudentInfo>;
+  @useResult
+  $Res call({String? id, String? first_name, String? last_name});
+}
+
+/// @nodoc
+class _$StudentInfoCopyWithImpl<$Res, $Val extends StudentInfo>
+    implements $StudentInfoCopyWith<$Res> {
+  _$StudentInfoCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of StudentInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? first_name = freezed,
+    Object? last_name = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      first_name: freezed == first_name
+          ? _value.first_name
+          : first_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      last_name: freezed == last_name
+          ? _value.last_name
+          : last_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$StudentInfoImplCopyWith<$Res>
+    implements $StudentInfoCopyWith<$Res> {
+  factory _$$StudentInfoImplCopyWith(
+          _$StudentInfoImpl value, $Res Function(_$StudentInfoImpl) then) =
+      __$$StudentInfoImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? id, String? first_name, String? last_name});
+}
+
+/// @nodoc
+class __$$StudentInfoImplCopyWithImpl<$Res>
+    extends _$StudentInfoCopyWithImpl<$Res, _$StudentInfoImpl>
+    implements _$$StudentInfoImplCopyWith<$Res> {
+  __$$StudentInfoImplCopyWithImpl(
+      _$StudentInfoImpl _value, $Res Function(_$StudentInfoImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of StudentInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? first_name = freezed,
+    Object? last_name = freezed,
+  }) {
+    return _then(_$StudentInfoImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      first_name: freezed == first_name
+          ? _value.first_name
+          : first_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      last_name: freezed == last_name
+          ? _value.last_name
+          : last_name // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
+class _$StudentInfoImpl implements _StudentInfo {
+  const _$StudentInfoImpl({this.id, this.first_name, this.last_name});
+
+  factory _$StudentInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$StudentInfoImplFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String? first_name;
+  @override
+  final String? last_name;
+
+  @override
+  String toString() {
+    return 'StudentInfo(id: $id, first_name: $first_name, last_name: $last_name)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StudentInfoImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.first_name, first_name) ||
+                other.first_name == first_name) &&
+            (identical(other.last_name, last_name) ||
+                other.last_name == last_name));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, first_name, last_name);
+
+  /// Create a copy of StudentInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$StudentInfoImplCopyWith<_$StudentInfoImpl> get copyWith =>
+      __$$StudentInfoImplCopyWithImpl<_$StudentInfoImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$StudentInfoImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _StudentInfo implements StudentInfo {
+  const factory _StudentInfo(
+      {final String? id,
+      final String? first_name,
+      final String? last_name}) = _$StudentInfoImpl;
+
+  factory _StudentInfo.fromJson(Map<String, dynamic> json) =
+      _$StudentInfoImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get first_name;
+  @override
+  String? get last_name;
+
+  /// Create a copy of StudentInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$StudentInfoImplCopyWith<_$StudentInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

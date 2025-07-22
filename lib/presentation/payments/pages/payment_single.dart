@@ -3,7 +3,10 @@ import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
 import 'package:fitrat_parent2/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../../utils/app_assets.dart';
 
 String selectedValue = "Click";
 int selectedIndex = 0;
@@ -82,8 +85,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                             child: Row(
                               children: [
-                                const CircleAvatar(
-                                  radius: 26,
+                                Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: ClipOval(
+                                    child: Container(
+                                      height: 46,
+                                      width: 46,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: Colors.grey.shade300,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: SvgPicture.asset(
+                                          AppIcons.person,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
@@ -220,8 +240,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               if (_formKey.currentState!.validate()) {
                                 bloc.add(PayEvent(
                                   lid: '',
-                                  student:
-                                      '07ed9628-1d05-41a3-b8c6-e347a0178294',
+                                  student: '07ed9628-1d05-41a3-b8c6-e347a0178294',
                                   amount: _amountController.text,
                                   type: selectedValue ?? "Click",
                                 ));

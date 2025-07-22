@@ -51,14 +51,14 @@ void showConfirmDialog({
             ),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              // mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 // Cancel
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
                   child: Container(
                     height: 40,
-                    width: 87,
+                    width: 130,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: const Color(0xFFF3F4F6),
@@ -82,7 +82,7 @@ void showConfirmDialog({
                   onTap: onConfirm,
                   child: Container(
                     height: 40,
-                    width: 100,
+                    width: 130,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: confirmColor,
