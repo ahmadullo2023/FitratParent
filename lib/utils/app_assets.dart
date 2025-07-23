@@ -56,6 +56,7 @@ class AppIcons {
   static const String onboarding3 = 'assets/icons/onboarding3.svg';
   static const String paymentScreenIcon = "assets/icons/Iconex2.svg";
   static const String walletFull = "assets/icons/Wallet_full.svg";
+  static const String tablerChecks = 'assets/icons/tabler_checks1.svg';
 
   static const String visibilityOn = 'assets/icons/visibility_on.svg';
   static const String visibilityOff = 'assets/icons/visibility_off.svg';
@@ -84,6 +85,7 @@ class AppIcons {
   static const String noNotification = 'assets/icons/no_notif.svg';
   static const String messages = 'assets/icons/messages.svg';
   static const String send = 'assets/icons/send.svg';
+  static const String send2 = 'assets/icons/send2.svg';
   static const String good = 'assets/icons/good.svg';
   static const String bad = 'assets/icons/bad.svg';
   static const String pdf = 'assets/icons/pdf.svg';

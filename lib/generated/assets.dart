@@ -89,6 +89,7 @@ class Assets {
   static const String iconsResultsFilled = 'assets/icons/results_filled.svg';
   static const String iconsSearch = 'assets/icons/search.svg';
   static const String iconsSend = 'assets/icons/send.svg';
+  static const String iconsSend2 = 'assets/icons/send2.svg';
   static const String iconsSettings = 'assets/icons/settings.svg';
   static const String iconsStackOfMoney = 'assets/icons/stack-of-money.svg';
   static const String iconsStackOfMoney2 = 'assets/icons/stack-of-money2.svg';

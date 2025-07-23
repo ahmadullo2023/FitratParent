@@ -20,7 +20,7 @@ class CommentModel with _$CommentModel {
     @JsonKey(name: 'first_name') dynamic firstName,
     @JsonKey(name: 'last_name') dynamic lastName,
     @JsonKey(name: 'photo') Photo? photo,
-    @JsonKey(name: 'creature_photo') Photo? creatorPhoto,
+    @JsonKey(name: 'file') Photo? file,
   }) = _CommentModel;
 
   factory CommentModel.fromJson(Map<String, Object?> json) => _$CommentModelFromJson(json);

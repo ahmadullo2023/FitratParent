@@ -90,27 +90,27 @@ class _PaymentsPageState extends State<PaymentsPage> {
                           : SizedBox(
                               height: 410,
                               child: ListView.builder(
-                                  itemCount: payState.paymentHistoryModel!.results!.length,
-                                  itemBuilder: (context, index) =>
-                                      studentId ==
-                                          payState.paymentHistoryModel!.results![index].studentInfo?.id ?
-                                      _paymentItem(
-                                          payState.paymentHistoryModel!
-                                                  .results![index].action !=
-                                              "INCOME",
-                                          payState
-                                                  .paymentHistoryModel!
-                                                  .results![index]
-                                                  .payment_method ??
-                                              "",
-                                          payState.paymentHistoryModel!
-                                              .results![index].amount
-                                              .toString(),
-                                          formatDate(payState
-                                              .paymentHistoryModel!
-                                              .results![index]
-                                              .created_at!)) : SizedBox(),
-                                  ),
+                                itemCount: payState
+                                    .paymentHistoryModel!.results!.length,
+                                itemBuilder: (context, index) => studentId ==
+                                        payState.paymentHistoryModel!
+                                            .results![index].studentInfo?.id
+                                    ? _paymentItem(
+                                        payState.paymentHistoryModel!
+                                                .results![index].action !=
+                                            "INCOME",
+                                        payState
+                                                .paymentHistoryModel!
+                                                .results![index]
+                                                .payment_method ??
+                                            "",
+                                        payState.paymentHistoryModel!
+                                            .results![index].amount
+                                            .toString(),
+                                        formatDate(payState.paymentHistoryModel!
+                                            .results![index].created_at!))
+                                    : SizedBox(),
+                              ),
                             ),
                     ],
                   ),
