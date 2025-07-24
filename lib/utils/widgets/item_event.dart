@@ -38,8 +38,8 @@ class ItemEvents extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                // const Color(0xFF79F1A4).withOpacity(0.8),
-                // const Color(0xFF0E5CAD).withOpacity(0.8)
+                const Color(0xFF79F1A4).withOpacity(0.01),
+                const Color(0xFF0E5CAD).withOpacity(0.01)
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

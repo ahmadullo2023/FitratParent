@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:fitrat_parent2/presentation/payments/pages/payment_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +8,11 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../utils/app_assets.dart';
+import '../../../utils/servise/notification_service.dart';
 import '../../../utils/theme.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../home/home_screen.dart';
+import '../../notification/repository/notification_repository.dart';
 import '../../profile/profile_screen.dart';
 import '../bloc/main_bloc.dart';
 
@@ -64,6 +69,12 @@ class _HolderScreenState extends State<HolderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    unawaited(NotificationService.getFcmToken().then((value) {
+      if (value != null) {
+        notificationRepository.sendRfToken(value);
+        log("success send fcm");
+      }
+    }));
     return BlocBuilder<MainBloc, MainState>(
       builder: (context, state) {
         return WillPopScope(

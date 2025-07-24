@@ -1,16 +1,16 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:fitrat_parent2/firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../../firebase_options.dart';
+
 
 class NotificationService {
   static final _firebaseMessaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin
-      _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   late AndroidNotificationChannel channel;
 
   static Future<void> initialize() async {
@@ -60,24 +60,24 @@ class NotificationService {
 
   static Future localInit() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_notification');
 
     DarwinInitializationSettings initializationSettingsDarwin =
-        const DarwinInitializationSettings();
+    const DarwinInitializationSettings();
 
     final InitializationSettings initializationSettings =
-        InitializationSettings(
+    InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsDarwin,
     );
 
     //request notification permissions for android 13 and above
     if (_flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>() !=
+        AndroidFlutterLocalNotificationsPlugin>() !=
         null) {
       _flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()!
+          AndroidFlutterLocalNotificationsPlugin>()!
           .requestNotificationsPermission();
     }
 
@@ -106,7 +106,7 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         playSound: true,
-        icon: '@mipmap/ic_launcher',
+        icon: '@mipmap/ic_notification',
       ),
       iOS: DarwinNotificationDetails(
         presentAlert: true,

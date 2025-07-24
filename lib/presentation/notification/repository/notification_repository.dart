@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:logger/web.dart';
+import '../../../data/db/cache.dart';
 import '../../../utils/models/pagination_model.dart';
 import '../../../utils/request_helper.dart';
 import '../model/notification_model.dart';
@@ -42,6 +43,17 @@ class NotificationRepository {
       Logger().e([e, s]);
       rethrow;
     }
+  }
+
+  Future<void> sendRfToken(String token) async {
+
+    print(">>>>> sendRfToken ishga tushdi ===> token => $token <<<<");
+
+    await requestHelper.postWithAuth(
+        '/notifications/rftoken/', {'user': cache.getString("id"), 'token': token},
+        log: true);
+
+    print(">>>>> sendRfToken ishga tushib bo'ldi <<<<<<");
   }
 
 
