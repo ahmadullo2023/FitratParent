@@ -61,16 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final student = context.watch<MainBloc>().state.studentModel;
     final student2 = context.watch<MainBloc>().state.meModel;
-
     return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
       return BlocBuilder<ProfileBloc, ProfileState>(
         builder: (proContext, proState) {
           return Scaffold(
               appBar: CustomAppBar(
                 title: proState.getMe?.fullName ?? '',
-                points: mainState.status == StudentStatus.loading
-                    ? 0
-                    : student?.ball?.toDouble() ?? 0,
+                points: mainState.status == StudentStatus.loading ? 0 : student?.ball?.toDouble() ?? 0,
                 isLoading: mainState.status == StudentStatus.loading,
                 userImage: student2?.photo?.file,
               ),
@@ -94,6 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           physics: const AlwaysScrollableScrollPhysics(),
                           child: BlocBuilder<HomeBloc, HomeState>(
                             builder: (homeContext1, homeState1) {
+                              studentId2 = homeState1
+                                      .learningResponse?.first.studentId ??
+                                  "";
                               return Padding(
                                   padding: const EdgeInsets.only(bottom: 20),
                                   child: Column(
@@ -663,6 +663,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+String studentId2 = "92b0b156-a097-46c6-92d9-d92aaeda099b";
 
 String formatMoney(String input) {
   final number = double.tryParse(input);

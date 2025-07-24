@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fitrat_parent2/data/db/cache.dart';
 import 'package:fitrat_parent2/data/hive/hive_helper.dart';
 import 'package:fitrat_parent2/presentation/balance/bloc/balance_bloc.dart';
@@ -6,20 +7,24 @@ import 'package:fitrat_parent2/presentation/main/bloc/main_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/widgets/edit_profile/bloc/edit_profile_bloc.dart';
+
 // import 'package:fitrat_parent2/presentation/main/pages/main_page.dart';
 import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
 import 'package:fitrat_parent2/utils/servise/no_internet.dart';
+import 'package:fitrat_parent2/utils/servise/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'firebase_options.dart';
 import 'generated/l10n.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  NotificationService.initialize();
   InternetChecker().initialize();
 
   await initializeCache();
@@ -74,6 +79,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    NotificationService.getFcmToken();
     // return App();
     return MaterialApp(
       navigatorKey: InternetChecker().navigatorKey,

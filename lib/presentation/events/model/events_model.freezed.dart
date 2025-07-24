@@ -25,6 +25,7 @@ mixin _$EventsModel {
   FileModel? get photo => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
   String? get linkPreview => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
   String? get endDate => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
@@ -51,6 +52,7 @@ abstract class $EventsModelCopyWith<$Res> {
       FileModel? photo,
       String? link,
       String? linkPreview,
+      String? title,
       String? comment,
       String? endDate,
       String? status});
@@ -78,6 +80,7 @@ class _$EventsModelCopyWithImpl<$Res, $Val extends EventsModel>
     Object? photo = freezed,
     Object? link = freezed,
     Object? linkPreview = freezed,
+    Object? title = freezed,
     Object? comment = freezed,
     Object? endDate = freezed,
     Object? status = freezed,
@@ -102,6 +105,10 @@ class _$EventsModelCopyWithImpl<$Res, $Val extends EventsModel>
       linkPreview: freezed == linkPreview
           ? _value.linkPreview
           : linkPreview // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
       comment: freezed == comment
           ? _value.comment
@@ -147,6 +154,7 @@ abstract class _$$EventsModelImplCopyWith<$Res>
       FileModel? photo,
       String? link,
       String? linkPreview,
+      String? title,
       String? comment,
       String? endDate,
       String? status});
@@ -173,6 +181,7 @@ class __$$EventsModelImplCopyWithImpl<$Res>
     Object? photo = freezed,
     Object? link = freezed,
     Object? linkPreview = freezed,
+    Object? title = freezed,
     Object? comment = freezed,
     Object? endDate = freezed,
     Object? status = freezed,
@@ -197,6 +206,10 @@ class __$$EventsModelImplCopyWithImpl<$Res>
       linkPreview: freezed == linkPreview
           ? _value.linkPreview
           : linkPreview // ignore: cast_nullable_to_non_nullable
+              as String?,
+      title: freezed == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String?,
       comment: freezed == comment
           ? _value.comment
@@ -224,6 +237,7 @@ class _$EventsModelImpl implements _EventsModel {
       this.photo,
       this.link,
       this.linkPreview,
+      this.title,
       this.comment,
       this.endDate,
       this.status})
@@ -251,6 +265,8 @@ class _$EventsModelImpl implements _EventsModel {
   @override
   final String? linkPreview;
   @override
+  final String? title;
+  @override
   final String? comment;
   @override
   final String? endDate;
@@ -259,7 +275,7 @@ class _$EventsModelImpl implements _EventsModel {
 
   @override
   String toString() {
-    return 'EventsModel(id: $id, file: $file, photo: $photo, link: $link, linkPreview: $linkPreview, comment: $comment, endDate: $endDate, status: $status)';
+    return 'EventsModel(id: $id, file: $file, photo: $photo, link: $link, linkPreview: $linkPreview, title: $title, comment: $comment, endDate: $endDate, status: $status)';
   }
 
   @override
@@ -273,6 +289,7 @@ class _$EventsModelImpl implements _EventsModel {
             (identical(other.link, link) || other.link == link) &&
             (identical(other.linkPreview, linkPreview) ||
                 other.linkPreview == linkPreview) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
             (identical(other.status, status) || other.status == status));
@@ -287,6 +304,7 @@ class _$EventsModelImpl implements _EventsModel {
       photo,
       link,
       linkPreview,
+      title,
       comment,
       endDate,
       status);
@@ -314,6 +332,7 @@ abstract class _EventsModel implements EventsModel {
       final FileModel? photo,
       final String? link,
       final String? linkPreview,
+      final String? title,
       final String? comment,
       final String? endDate,
       final String? status}) = _$EventsModelImpl;
@@ -331,6 +350,8 @@ abstract class _EventsModel implements EventsModel {
   String? get link;
   @override
   String? get linkPreview;
+  @override
+  String? get title;
   @override
   String? get comment;
   @override

@@ -2,7 +2,6 @@ import 'package:fitrat_parent2/utils/extensions/extensions.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../data/db/cache.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -57,7 +56,16 @@ class MessageItem extends StatelessWidget {
                   width: 1,
                 ),
                 color: isByMine ? Color(0xFFC2F0D5) : AppColors.white,
-                borderRadius: BorderRadius.circular(8),
+
+                borderRadius: BorderRadius.only(
+                  bottomRight:
+                      !isByMine ? Radius.circular(10) : Radius.circular(0),
+                  topLeft: !isByMine ? Radius.circular(0) : Radius.circular(10),
+                  topRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+
+                // borderRadius: BorderRadius.circular(8),
               ),
               child: Stack(
                 children: [
@@ -73,10 +81,14 @@ class MessageItem extends StatelessWidget {
                           : SizedBox(),
                       if (model.file?.file != null) ...[
                         8.vertical,
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: CustomCachedNetworkImage(
-                            imageUrl: model.file!.file!,
+                        SizedBox(
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CustomCachedNetworkImage(
+                              imageUrl: model.file!.file!,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_assets.dart';
-import '../../utils/widgets/custom_cached_network.dart';
 import '../main/bloc/main_bloc.dart';
 import '../notification/notifications_screen.dart';
 
@@ -45,22 +44,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(left: 16.0, top: 12, bottom: 10),
             child: Container(
               height: 40,
-              // color: Colors.deepOrange,
               width: 35,
               child: GestureDetector(
                 onTap: () {},
-                child: ClipOval(
-                  child: userImage != null
-                      ? CustomCachedNetworkImage(
-                          height: 40,
-                          width: 35,
-                          iconSize: 12,
-                          imageUrl: userImage!,
-                        )
-                      : SvgPicture.asset(
-                          AppIcons.person,
-                        ),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.grey.shade200,
+                  backgroundImage: userImage != null
+                      ? NetworkImage(userImage!)
+                      : null,
+                  child: userImage == null
+                      ? SvgPicture.asset(
+                    AppIcons.person,
+                    height: 20,
+                    width: 20,
+                  )
+                      : null,
                 ),
+
               ),
             ),
           ),

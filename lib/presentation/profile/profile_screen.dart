@@ -13,6 +13,7 @@ import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/theme.dart' hide AppColors;
 import '../children/childern_page.dart';
+import '../notification/notifications_screen.dart';
 import 'bloc/profile_bloc.dart';
 import '../home/home_screen.dart';
 import '../login/pages/login_screen.dart';
@@ -201,7 +202,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: const EditProfileScreen(),
                                   ),
                                 ),
-
                                 // MaterialPageRoute(
                                 //     builder: (context) => EditProfileScreen()),
                               );
@@ -213,7 +213,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          NotificationsScreen()));
+                            },
                             child: ItemDirections(
                               imageUrl: AppIcons.notifications,
                               title: 'Eslatmalar',

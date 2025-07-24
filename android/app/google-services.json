@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "621310454548",
+    "project_id": "fitrat-a762e",
+    "storage_bucket": "fitrat-a762e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621310454548:android:51078cb50f311b4120f001",
+        "android_client_info": {
+          "package_name": "com.example.fitrat_students"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTYoW8xCVm7toJXJFQg-XbNBvjNtLX5ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621310454548:android:a2c3bbe7661f720d20f001",
+        "android_client_info": {
+          "package_name": "uz.sector.soft.fitrat_parent2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTYoW8xCVm7toJXJFQg-XbNBvjNtLX5ls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

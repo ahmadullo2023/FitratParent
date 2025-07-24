@@ -1,5 +1,6 @@
 import 'package:fitrat_parent2/presentation/events/repository/events_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../utils/custom_pagination_widget.dart';
 import '../../utils/widgets/item_event.dart';
@@ -30,7 +31,6 @@ class _EventsScreenState extends State<EventsScreen> {
         selectedStatus = types[index - 1].nameAPI;
       }
     });
-
     _pagingController.refresh();
   }
 
@@ -86,33 +86,54 @@ class _EventsScreenState extends State<EventsScreen> {
           const SizedBox(height: 8),
           Expanded(
             child: CustomPaginationWidget<EventsModel>(
-              controller: _pagingController,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              itemBuilder: (item) {
-                return ItemEvents(
-                  title: item.comment ?? "",
-                  time: item.endDate ?? "",
-                  backgroundImage: item.photo?.file,
-                  onTab: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EventDetail(event: item)));
-                  }, isEvent: true,
-                );
-              },
-              getItems: (page) async {
-                try {
-                  final result = await eventsRepository.getEvents(
-                    status: selectedStatus,
-                    page: page,
+                controller: _pagingController,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                itemBuilder: (item) {
+                  return ItemEvents(
+                    title: item.comment ?? "",
+                    time: item.endDate ?? "",
+                    backgroundImage: item.photo?.file,
+                    onTab: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EventDetail(event: item)));
+                    },
+                    isEvent: true,
                   );
-                  return result;
-                } catch (e) {
-                  rethrow;
-                }
-              },
-            ),
+                },
+                getItems: (page) async {
+                  try {
+                    final result = await eventsRepository.getEvents(
+                      status: selectedStatus,
+                      page: page,
+                    );
+                    return result;
+                  } catch (e) {
+                    rethrow;
+                  }
+                },
+                emptyBuilder: () => Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset("assets/icons/33.svg"),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "To’lovlar mavjud emas",
+                            style: TextStyle(
+                                color: Color(0xFF1F2A37),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
+                            style: TextStyle(color: Color(0xFF6C737F)),
+                          ),
+                        ],
+                      ),
+                    )),
           )
         ],
       ),

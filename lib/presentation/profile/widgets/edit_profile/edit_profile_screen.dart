@@ -114,175 +114,178 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
             ),
-            body: Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: const Color(0xffF3F4F6),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Stack(
-                      children: [
-                        BlocBuilder<EditProfileBloc, EditProfileState>(
-                          builder: (context, photoState) {
-                            return ClipOval(
-                              child: InkWell(
-                                onTap: photoState.isUploadingPhoto
-                                    ? null
-                                    : () async {
-                                        final image =
-                                            await ImagePickerDialog.show(
-                                          context,
-                                          isDeletable:
-                                              photoState.currentPhotoId != null,
-                                        );
-                                        if (image != null) {
-                                          if (image is XFile) {
-                                            context.read<EditProfileBloc>().add(
-                                                  UploadPhoto(
-                                                    filePath: image.path,
-                                                    fileName: image.name,
-                                                  ),
-                                                );
-                                          } else if (image == "delete") {
-                                            context
-                                                .read<EditProfileBloc>()
-                                                .add(DeletePhoto());
+            body: SafeArea(
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: const Color(0xffF3F4F6),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Stack(
+                        children: [
+                          BlocBuilder<EditProfileBloc, EditProfileState>(
+                            builder: (context, photoState) {
+                              return ClipOval(
+                                child: InkWell(
+                                  onTap: photoState.isUploadingPhoto
+                                      ? null
+                                      : () async {
+                                          final image =
+                                              await ImagePickerDialog.show(
+                                            context,
+                                            isDeletable:
+                                                photoState.currentPhotoId != null,
+                                          );
+                                          if (image != null) {
+                                            if (image is XFile) {
+                                              context.read<EditProfileBloc>().add(
+                                                    UploadPhoto(
+                                                      filePath: image.path,
+                                                      fileName: image.name,
+                                                    ),
+                                                  );
+                                            } else if (image == "delete") {
+                                              context
+                                                  .read<EditProfileBloc>()
+                                                  .add(DeletePhoto());
+                                            }
                                           }
-                                        }
-                                      },
-                                child: SizedBox(
-                                  height: 88,
-                                  width: 88,
-                                  child: photoState.isUploadingPhoto
-                                      ? const Center(
-                                          child: CupertinoActivityIndicator())
-                                      : _buildProfileImage(photoState, student),
+                                        },
+                                  child: SizedBox(
+                                    height: 88,
+                                    width: 88,
+                                    child: photoState.isUploadingPhoto
+                                        ? const Center(
+                                            child: CupertinoActivityIndicator())
+                                        : _buildProfileImage(photoState, student),
+                                  ),
                                 ),
+                              );
+                            },
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              width: 32,
+                              height: 32,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
                               ),
-                            );
-                          },
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(4),
-                            child: SvgPicture.asset(
-                              AppIcons.icEdit,
-                              width: 20,
-                              height: 20,
+                              padding: const EdgeInsets.all(4),
+                              child: SvgPicture.asset(
+                                AppIcons.icEdit,
+                                width: 20,
+                                height: 20,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 24),
-                    child: CustomTextField(
-                      labelText: "Ism",
-                      hintText: "Ismingiz",
-                      textInputType: TextInputType.name,
-                      controller: nameController,
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 24),
+                      child: CustomTextField(
+                        labelText: "Ism",
+                        hintText: "Ismingiz",
+                        textInputType: TextInputType.name,
+                        controller: nameController,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 16),
-                    child: CustomTextField(
-                      labelText: "Familiya",
-                      hintText: "Familiangiz",
-                      textInputType: TextInputType.name,
-                      controller: lastNameController,
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 16),
+                      child: CustomTextField(
+                        labelText: "Familiya",
+                        hintText: "Familiangiz",
+                        textInputType: TextInputType.name,
+                        controller: lastNameController,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 16),
-                    child: CustomPhoneField(
-                      controller: phoneController,
-                      validatorText: "Telefon raqamni kiriting",
-                      labelText: "Telefon raqam",
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 16),
+                      child: CustomPhoneField(
+                        controller: phoneController,
+                        validatorText: "Telefon raqamni kiriting",
+                        labelText: "Telefon raqam",
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  BlocConsumer<EditProfileBloc, EditProfileState>(
-                    listener: (context, state) {
-                      if (state.status == PutStatus.success) {
-                        context
-                            .read<MainBloc>()
-                            .add(LoadMe()); // Refresh user data
-                        Navigator.pop(context, true);
-                      } else if (state.status == PutStatus.error) {
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   const SnackBar(content: Text('Xatolik yuz berdi')),
-                        // );
-                      }
+                    const Spacer(),
+                    BlocConsumer<EditProfileBloc, EditProfileState>(
+                      listener: (context, state) {
+                        if (state.status == PutStatus.success) {
+                          context
+                              .read<MainBloc>()
+                              .add(LoadMe()); // Refresh user data
+                          Navigator.pop(context, true);
+                        } else if (state.status == PutStatus.error) {
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   const SnackBar(content: Text('Xatolik yuz berdi')),
+                          // );
+                        }
+              
+                        if (state.uploadError != null) {
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(content: Text('Rasm yuklashda xatolik: ${state.uploadError}')),
+                          // );
+                        }
+                      },
+                      builder: (context, editState) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 22),
+                          child: CustomButton(
+                            text: "Saqlash",
+                            // isLoading: editState.status == PutStatus.loading,
+                            onPressed: () {
+                              showConfirmDialog(
+                                context: context,
+                                title: "O`zgatirish?",
+                                description:
+                                    "Shaxsiy ma'lumotlaringizga o'zgartirish kiritmoqchimisiz?",
+                                confirmButtonText: "O`zgartirish",
+                                onConfirm: () async {
+                                  final photoState = context.read<EditProfileBloc>().state;
+              
+                                  String? photoToSend;
+                                  bool deletePhoto = false;
+              
+                                  if (photoState.currentPhotoId == null &&
+                                      originalImageId != null) {
+                                    photoToSend = null;
+                                    deletePhoto = true;
+                                  } else if (photoState.currentPhotoId !=
+                                      originalImageId) {
+                                    photoToSend = photoState.currentPhotoId;
+                                  } else {
+                                    photoToSend = originalImageId;
+                                  }
+              
+                                  context.read<EditProfileBloc>().add(EditData(
+                                        name: nameController.text,
+                                        lastName: lastNameController.text,
+                                        phone: phoneController.text,
+                                        photo: photoToSend,
+                                      ));
+              
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
 
-                      if (state.uploadError != null) {
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   SnackBar(content: Text('Rasm yuklashda xatolik: ${state.uploadError}')),
-                        // );
-                      }
-                    },
-                    builder: (context, editState) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 22),
-                        child: CustomButton(
-                          text: "Saqlash",
-                          // isLoading: editState.status == PutStatus.loading,
-                          onPressed: () {
-                            showConfirmDialog(
-                              context: context,
-                              title: "O`zgatirish?",
-                              description:
-                                  "Shaxsiy ma'lumotlaringizga o'zgartirish kiritmoqchimisiz?",
-                              confirmButtonText: "O`zgartirish",
-                              onConfirm: () async {
-                                final photoState =
-                                    context.read<EditProfileBloc>().state;
-
-                                String? photoToSend;
-                                bool deletePhoto = false;
-
-                                if (photoState.currentPhotoId == null &&
-                                    originalImageId != null) {
-                                  photoToSend = null;
-                                  deletePhoto = true;
-                                } else if (photoState.currentPhotoId !=
-                                    originalImageId) {
-                                  photoToSend = photoState.currentPhotoId;
-                                } else {
-                                  photoToSend = originalImageId;
-                                }
-
-                                context.read<EditProfileBloc>().add(EditData(
-                                      name: nameController.text,
-                                      lastName: lastNameController.text,
-                                      phone: phoneController.text,
-                                      photo: photoToSend,
-                                    ));
-
-                                Navigator.pop(context);
-                              },
-                              isDestructive: false,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                                },
+                                isDestructive: false,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

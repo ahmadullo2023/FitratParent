@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
+import '../../home/home_screen.dart';
 
 class PaymentsPage extends StatefulWidget {
   const PaymentsPage({super.key});
@@ -22,8 +23,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
     super.initState();
   }
 
-  String studentId = "07ed9628-1d05-41a3-b8c6-e347a0178294";
-
   String formatDate(String isoString) {
     final dateTime = DateTime.parse(isoString).toLocal();
     final formatter = DateFormat('dd.MM.yyyy, HH:mm');
@@ -36,6 +35,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
       builder: (context, state) {
         return BlocBuilder<PaymentBloc, PaymentState>(
           builder: (payContext, payState) {
+            final filteredPayments = payState.paymentHistoryModel?.results
+                    ?.where((e) => e.studentInfo?.id == studentId2)
+                    .toList() ??
+                [];
             return Scaffold(
               backgroundColor: Colors.white,
               body: SafeArea(
@@ -85,33 +88,44 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 16),
                       ),
-                      (payState.paymentHistoryModel?.results?.length ?? 0) == 0
-                          ? SizedBox()
-                          : SizedBox(
-                              height: 410,
-                              child: ListView.builder(
-                                itemCount: payState
-                                    .paymentHistoryModel!.results!.length,
-                                itemBuilder: (context, index) => studentId ==
-                                        payState.paymentHistoryModel!
-                                            .results![index].studentInfo?.id
-                                    ? _paymentItem(
-                                        payState.paymentHistoryModel!
-                                                .results![index].action !=
-                                            "INCOME",
-                                        payState
-                                                .paymentHistoryModel!
-                                                .results![index]
-                                                .payment_method ??
-                                            "",
-                                        payState.paymentHistoryModel!
-                                            .results![index].amount
-                                            .toString(),
-                                        formatDate(payState.paymentHistoryModel!
-                                            .results![index].created_at!))
-                                    : SizedBox(),
+                      SizedBox(
+                        height: 410,
+                        child: filteredPayments.isEmpty
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset("assets/icons/26.svg"),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      "To’lovlar mavjud emas",
+                                      style: TextStyle(
+                                          color: Color(0xFF1F2A37),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
+                                      style:
+                                          TextStyle(color: Color(0xFF6C737F)),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: filteredPayments.length,
+                                itemBuilder: (context, index) {
+                                  final item = filteredPayments[index];
+                                  return _paymentItem(
+                                    item.action != "INCOME",
+                                    item.payment_method ?? "",
+                                    item.amount.toString(),
+                                    formatDate(item.created_at!),
+                                  );
+                                },
                               ),
-                            ),
+                      ),
                     ],
                   ),
                 ),

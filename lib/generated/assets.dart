@@ -5,6 +5,7 @@ class Assets {
   static const String assetsIconsIcVideo = 'assets/icons/ic_video.svg';
   static const String icons23 = 'assets/icons/23.svg';
   static const String icons26 = 'assets/icons/26.svg';
+  static const String icons33 = 'assets/icons/33.svg';
   static const String iconsAppliciants = 'assets/icons/appliciants.svg';
   static const String iconsAttendance = 'assets/icons/attendance.svg';
   static const String iconsAward = 'assets/icons/award.svg';

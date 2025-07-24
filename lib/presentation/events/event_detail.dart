@@ -5,7 +5,6 @@ import 'package:fitrat_parent2/utils/widgets/video_landscape_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
-
 import '../../utils/app_colors.dart';
 import '../../utils/widgets/loading_widget.dart';
 import '../widgets/custom_button.dart';
@@ -20,7 +19,7 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-  Map<int, VideoPlayerController> _videoControllers = {};
+  final Map<int, VideoPlayerController> _videoControllers = {};
   Map<int, bool> _videoInitialized = {};
   Map<int, bool> _videoLoading = {};
   Map<int, bool> _videoEnded = {};
@@ -344,7 +343,7 @@ class _EventDetailState extends State<EventDetail> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(widget.event.comment ?? "No title",
+                child: Text(widget.event.title ?? "No title",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,

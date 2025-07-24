@@ -15,6 +15,7 @@ class EventsModel with _$EventsModel {
     FileModel? photo,
     String? link,
     String? linkPreview,
+    String? title,
     String? comment,
     String? endDate,
     String? status,
