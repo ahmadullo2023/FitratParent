@@ -13,6 +13,7 @@ class ResultsRepository {
         "/quiz-results/student-results/?fk_name=$a&page=$page&status=Accepted",
         log: true,
       );
+
       return PaginationModel.fromJson(
         response,
             (json) => ResultsModel.fromJson(json as Map<String, dynamic>),
@@ -23,21 +24,73 @@ class ResultsRepository {
     }
   }
 
-  Future<List<ResultsModel>> getResultsNoPg() async {
+
+  // Future<List<ResultsModel>> getResultsNoPg({String? studentId, String? status}) async {
+  //   try {
+  //     final response = await requestHelper.getWithAuth(
+  //       "/quiz-results/student-results/?page=1&student=${studentId ?? ""}&status=${status ?? ""}",
+  //       log: true,
+  //     );
+  //
+  //     final List list = response['results'];
+  //
+  //         print("+++++++++++++++++++");
+  //         print(response);
+  //         print("+++++++++++++++++++");
+  //         print(list.map((e) => ResultsModel.fromJson(e)).toList());
+  //         print("+++++++++++++++++++");
+  //
+  //
+  //     return  response; //list.map((e) => ResultsModel.fromJson(e)).toList();
+  //   } catch (e, s) {
+  //     Logger().e(["ERROR", e, s]);
+  //     rethrow;
+  //   }
+  // }
+
+
+
+  Future<List<ResultsModel>> getResultsNoPg({String? studentId, String? status}) async {
     try {
       final response = await requestHelper.getWithAuth(
-        "/quiz-results/student-results/?page=1&status=Accepted",
+        "/quiz-results/student-results/?page=1&student=${studentId ?? ""}&status=${status ?? ""}",
         log: true,
       );
 
-      final List list = response['results'];
+      final List resultsJson = response['results'] ?? [];
 
-      return list.map((e) => ResultsModel.fromJson(e)).toList();
+      final List<ResultsModel> results = resultsJson
+          .map((e) => ResultsModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      print("+++++++++++++++");
+      print(results);
+      print("+++++++++++++++");
+
+
+      return results;
     } catch (e, s) {
       Logger().e(["ERROR", e, s]);
       rethrow;
     }
   }
+
+
+  // Future<List<ResultsModel>> getResultsNoPg() async {
+  //   try {
+  //     final response = await requestHelper.getWithAuth(
+  //       "/quiz-results/student-results/?page=1&status=Accepted",
+  //       log: true,
+  //     );
+  //
+  //     final List list = response['results'];
+  //
+  //     return list.map((e) => ResultsModel.fromJson(e)).toList();
+  //   } catch (e, s) {
+  //     Logger().e(["ERROR", e, s]);
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<FKNameModel>> getResultTypes () async {
     try {

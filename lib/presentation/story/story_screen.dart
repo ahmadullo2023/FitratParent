@@ -29,6 +29,7 @@ class _StoryScreenState extends State<StoryScreen> {
 
   Map<int, int> innerIndexMap = {};
   Map<int, double> progressMap = {};
+  final Map<String, VideoPlayerController> _videoControllerCache = {};
 
   Timer? _timer;
   Duration storyDuration = const Duration(seconds: 3);
@@ -141,7 +142,6 @@ class _StoryScreenState extends State<StoryScreen> {
     }
   }
 
-  /// Video uchun progressni set qilish
   void setVideoProgress(double progress) {
     if (!isPaused && mounted) {
       setState(() {
@@ -155,6 +155,10 @@ class _StoryScreenState extends State<StoryScreen> {
     _timer?.cancel();
     _outerPageController.dispose();
     _innerPageController.dispose();
+    for (final controller in _videoControllerCache.values) {
+      controller.dispose();
+    }
+    _videoControllerCache.clear();
     super.dispose();
   }
 
@@ -188,14 +192,23 @@ class _StoryScreenState extends State<StoryScreen> {
 
   Widget buildMedia(String url, int storyIndex) {
     if (url.endsWith('.mp4')) {
-      return VideoPlayerWidget(
-        videoUrl: url,
-        isPaused: isPaused || _isAnimating || storyIndex != currentOuterIndex,
-        onInitialized: (duration) {
+      if (!_videoControllerCache.containsKey(url)) {
+        final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+        controller.initialize().then((_) {
+          setState(() {});
+          controller.play();
           if (storyIndex == currentOuterIndex) {
-            _updateStoryDuration(duration);
+            _updateStoryDuration(controller.value.duration);
           }
-        },
+        });
+        _videoControllerCache[url] = controller;
+      }
+
+      final controller = _videoControllerCache[url]!;
+
+      return VideoPlayerWidget(
+        controller: controller,
+        isPaused: isPaused || _isAnimating || storyIndex != currentOuterIndex,
       );
     }
 
@@ -324,15 +337,13 @@ class _StoryScreenState extends State<StoryScreen> {
 }
 
 class VideoPlayerWidget extends StatefulWidget {
-  final String videoUrl;
+  final VideoPlayerController controller;
   final bool isPaused;
-  final void Function(Duration)? onInitialized;
 
   const VideoPlayerWidget({
     super.key,
-    required this.videoUrl,
+    required this.controller,
     required this.isPaused,
-    this.onInitialized,
   });
 
   @override
@@ -340,60 +351,59 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-  bool _initialized = false;
-
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
-      ..initialize().then((_) {
-        setState(() {
-          _initialized = true;
-        });
 
-        widget.onInitialized?.call(_controller.value.duration);
-        _controller.play();
-
-        _controller.addListener(() {
-          if (!mounted || !_controller.value.isInitialized) return;
-
-          final duration = _controller.value.duration;
-          final position = _controller.value.position;
-
-          final parent = context.findAncestorStateOfType<_StoryScreenState>();
-          if (duration.inMilliseconds > 0) {
-            final progress = position.inMilliseconds / duration.inMilliseconds;
-            parent?.setVideoProgress(progress);
-          }
-
-          final isEnded = position >= duration && !_controller.value.isPlaying;
-          if (isEnded) {
-            Future.microtask(() {
-              parent?._goToNextStory();
-            });
-          }
-        });
-      }).catchError((error) {
-        print('❌ Video yuklashda xato: $error');
+    if (widget.controller.value.isInitialized) {
+      widget.controller.play();
+    } else {
+      widget.controller.initialize().then((_) {
+        if (mounted) {
+          setState(() {});
+          widget.controller.play();
+        }
       });
+    }
+
+    widget.controller.addListener(_onVideoUpdate);
+  }
+
+  void _onVideoUpdate() {
+    if (!mounted || !widget.controller.value.isInitialized) return;
+
+    final duration = widget.controller.value.duration;
+    final position = widget.controller.value.position;
+
+    final parent = context.findAncestorStateOfType<_StoryScreenState>();
+    if (duration.inMilliseconds > 0) {
+      final progress = position.inMilliseconds / duration.inMilliseconds;
+      parent?.setVideoProgress(progress);
+    }
+
+    if (position >= duration && !widget.controller.value.isPlaying) {
+      Future.microtask(() {
+        parent?._goToNextStory();
+      });
+    }
   }
 
   @override
-  void didUpdateWidget(VideoPlayerWidget oldWidget) {
+  void didUpdateWidget(covariant VideoPlayerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.isPaused != widget.isPaused && _initialized) {
+    if (oldWidget.isPaused != widget.isPaused &&
+        widget.controller.value.isInitialized) {
       if (widget.isPaused) {
-        _controller.pause();
+        widget.controller.pause();
       } else {
-        _controller.play();
+        widget.controller.play();
       }
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    widget.controller.removeListener(_onVideoUpdate);
     super.dispose();
   }
 
@@ -404,10 +414,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       height: double.infinity,
       color: Colors.black,
       child: Center(
-        child: _initialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+        child: widget.controller.value.isInitialized
+            ? FittedBox(
+                fit: BoxFit.contain,
+                child: SizedBox(
+                  width: widget.controller.value.size.width,
+                  height: widget.controller.value.size.height,
+                  child: VideoPlayer(widget.controller),
+                ),
               )
             : const CircularProgressIndicator(),
       ),

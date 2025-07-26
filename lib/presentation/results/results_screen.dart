@@ -1,5 +1,6 @@
 import 'package:fitrat_parent2/presentation/results/repository/results_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../utils/custom_pagination_widget.dart';
@@ -103,48 +104,69 @@ class _ResultsScreenState extends State<ResultsScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: CustomPaginationWidget<ResultsModel>(
-                spacing: 0,
-                isListView: false,
-                controller: _pagingController,
-                itemBuilder: (item) {
-                  return ItemResults(
-                    topImageUrl: item.file?.file,
-                    studentImageUrl: item.file?.file,
-                    studentName: item.fullName ?? "Ann",
-                    resultType: item.type ?? "",
-                    score: item.point ?? "",
-                    isBig: true,
-                    onTap: () {
-                      item.file?.file != null &&
-                              (item.file!.file!.endsWith(".png") ||
-                                  item.file!.file!.endsWith(".jpg") ||
-                                  item.file!.file!.endsWith(".jpeg"))
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => Scaffold(
-                                      backgroundColor: Colors.black,
-                                      body: Center(
-                                          child: InteractiveViewer(
-                                              child: Image.network(
-                                                  item.file!.file!))))))
-                          : FileDownloadService().downloadAndOpenFile(
-                              context: context,
-                              url: item.file!.file!,
-                            );
-                    },
-                  );
-                },
-                getItems: (page) async {
-                  try {
-                    final result = await resultsRepository.getResults(
-                        fkId: selectedFkId, page: page);
-                    return result;
-                  } catch (e) {
-                    rethrow;
-                  }
-                },
-              ),
+                  spacing: 0,
+                  isListView: false,
+                  controller: _pagingController,
+                  itemBuilder: (item) {
+                    return ItemResults(
+                      topImageUrl: item.file?.file,
+                      studentImageUrl: item.file?.file,
+                      studentName: item.fullName ?? "Ann",
+                      resultType: item.fkName?.name ?? "",
+                      score: item.point ?? "",
+                      isBig: true,
+                      onTap: () {
+                        item.file?.file != null &&
+                                (item.file!.file!.endsWith(".png") ||
+                                    item.file!.file!.endsWith(".jpg") ||
+                                    item.file!.file!.endsWith(".jpeg"))
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => Scaffold(
+                                        backgroundColor: Colors.black,
+                                        body: Center(
+                                            child: InteractiveViewer(
+                                                child: Image.network(
+                                                    item.file!.file!))))))
+                            : FileDownloadService().downloadAndOpenFile(
+                                context: context,
+                                url: item.file!.file!,
+                              );
+                      },
+                    );
+                  },
+                  getItems: (page) async {
+                    try {
+                      final result = await resultsRepository.getResults(
+                          fkId: selectedFkId, page: page);
+                      return result;
+                    } catch (e) {
+                      rethrow;
+                    }
+                  },
+                  emptyBuilder: () => Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset("assets/icons/46.svg"),
+                            const SizedBox(height: 8),
+                            const Text(
+                              "Sertifikatlar yo’q",
+                              style: TextStyle(
+                                  color: Color(0xFF1F2A37),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              "Natijalar topilmadi keyinroq urinib ko’ring",
+                              style: TextStyle(color: Color(0xFF6C737F)),
+                            ),
+                          ],
+                        ),
+                      )),
+
             ),
           ),
         ],

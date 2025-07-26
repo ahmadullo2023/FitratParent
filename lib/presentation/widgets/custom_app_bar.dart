@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/app_assets.dart';
 import '../main/bloc/main_bloc.dart';
 import '../notification/notifications_screen.dart';
+import '../notification/repository/notification_repository.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -50,44 +51,61 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.grey.shade200,
-                  backgroundImage: userImage != null
-                      ? NetworkImage(userImage!)
-                      : null,
+                  backgroundImage:
+                      userImage != null ? NetworkImage(userImage!) : null,
                   child: userImage == null
                       ? SvgPicture.asset(
-                    AppIcons.person,
-                    height: 20,
-                    width: 20,
-                  )
+                          AppIcons.person,
+                          height: 20,
+                          width: 20,
+                        )
                       : null,
                 ),
-
               ),
             ),
           ),
           actions: [
-            GestureDetector(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => NotificationsScreen()));
               },
-              child: Container(
-                height: 40,
-                width: 40,
-                margin: const EdgeInsets.only(right: 14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF9FAFB),
-                  border:
-                      Border.all(color: const Color(0xFFd8ffe7), width: 1.5),
-                  shape: BoxShape.circle,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SvgPicture.asset(AppIcons.notifications),
-                ),
+              icon: Stack(
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.notifications,
+                  ),
+                  if (notificationCount > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                        child: Text(
+                          notificationCount.toString(),
+                          //'${state.count}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
               ),
+              padding: EdgeInsets.zero,
             ),
           ],
         );

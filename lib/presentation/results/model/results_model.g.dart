@@ -9,14 +9,14 @@ part of 'results_model.dart';
 _$ResultsModelImpl _$$ResultsModelImplFromJson(Map<String, dynamic> json) =>
     _$ResultsModelImpl(
       id: json['id'] as String?,
-      studentId: json['studentId'] as String?,
-      fkName: json['fkName'] == null
+      studentId: json['student_id'] as String?,
+      fkName: json['fk_name'] == null
           ? null
-          : FKNameModel.fromJson(json['fkName'] as Map<String, dynamic>),
-      fullName: json['fullName'] as String?,
-      studentPhoto: json['studentPhoto'] == null
+          : FKNameModel.fromJson(json['fk_name'] as Map<String, dynamic>),
+      fullName: json['full_name'] as String?,
+      studentPhoto: json['student_photo'] == null
           ? null
-          : Photo.fromJson(json['studentPhoto'] as Map<String, dynamic>),
+          : Photo.fromJson(json['student_photo'] as Map<String, dynamic>),
       type: json['type'] as String?,
       teacher: json['teacher'] as String?,
       point: json['point'] as String?,
@@ -28,10 +28,10 @@ _$ResultsModelImpl _$$ResultsModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$ResultsModelImplToJson(_$ResultsModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'studentId': instance.studentId,
-      'fkName': instance.fkName,
-      'fullName': instance.fullName,
-      'studentPhoto': instance.studentPhoto,
+      'student_id': instance.studentId,
+      'fk_name': instance.fkName,
+      'full_name': instance.fullName,
+      'student_photo': instance.studentPhoto,
       'type': instance.type,
       'teacher': instance.teacher,
       'point': instance.point,

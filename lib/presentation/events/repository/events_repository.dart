@@ -7,6 +7,9 @@ import 'package:logger/logger.dart';
 class EventsRepository {
   Future<PaginationModel<EventsModel>> getEvents(
       {String? status, required int page}) async {
+
+    print("getEvents ishga tushdi <<<");
+
     String a = status ?? "";
     try {
       final response = await requestHelper.getWithAuth(
@@ -26,7 +29,7 @@ class EventsRepository {
   Future<List<EventsModel>> getEventsNoPg() async {
     try {
       final response = await requestHelper.getWithAuth(
-        "/event/?page=1",
+        "/event/?status=Soon&page=1",
         log: true,
       );
 

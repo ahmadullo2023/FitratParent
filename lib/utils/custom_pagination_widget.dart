@@ -400,7 +400,8 @@ class _CustomPaginationWidgetState<T> extends State<CustomPaginationWidget<T>>
                   widget.itemBuilder(item).paddingOnly(bottom: widget.spacing),
               firstPageProgressIndicatorBuilder: (context) =>
                   const LoadingWidget(),
-              noItemsFoundIndicatorBuilder: (_) => Center(
+              noItemsFoundIndicatorBuilder: (_) =>
+              widget.emptyBuilder?.call() ?? Center(
                 child: SvgPicture.asset(widget.emptyIcon ?? AppIcons.empty),
               ),
               newPageErrorIndicatorBuilder: (context) => Column(

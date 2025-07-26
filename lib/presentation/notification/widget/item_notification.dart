@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 
@@ -64,7 +63,8 @@ class _ItemNotificationState extends State<ItemNotification> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Keep icon at top
                 children: [
                   Container(
                     height: 40,
@@ -72,7 +72,8 @@ class _ItemNotificationState extends State<ItemNotification> {
                     margin: const EdgeInsets.only(right: 14),
                     decoration: BoxDecoration(
                       color: const Color(0xFFF9FAFB),
-                      border: Border.all(color: AppColors.emerald100, width: 1.5),
+                      border:
+                          Border.all(color: AppColors.emerald100, width: 1.5),
                       shape: BoxShape.circle,
                     ),
                     child: Padding(
@@ -80,7 +81,6 @@ class _ItemNotificationState extends State<ItemNotification> {
                       child: SvgPicture.asset(AppIcons.notifications),
                     ),
                   ),
-                  const SizedBox(width: 8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +99,7 @@ class _ItemNotificationState extends State<ItemNotification> {
                                 ),
                               ),
                             ),
-                            if (_showDot)
+                            if (!_showDot)
                               Container(
                                 width: 8,
                                 height: 8,

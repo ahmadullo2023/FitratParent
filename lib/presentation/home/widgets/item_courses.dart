@@ -132,76 +132,323 @@ class ItemCourses extends StatelessWidget {
   }
 }
 
+
+
 class ItemCoursesShimmer extends StatelessWidget {
   const ItemCoursesShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: 3,
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
-      itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        child: Container(
-          height: 72,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: const Border(
-              top: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
-              left: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
-              right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
-              bottom: BorderSide(color: Color(0xFFE5E7EB), width: 3),
+    return Column(
+      children: [
+      SizedBox(
+      height: 69,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade600,
-                  borderRadius: BorderRadius.circular(12),
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(width: 4),
+      ),
+    ),
+        SizedBox(height: 38),
+        Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Container(
+              height: 170,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: const Border(
+                  top: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  left: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  bottom: BorderSide(color: Color(0xFFE5E7EB), width: 3),
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 16,
+              child: Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
                       color: Colors.grey.shade600,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(height: 4),
-                    Container(
-                      width: 100,
-                      height: 10,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: 100,
+                          height: 10,
+                          color: Colors.grey.shade300,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                       color: Colors.grey.shade300,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey.shade300,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        SizedBox(height: 15),
+        SizedBox(
+          width: 400,
+          height: 200,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: 3,
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemBuilder: (context, index) => Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 200,
+                  width: 150,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: const Border(
+                      top: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                      left: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                      right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                      bottom: BorderSide(color: Color(0xFFE5E7EB), width: 3),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade600,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 16,
+                              color: Colors.grey.shade600,
+                            ),
+                            const SizedBox(height: 4),
+                            Container(
+                              width: 100,
+                              height: 10,
+                              color: Colors.grey.shade300,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          itemCount: 3,
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+          itemBuilder: (context, index) => Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              height: 72,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: const Border(
+                  top: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  left: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+                  bottom: BorderSide(color: Color(0xFFE5E7EB), width: 3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade600,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: 100,
+                          height: 10,
+                          color: Colors.grey.shade300,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
+
+
+
+
+
+// class ItemCoursesShimmer extends StatelessWidget {
+//   const ItemCoursesShimmer({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.separated(
+//       shrinkWrap: true,
+//       physics: const NeverScrollableScrollPhysics(),
+//       padding: const EdgeInsets.symmetric(horizontal: 16),
+//       itemCount: 3,
+//       separatorBuilder: (context, index) => const SizedBox(height: 10),
+//       itemBuilder: (context, index) => Shimmer.fromColors(
+//         baseColor: Colors.grey.shade300,
+//         highlightColor: Colors.grey.shade100,
+//         child: Container(
+//           height: 72,
+//           padding: const EdgeInsets.symmetric(horizontal: 12),
+//           decoration: BoxDecoration(
+//             color: Colors.white,
+//             borderRadius: BorderRadius.circular(16),
+//             border: const Border(
+//               top: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+//               left: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+//               right: BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
+//               bottom: BorderSide(color: Color(0xFFE5E7EB), width: 3),
+//             ),
+//           ),
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 48,
+//                 height: 48,
+//                 decoration: BoxDecoration(
+//                   color: Colors.grey.shade600,
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//               ),
+//               const SizedBox(width: 12),
+//               Expanded(
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Container(
+//                       width: double.infinity,
+//                       height: 16,
+//                       color: Colors.grey.shade600,
+//                     ),
+//                     const SizedBox(height: 4),
+//                     Container(
+//                       width: 100,
+//                       height: 10,
+//                       color: Colors.grey.shade300,
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               const SizedBox(width: 12),
+//               Container(
+//                 width: 60,
+//                 height: 60,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   color: Colors.grey.shade300,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -57,6 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
       value: bloc,
       child: Scaffold(
         body: BlocConsumer<LoginBloc, LoginState>(
+
+
           listener: (context, state) {
             if (state.status == LoginStatus.success) {
               Navigator.pushReplacement(
@@ -67,11 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
             } else if (state.status == LoginStatus.error) {
               showTopFlushBar(
                 context,
-                state.errorMessage ??
                     "Login muvaffaqiyatsiz tugadi. Iltimos, ma'lumotlarni tekshirib qayta urinib ko'ring.",
               );
             }
           },
+
+
           builder: (context, state) {
             return Container(
               color: Colors.white,

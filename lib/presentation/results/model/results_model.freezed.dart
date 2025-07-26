@@ -21,9 +21,13 @@ ResultsModel _$ResultsModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ResultsModel {
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'student_id')
   String? get studentId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fk_name')
   FKNameModel? get fkName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'full_name')
   String? get fullName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'student_photo')
   Photo? get studentPhoto => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
   String? get teacher => throw _privateConstructorUsedError;
@@ -48,10 +52,10 @@ abstract class $ResultsModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
-      String? studentId,
-      FKNameModel? fkName,
-      String? fullName,
-      Photo? studentPhoto,
+      @JsonKey(name: 'student_id') String? studentId,
+      @JsonKey(name: 'fk_name') FKNameModel? fkName,
+      @JsonKey(name: 'full_name') String? fullName,
+      @JsonKey(name: 'student_photo') Photo? studentPhoto,
       String? type,
       String? teacher,
       String? point,
@@ -180,10 +184,10 @@ abstract class _$$ResultsModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String? id,
-      String? studentId,
-      FKNameModel? fkName,
-      String? fullName,
-      Photo? studentPhoto,
+      @JsonKey(name: 'student_id') String? studentId,
+      @JsonKey(name: 'fk_name') FKNameModel? fkName,
+      @JsonKey(name: 'full_name') String? fullName,
+      @JsonKey(name: 'student_photo') Photo? studentPhoto,
       String? type,
       String? teacher,
       String? point,
@@ -266,10 +270,10 @@ class __$$ResultsModelImplCopyWithImpl<$Res>
 class _$ResultsModelImpl implements _ResultsModel {
   const _$ResultsModelImpl(
       {this.id,
-      this.studentId,
-      this.fkName,
-      this.fullName,
-      this.studentPhoto,
+      @JsonKey(name: 'student_id') this.studentId,
+      @JsonKey(name: 'fk_name') this.fkName,
+      @JsonKey(name: 'full_name') this.fullName,
+      @JsonKey(name: 'student_photo') this.studentPhoto,
       this.type,
       this.teacher,
       this.point,
@@ -281,12 +285,16 @@ class _$ResultsModelImpl implements _ResultsModel {
   @override
   final String? id;
   @override
+  @JsonKey(name: 'student_id')
   final String? studentId;
   @override
+  @JsonKey(name: 'fk_name')
   final FKNameModel? fkName;
   @override
+  @JsonKey(name: 'full_name')
   final String? fullName;
   @override
+  @JsonKey(name: 'student_photo')
   final Photo? studentPhoto;
   @override
   final String? type;
@@ -345,10 +353,10 @@ class _$ResultsModelImpl implements _ResultsModel {
 abstract class _ResultsModel implements ResultsModel {
   const factory _ResultsModel(
       {final String? id,
-      final String? studentId,
-      final FKNameModel? fkName,
-      final String? fullName,
-      final Photo? studentPhoto,
+      @JsonKey(name: 'student_id') final String? studentId,
+      @JsonKey(name: 'fk_name') final FKNameModel? fkName,
+      @JsonKey(name: 'full_name') final String? fullName,
+      @JsonKey(name: 'student_photo') final Photo? studentPhoto,
       final String? type,
       final String? teacher,
       final String? point,
@@ -360,12 +368,16 @@ abstract class _ResultsModel implements ResultsModel {
   @override
   String? get id;
   @override
+  @JsonKey(name: 'student_id')
   String? get studentId;
   @override
+  @JsonKey(name: 'fk_name')
   FKNameModel? get fkName;
   @override
+  @JsonKey(name: 'full_name')
   String? get fullName;
   @override
+  @JsonKey(name: 'student_photo')
   Photo? get studentPhoto;
   @override
   String? get type;

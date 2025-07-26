@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitrat_parent2/presentation/home/repository/home_repository.dart';
+import 'package:fitrat_parent2/presentation/home/widgets/item_courses.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/item_story.dart';
 import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
@@ -18,6 +19,7 @@ import '../events/events_screen.dart';
 import '../events/model/events_model.dart';
 import '../events/repository/events_repository.dart';
 import '../main/bloc/main_bloc.dart';
+import '../notification/repository/notification_repository.dart';
 import '../results/model/results_model.dart';
 import '../results/repository/results_repository.dart';
 import '../results/results_screen.dart';
@@ -43,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<MainBloc>().add(LoadStudent());
     context.read<ProfileBloc>().add(GetMeEvent());
     context.read<HomeBloc>().add(LoadStories());
-    // context.read<HomeBloc>().add(LoadCourses());
     context.read<HomeBloc>().add(LoadLearnings());
+    notificationRepository.getNotifications(page: 1);
     getResults();
     getEvents();
   }
@@ -61,13 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final student = context.watch<MainBloc>().state.studentModel;
     final student2 = context.watch<MainBloc>().state.meModel;
+
     return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
       return BlocBuilder<ProfileBloc, ProfileState>(
         builder: (proContext, proState) {
           return Scaffold(
               appBar: CustomAppBar(
                 title: proState.getMe?.fullName ?? '',
-                points: mainState.status == StudentStatus.loading ? 0 : student?.ball?.toDouble() ?? 0,
+                points: mainState.status == StudentStatus.loading
+                    ? 0
+                    : student?.ball?.toDouble() ?? 0,
                 isLoading: mainState.status == StudentStatus.loading,
                 userImage: student2?.photo?.file,
               ),
@@ -83,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.read<MainBloc>().add(LoadStudent());
                         context.read<HomeBloc>().add(LoadStories());
                         context.read<ProfileBloc>().add(GetMeEvent());
-                        // context.read<HomeBloc>().add(LoadCourses());
                         context.read<HomeBloc>().add(LoadLearnings());
                         getResults();
                       },
@@ -110,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           builder: (context, homeState2) {
                                             if (homeState2.status ==
                                                 StoriesStatus.loading) {
-                                              return _buildStoriesShimmer();
+                                              return ItemCoursesShimmer();
+                                              //_buildStoriesShimmer();
                                             } else if (homeState2.status ==
                                                 StoriesStatus.error) {
                                               return const SizedBox(
@@ -326,8 +331,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   studentName:
                                                       results[index].fullName ??
                                                           "Ann",
-                                                  resultType:
-                                                      results[index].type ?? "",
+                                                  resultType: results[index]
+                                                          .fkName
+                                                          ?.name ??
+                                                      "",
                                                   score: results[index].point ??
                                                       "",
                                                   onTap: () {
@@ -583,33 +590,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           )
         ],
-      ),
-    );
-  }
-
-  Widget _buildStoriesShimmer() {
-    return SizedBox(
-      height: 69,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              width: 68,
-              height: 68,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) => const SizedBox(width: 4),
       ),
     );
   }

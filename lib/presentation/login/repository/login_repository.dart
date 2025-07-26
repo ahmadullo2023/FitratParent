@@ -30,7 +30,6 @@ class AuthRepository {
         throw Exception("Faqat ota-onalar (Parents) tizimga kira oladi.");
       }
 
-      // Cache va Hive yozuvlari
       await cache.setString("access_token", loginModel.accessToken ?? "");
       await cache.setString("refresh_token", loginModel.refreshToken ?? "");
       await cache.setString("role", loginModel.role ?? "");

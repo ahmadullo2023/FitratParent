@@ -11,20 +11,29 @@ part 'results_model.g.dart';
 class ResultsModel with _$ResultsModel {
   const factory ResultsModel({
     String? id,
+
+    @JsonKey(name: 'student_id')
     String? studentId,
+
+    @JsonKey(name: 'fk_name')
     FKNameModel? fkName,
+
+    @JsonKey(name: 'full_name')
     String? fullName,
+
+    @JsonKey(name: 'student_photo')
     Photo? studentPhoto,
+
     String? type,
     String? teacher,
     String? point,
     FileModel? file
-
-}) = _ResultsModel;
+  }) = _ResultsModel;
 
   factory ResultsModel.fromJson(Map<String, dynamic> json) =>
       _$ResultsModelFromJson(json);
 }
+
 
 @freezed
 class FKNameModel with _$FKNameModel {
