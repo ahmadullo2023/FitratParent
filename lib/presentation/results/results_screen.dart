@@ -2,7 +2,6 @@ import 'package:fitrat_parent2/presentation/results/repository/results_repositor
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
 import '../../utils/custom_pagination_widget.dart';
 import '../../utils/servise/file_download_service.dart';
 import '../../utils/widgets/item_results.dart';
@@ -43,7 +42,6 @@ class _ResultsScreenState extends State<ResultsScreen> {
         selectedFkId = types[index - 1].id;
       }
     });
-
     _pagingController.refresh();
   }
 
@@ -54,7 +52,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
         leading: const BackButton(),
         centerTitle: true,
         title: const Text(
-          'Natijalar',
+          "Faxirli o'quvchilarimiz",
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 20,
@@ -66,110 +64,112 @@ class _ResultsScreenState extends State<ResultsScreen> {
         surfaceTintColor: Colors.transparent,
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (types.isNotEmpty) ...[
-            SizedBox(
-              height: 36,
-              child: ListView(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (types.isNotEmpty) ...[
+              SizedBox(
+                height: 36,
+                child: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    CustomChip(
+                      label: "Barchasi",
+                      isSelected: selectedTypeIndex == 0,
+                      onTap: () => _onChipSelected(0),
+                    ),
+                    const SizedBox(width: 8),
+                    // Dynamic chips from types
+                    ...types.asMap().entries.map((entry) {
+                      int index = entry.key + 1;
+                      FKNameModel type = entry.value;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: CustomChip(
+                          label: type.name ?? "Unknown",
+                          isSelected: selectedTypeIndex == index,
+                          onTap: () => _onChipSelected(index),
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            Expanded(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  CustomChip(
-                    label: "Barchasi",
-                    isSelected: selectedTypeIndex == 0,
-                    onTap: () => _onChipSelected(0),
-                  ),
-                  const SizedBox(width: 8),
-                  // Dynamic chips from types
-                  ...types.asMap().entries.map((entry) {
-                    int index = entry.key + 1;
-                    FKNameModel type = entry.value;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: CustomChip(
-                        label: type.name ?? "Unknown",
-                        isSelected: selectedTypeIndex == index,
-                        onTap: () => _onChipSelected(index),
-                      ),
-                    );
-                  }).toList(),
-                ],
+                child: CustomPaginationWidget<ResultsModel>(
+                    padding: EdgeInsets.only(bottom: 20),
+                    spacing: 0,
+                    isListView: false,
+                    controller: _pagingController,
+                    itemBuilder: (item) {
+                      return ItemResults(
+                        topImageUrl: item.file?.file,
+                        studentImageUrl: item.file?.file,
+                        studentName: item.fullName ?? "Ann",
+                        resultType: item.fkName?.name ?? "",
+                        score: item.point ?? "",
+                        isBig: true,
+                        onTap: () {
+                          item.file?.file != null &&
+                                  (item.file!.file!.endsWith(".png") ||
+                                      item.file!.file!.endsWith(".jpg") ||
+                                      item.file!.file!.endsWith(".jpeg"))
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => Scaffold(
+                                          backgroundColor: Colors.black,
+                                          body: Center(
+                                              child: InteractiveViewer(
+                                                  child: Image.network(
+                                                      item.file!.file!))))))
+                              : FileDownloadService().downloadAndOpenFile(
+                                  context: context,
+                                  url: item.file!.file!,
+                                );
+                        },
+                      );
+                    },
+                    getItems: (page) async {
+                      try {
+                        final result = await resultsRepository.getResults(
+                            fkId: selectedFkId, page: page);
+                        return result;
+                      } catch (e) {
+                        rethrow;
+                      }
+                    },
+                    emptyBuilder: () => Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset("assets/icons/46.svg"),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "Sertifikatlar yo’q",
+                                style: TextStyle(
+                                    color: Color(0xFF1F2A37),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "Natijalar topilmadi keyinroq urinib ko’ring",
+                                style: TextStyle(color: Color(0xFF6C737F)),
+                              ),
+                            ],
+                          ),
+                        )),
               ),
             ),
-            const SizedBox(height: 8),
           ],
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: CustomPaginationWidget<ResultsModel>(
-                  spacing: 0,
-                  isListView: false,
-                  controller: _pagingController,
-                  itemBuilder: (item) {
-                    return ItemResults(
-                      topImageUrl: item.file?.file,
-                      studentImageUrl: item.file?.file,
-                      studentName: item.fullName ?? "Ann",
-                      resultType: item.fkName?.name ?? "",
-                      score: item.point ?? "",
-                      isBig: true,
-                      onTap: () {
-                        item.file?.file != null &&
-                                (item.file!.file!.endsWith(".png") ||
-                                    item.file!.file!.endsWith(".jpg") ||
-                                    item.file!.file!.endsWith(".jpeg"))
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => Scaffold(
-                                        backgroundColor: Colors.black,
-                                        body: Center(
-                                            child: InteractiveViewer(
-                                                child: Image.network(
-                                                    item.file!.file!))))))
-                            : FileDownloadService().downloadAndOpenFile(
-                                context: context,
-                                url: item.file!.file!,
-                              );
-                      },
-                    );
-                  },
-                  getItems: (page) async {
-                    try {
-                      final result = await resultsRepository.getResults(
-                          fkId: selectedFkId, page: page);
-                      return result;
-                    } catch (e) {
-                      rethrow;
-                    }
-                  },
-                  emptyBuilder: () => Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset("assets/icons/46.svg"),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Sertifikatlar yo’q",
-                              style: TextStyle(
-                                  color: Color(0xFF1F2A37),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Natijalar topilmadi keyinroq urinib ko’ring",
-                              style: TextStyle(color: Color(0xFF6C737F)),
-                            ),
-                          ],
-                        ),
-                      )),
-
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

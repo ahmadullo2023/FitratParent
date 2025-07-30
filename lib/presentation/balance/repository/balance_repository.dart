@@ -4,7 +4,6 @@ import '../../../data/hive/hive_helper.dart';
 import '../../../utils/models/pagination_model.dart';
 import '../../../utils/request_helper.dart';
 
-
 class BalanceRepository {
   Future<PaginationModel<BalanceModel>> getBalance({int page = 1}) async {
     final completer = Completer<PaginationModel<BalanceModel>>();

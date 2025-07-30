@@ -37,6 +37,8 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       try {
         final result = await paymentRepository.paymentHistory();
 
+        print("bu bloc ni ichidagi result ==> $result");
+
         emit(state.copyWith(
           status: PaymentStatus.success,
           paymentHistoryModel: result,

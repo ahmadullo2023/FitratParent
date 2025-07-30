@@ -10,6 +10,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../generated/l10n.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../presentation/comments/widgets/message_item.dart';
+
 //
 // class CustomPaginationWidget2<T> extends StatefulHookConsumerWidget {
 //   const CustomPaginationWidget2({
@@ -223,9 +225,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 //   }
 // }
 
-
-
-
 class CustomPaginationWidget<T> extends StatefulWidget {
   const CustomPaginationWidget({
     super.key,
@@ -274,7 +273,8 @@ class _CustomPaginationWidgetState<T> extends State<CustomPaginationWidget<T>>
   @override
   void initState() {
     super.initState();
-    _pagingController = widget.controller ?? PagingController<int, T>(firstPageKey: 1);
+    _pagingController =
+        widget.controller ?? PagingController<int, T>(firstPageKey: 1);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_hasInitialized) {
@@ -401,9 +401,10 @@ class _CustomPaginationWidgetState<T> extends State<CustomPaginationWidget<T>>
               firstPageProgressIndicatorBuilder: (context) =>
                   const LoadingWidget(),
               noItemsFoundIndicatorBuilder: (_) =>
-              widget.emptyBuilder?.call() ?? Center(
-                child: SvgPicture.asset(widget.emptyIcon ?? AppIcons.empty),
-              ),
+                  widget.emptyBuilder?.call() ??
+                  Center(
+                    child: SvgPicture.asset(widget.emptyIcon ?? AppIcons.empty),
+                  ),
               newPageErrorIndicatorBuilder: (context) => Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -442,12 +443,6 @@ class _CustomPaginationWidgetState<T> extends State<CustomPaginationWidget<T>>
     );
   }
 }
-
-
-
-
-
-
 
 class CustomPaginationWidget2<T> extends StatefulWidget {
   const CustomPaginationWidget2({
@@ -519,7 +514,6 @@ class _CustomPaginationWidget2State<T> extends State<CustomPaginationWidget2<T>>
       }
     }
 
-    // Set up page request listener
     _pagingController.addPageRequestListener(
       (pageKey) async {
         if (!mounted) return;
@@ -553,7 +547,6 @@ class _CustomPaginationWidget2State<T> extends State<CustomPaginationWidget2<T>>
 
   @override
   Widget build(BuildContext context) {
-
     print(">>>>> ${_pagingController.itemList}");
 
     super.build(context);
@@ -578,9 +571,11 @@ class _CustomPaginationWidget2State<T> extends State<CustomPaginationWidget2<T>>
               itemBuilder: (context, item, index) =>
                   widget.itemBuilder(item).paddingOnly(bottom: widget.spacing),
               firstPageProgressIndicatorBuilder: (context) =>
-                  const LoadingWidget(),
+                  const ShimmerMessageItem(),
+              //LoadingWidget().marginSymmetric(vertical: 10),
               newPageProgressIndicatorBuilder: (context) =>
-                  LoadingWidget().marginSymmetric(vertical: 10),
+                  ShimmerMessageItem(),
+              //   LoadingWidget().marginSymmetric(vertical: 10),
               noItemsFoundIndicatorBuilder: (_) =>
                   widget.emptyBuilder?.call() ??
                   Center(

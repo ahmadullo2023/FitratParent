@@ -223,11 +223,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    selectedValue ?? "To'lov turini tanlang",
+                                    selectedValue,
                                     style: TextStyle(
-                                      color: selectedValue == null
-                                          ? Colors.grey
-                                          : Colors.black,
+                                      color: Colors.black,
                                       fontSize: 16,
                                     ),
                                   ),
@@ -249,7 +247,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     student:
                                         '92b0b156-a097-46c6-92d9-d92aaeda099b',
                                     amount: _amountController.text,
-                                    type: selectedValue ?? "Click",
+                                    type: selectedValue,
                                   ));
 
                                   await for (final state in bloc.stream) {
@@ -305,93 +303,110 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(3),
+              child: SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 48,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Farzandingiz",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Farzandingiz",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 18),
-                  ...List.generate(1, (index) {
-                    final isSelected = selectedIndex == index;
-                    final subject = "Kimyo noldan";
-                    final avatar = 'https://randomuser.me/api/g';
+                    const SizedBox(height: 18),
+                    ...List.generate(1, (index) {
+                      final isSelected = selectedIndex == index;
+                      final subject = "Kimyo noldan";
+                      final avatar = 'https://randomuser.me/api/g';
 
-                    return GestureDetector(
-                      onTap: () => setState(() => selectedIndex = index),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: isSelected
-                                ? Color(0xFFF3F4F6)
-                                : Colors.grey.shade200,
-                            width: 1.5,
+                      return GestureDetector(
+                        onTap: () => setState(() => selectedIndex = index),
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: isSelected
+                                  ? Color(0xFFF3F4F6)
+                                  : Colors.grey.shade200,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipOval(
+                                  child: Container(
+                                    height: 46,
+                                    width: 46,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30),
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: SvgPicture.asset(
+                                        AppIcons.person,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.learningResponse?.first.fullName
+                                              ?.toString() ??
+                                          "",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      subject,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (isSelected)
+                                const Icon(Icons.check, color: Colors.green),
+                            ],
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundImage: NetworkImage(avatar),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.learningResponse?.first.fullName
-                                            ?.toString() ??
-                                        "",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    subject,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (isSelected)
-                              const Icon(Icons.check, color: Colors.green),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 12),
-                  CustomButton(
-                      text: "Tanlash",
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  const SizedBox(height: 12),
-                ],
+                      );
+                    }),
+                    const SizedBox(height: 12),
+                    CustomButton(
+                        text: "Tanlash",
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ),
               ),
             ),
           );
@@ -433,56 +448,58 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40,
-            height: 4,
-            margin: const EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          // Title
-          const Text(
-            'To‘lov usuli',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ...List.generate(paymentMethods.length, (index) {
-            return ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16),
-              // or EdgeInsets.zero
-              title: Text(
-                paymentMethods[index],
-                style: const TextStyle(fontSize: 16),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
               ),
-              trailing: selectedIndex == index
-                  ? const Icon(Icons.check, color: Colors.green)
-                  : null,
-              onTap: () {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-            );
-          }),
-          const SizedBox(height: 8),
-          CustomButton(
-              text: "Tanlash",
-              onPressed: () {
-                Navigator.pop(context, paymentMethods[selectedIndex]);
-                selectedValue = paymentMethods[selectedIndex];
-              }),
+            ),
+            // Title
+            const Text(
+              'To‘lov usuli',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 10),
+            ...List.generate(paymentMethods.length, (index) {
+              return ListTile(
+                dense: true,
+                contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                // or EdgeInsets.zero
+                title: Text(
+                  paymentMethods[index],
+                  style: const TextStyle(fontSize: 16),
+                ),
+                trailing: selectedIndex == index
+                    ? const Icon(Icons.check, color: Colors.green)
+                    : null,
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+              );
+            }),
+            const SizedBox(height: 8),
+            CustomButton(
+                text: "Tanlash",
+                onPressed: () {
+                  Navigator.pop(context, paymentMethods[selectedIndex]);
+                  selectedValue = paymentMethods[selectedIndex];
+                }),
 
-          const SizedBox(height: 10),
-        ],
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

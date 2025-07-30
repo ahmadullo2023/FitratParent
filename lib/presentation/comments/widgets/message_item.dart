@@ -8,6 +8,7 @@ import '../../../utils/app_colors.dart';
 import '../../../utils/formatters.dart';
 import '../../../utils/widgets/custom_cached_network.dart';
 import '../models/comment_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MessageItem extends StatelessWidget {
   const MessageItem({
@@ -83,6 +84,7 @@ class MessageItem extends StatelessWidget {
                         8.vertical,
                         SizedBox(
                           width: double.infinity,
+                          height: 300,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CustomCachedNetworkImage(
@@ -124,6 +126,71 @@ class MessageItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ShimmerMessageItem extends StatelessWidget {
+  const ShimmerMessageItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 800,
+      child: ListView.builder(
+        itemCount: 15,
+        padding: const EdgeInsets.all(12),
+        itemBuilder: (context, index) {
+          final isMe = index % 2 == 0;
+          return Align(
+            alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.all(10),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.75,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(16),
+                    topRight: const Radius.circular(16),
+                    bottomLeft: Radius.circular(isMe ? 16 : 0),
+                    bottomRight: Radius.circular(isMe ? 0 : 16),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 12,
+                      width: 150,
+                      color: Colors.white,
+                    ),
+                    // Container(
+                    //   height: 160,
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.circular(12),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 10),
+
+                    Container(
+                      height: 12,
+                      width: 80,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

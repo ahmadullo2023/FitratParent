@@ -35,9 +35,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
       builder: (context, state) {
         return BlocBuilder<PaymentBloc, PaymentState>(
           builder: (payContext, payState) {
+            print("BU build bolganida payState ==> ${payState.paymentHistoryModel}");
             final filteredPayments = payState.paymentHistoryModel?.results
-                    ?.where((e) => e.studentInfo?.id == studentId2)
-                    .toList() ??
+                    // ?.where((e) => e.studentInfo?.id == studentId2)
+                    // .toList()
+                ??
                 [];
             return Scaffold(
               backgroundColor: Colors.white,
@@ -195,7 +197,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  amount,
+                  NumberFormat.decimalPattern().format(double.tryParse(amount)),
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 4),
@@ -284,7 +286,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   children: [
                     SizedBox(height: 8),
                     Text(
-                      balance,
+                      NumberFormat.decimalPattern().format(double.tryParse(balance)),
+
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,

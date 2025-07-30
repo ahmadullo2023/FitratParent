@@ -11,14 +11,19 @@ class PaymentRepository {
     required String? type,
   }) async {
     try {
-      final body = {
-        "lid": null,
-        "student": student,
-        "amount": amount,
-        "type": type
-      };
-      final response =
-          await requestHelper.postWithAuth("/clickuz/order/", body, log: true);
+      final body = type == "Click"
+          ? {"lid": null, "student": student, "amount": amount, "type": type}
+          : {
+              "params": {
+                "amount": amount,
+                "order_id": student,
+              },
+              "return_url": null
+            };
+
+      final response = await requestHelper.postWithAuth(
+          type == "Click" ? "/clickuz/order/" : "/webhook/paycom", body,
+          log: true);
 
       print("BU payment ===> ${response}");
 
@@ -33,7 +38,7 @@ class PaymentRepository {
     print("paymentHistory funksiya ishladi");
 
     try {
-      final response = await requestHelper.getWithAuth("/finance/", log: true);
+      final response = await requestHelper.getWithAuth("/finance?creator=a668cce4-bc1b-46e5-a5fe-5d14ffc0ea19", log: true);
 
       print("BU payment history ===> ${response}");
 

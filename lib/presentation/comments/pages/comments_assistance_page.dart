@@ -13,7 +13,6 @@ import '../../../utils/custom_pagination_widget.dart';
 import '../models/comment_model.dart';
 import '../notifiers/comments_notifier.dart';
 import 'dart:async';
-
 import '../repositories/comment_repository.dart';
 import '../widgets/custom_toast.dart';
 import '../widgets/message_item.dart';
@@ -74,9 +73,7 @@ class CommentsAssistantPage extends HookConsumerWidget {
         child: Column(
           children: [
             Expanded(
-              child:
-
-              CustomPaginationWidget2(
+              child: CustomPaginationWidget2(
                 emptyIcon: AppIcons.messagesEmpty,
                 onInit: (controller) {
                   pagingController.value = controller;
