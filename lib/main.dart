@@ -1,3 +1,5 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitrat_parent2/data/db/cache.dart';
 import 'package:fitrat_parent2/data/hive/hive_helper.dart';
@@ -6,9 +8,6 @@ import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:fitrat_parent2/presentation/main/bloc/main_bloc.dart';
 import 'package:fitrat_parent2/presentation/payments/bloc/payment_bloc.dart';
 import 'package:fitrat_parent2/presentation/profile/bloc/profile_bloc.dart';
-import 'package:fitrat_parent2/presentation/profile/widgets/edit_profile/bloc/edit_profile_bloc.dart';
-
-// import 'package:fitrat_parent2/presentation/main/pages/main_page.dart';
 import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
 import 'package:fitrat_parent2/utils/servise/no_internet.dart';
 import 'package:fitrat_parent2/utils/servise/notification_service.dart';
@@ -16,15 +15,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'firebase_options.dart';
 import 'generated/l10n.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  NotificationService.initialize();
+
+  await Firebase.initializeApp();
+
+  await NotificationService.initialize();
   InternetChecker().initialize();
 
   await initializeCache();
@@ -44,9 +44,6 @@ void main() async {
         // BlocProvider<EditProfileBloc>(
         //   create: (_) => EditProfileBloc()..add(EditData(name: '', lastName: '', phone: '')),
         // ),
-        BlocProvider<MainBloc>(
-          create: (_) => MainBloc()..add(LoadMe()),
-        ),
         BlocProvider<PaymentBloc>(
           create: (_) => PaymentBloc()
             ..add(PayEvent(lid: '', student: '', amount: '', type: '')),
@@ -79,12 +76,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     NotificationService.getFcmToken();
     // return App();
     return MaterialApp(
-      navigatorKey: InternetChecker().navigatorKey,
-      // navigatorKey: navigatorKey,
+      navigatorKey: navigatorKey,
+      navigatorObservers: [ChuckerFlutter.navigatorObserver],
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,

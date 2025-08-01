@@ -1,6 +1,7 @@
 import 'package:fitrat_parent2/presentation/notification/repository/notification_repository.dart';
 import 'package:fitrat_parent2/presentation/notification/widget/dialog_notification.dart';
 import 'package:fitrat_parent2/presentation/notification/widget/item_notification.dart';
+import 'package:fitrat_parent2/utils/servise/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -87,7 +88,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         onTap: () async {
                           notificationRepository.updateNotificationIsRead(
                               notificationId: item.id);
-
+                          NotificationService.markNotificationAsRead(
+                              item.id ?? '');
                           _notificationController.refresh();
                         },
                       );

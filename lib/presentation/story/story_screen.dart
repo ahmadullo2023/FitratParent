@@ -30,6 +30,7 @@ class _StoryScreenState extends State<StoryScreen> {
   Map<int, int> innerIndexMap = {};
   Map<int, double> progressMap = {};
   final Map<String, VideoPlayerController> _videoControllerCache = {};
+  final Map<String, Duration> _videoPositionCache = {};
 
   Timer? _timer;
   Duration storyDuration = const Duration(seconds: 3);
@@ -236,26 +237,37 @@ class _StoryScreenState extends State<StoryScreen> {
           physics: const BouncingScrollPhysics(),
           onPageChanged: (index) {
             setState(() {
-              progressMap[currentOuterIndex] = currentProgress;
-              innerIndexMap[currentOuterIndex] = currentInnerIndex;
+              final prevOuterIndex = currentOuterIndex;
+              final prevInnerIndex = innerIndexMap[prevOuterIndex] ?? 0;
+              final prevUrl =
+                  widget.storiesData[prevOuterIndex][prevInnerIndex];
+
+              if (prevUrl.endsWith('.mp4') &&
+                  _videoControllerCache.containsKey(prevUrl)) {
+                final controller = _videoControllerCache[prevUrl]!;
+                if (controller.value.isInitialized) {
+                  _videoPositionCache[prevUrl] = controller.value.position;
+                }
+              }
 
               currentOuterIndex = index;
               currentProgress = progressMap[index] ?? 0.0;
+              currentInnerIndex = innerIndexMap[index] ?? 0;
+
+              final newUrl =
+                  widget.storiesData[currentOuterIndex][currentInnerIndex];
+              if (newUrl.endsWith('.mp4') &&
+                  _videoControllerCache.containsKey(newUrl)) {
+                final controller = _videoControllerCache[newUrl]!;
+                controller.seekTo(Duration.zero);
+                controller.play();
+              }
 
               _innerPageController =
                   PageController(initialPage: currentInnerIndex);
               isPaused = false;
               _isAnimating = false;
               _timer?.cancel();
-
-              final url =
-                  widget.storiesData[currentOuterIndex][currentInnerIndex];
-              if (url.endsWith('.mp4') &&
-                  _videoControllerCache.containsKey(url)) {
-                final controller = _videoControllerCache[url]!;
-                controller.seekTo(Duration.zero);
-                controller.play();
-              }
             });
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -378,25 +390,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     widget.controller.addListener(_onVideoUpdate);
   }
 
-  // void _onVideoUpdate() {
-  //   if (!mounted || !widget.controller.value.isInitialized) return;
-  //
-  //   final duration = widget.controller.value.duration;
-  //   final position = widget.controller.value.position;
-  //
-  //   final parent = context.findAncestorStateOfType<_StoryScreenState>();
-  //   if (duration.inMilliseconds > 0) {
-  //     final progress = position.inMilliseconds / duration.inMilliseconds;
-  //     parent?.setVideoProgress(progress);
-  //   }
-  //
-  //   if (position >= duration && !widget.controller.value.isPlaying) {
-  //     Future.microtask(() {
-  //       parent?._goToNextStory();
-  //     });
-  //   }
-  // }
-
   void _onVideoUpdate() {
     if (!mounted || !widget.controller.value.isInitialized) return;
 
@@ -408,6 +401,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       final progress = position.inMilliseconds / duration.inMilliseconds;
       parent?.setVideoProgress(progress);
     }
+
+    final videoUrl = widget.controller.dataSource;
+    parent?._videoPositionCache[videoUrl] = position;
 
     if (position >= duration - const Duration(milliseconds: 200)) {
       Future.microtask(() {

@@ -20,20 +20,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingData> pages = [
     OnboardingData(
-      imagePath: AppIcons.onboarding1,
-      title: "Sifatli va zamonaviy ta’lim",
-    subtitle:"Har bir o‘quvchiga chuqur bilim, tanqidiy fikrlash va amaliy ko‘nikmalarni berishga qaratilgan zamonaviy yondashuv"
-    ),
+        imagePath: AppIcons.onboarding1,
+        title: "Sifatli va zamonaviy ta’lim",
+        subtitle:
+            "Har bir o‘quvchiga chuqur bilim, tanqidiy fikrlash va amaliy ko‘nikmalarni berishga qaratilgan zamonaviy yondashuv"),
     OnboardingData(
-      imagePath: AppIcons.onboarding2,
-      title: "Kuchli jamoa va do‘stona muhit",
-    subtitle: "O‘zaro hurmat, qo‘llab-quvvatlash va ishonch asosida shakllangan jamoa – har bir a’zoning o‘sishi uchun eng qulay muhit"
-    ),
+        imagePath: AppIcons.onboarding2,
+        title: "Kuchli jamoa va do‘stona muhit",
+        subtitle:
+            "O‘zaro hurmat, qo‘llab-quvvatlash va ishonch asosida shakllangan jamoa – har bir a’zoning o‘sishi uchun eng qulay muhit"),
     OnboardingData(
         imagePath: AppIcons.onboarding3,
         title: "Maqsadga yo‘naltirilgan harakatlar",
-    subtitle:"Aniq strategiya va qat’iyat bilan harakat qilib, o‘z oldimizga qo‘ygan yuksak maqsadlar sari doimiy taraqqiyotga intilamiz"
-    ),
+        subtitle:
+            "Aniq strategiya va qat’iyat bilan harakat qilib, o‘z oldimizga qo‘ygan yuksak maqsadlar sari doimiy taraqqiyotga intilamiz"),
   ];
 
   @override
@@ -113,7 +113,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       count: pages.length,
                       effect: const ExpandingDotsEffect(
                         dotHeight: 6,
-                        dotWidth: 13, // Middle value between 6 and 20
+                        dotWidth: 13,
+                        // Middle value between 6 and 20
                         spacing: 6,
                         expansionFactor: 2,
                         activeDotColor: Color(0xFF10B981),
@@ -130,7 +131,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           : "Keyingisi",
                       onPressed: () {
                         if (_currentIndex == pages.length - 1) {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
                         } else {
                           _controller.nextPage(
                             duration: const Duration(milliseconds: 300),

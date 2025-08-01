@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
-import '../../home/home_screen.dart';
 
 class PaymentsPage extends StatefulWidget {
   const PaymentsPage({super.key});
@@ -35,10 +34,11 @@ class _PaymentsPageState extends State<PaymentsPage> {
       builder: (context, state) {
         return BlocBuilder<PaymentBloc, PaymentState>(
           builder: (payContext, payState) {
-            print("BU build bolganida payState ==> ${payState.paymentHistoryModel}");
+            print(
+                "BU build bolganida payState ==> ${payState.paymentHistoryModel}");
             final filteredPayments = payState.paymentHistoryModel?.results
-                    // ?.where((e) => e.studentInfo?.id == studentId2)
-                    // .toList()
+                // ?.where((e) => e.studentInfo?.id == studentId2)
+                // .toList()
                 ??
                 [];
             return Scaffold(
@@ -286,8 +286,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   children: [
                     SizedBox(height: 8),
                     Text(
-                      NumberFormat.decimalPattern().format(double.tryParse(balance)),
-
+                      NumberFormat.decimalPattern()
+                          .format(double.tryParse(balance)),
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,

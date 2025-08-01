@@ -143,8 +143,8 @@ class _ChildernPageState extends State<ChildernPage> {
                 ],
               ),
               const Spacer(),
-              const Icon(Icons.arrow_forward_ios,
-                  size: 16, color: Color(0xFF35B26A))
+              // const Icon(Icons.arrow_forward_ios,
+              //     size: 16, color: Color(0xFF35B26A))
             ],
           ),
           const SizedBox(height: 12),

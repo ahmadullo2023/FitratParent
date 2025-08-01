@@ -6,7 +6,7 @@ import '../main/bloc/main_bloc.dart';
 import '../notification/notifications_screen.dart';
 import '../notification/repository/notification_repository.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final double points;
   final bool isLoading;
@@ -24,21 +24,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(
       builder: (context, state) {
         return AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          scrolledUnderElevation: 0.0,
           elevation: 0,
           centerTitle: false,
           title: Text(
-            title ?? "",
+            widget.title ?? "",
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 20,
-              color: Color(0xFF1F2A37),
+              color: const Color(0xFF1F2A37),
             ),
           ),
           leading: Padding(
@@ -51,9 +55,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.grey.shade200,
-                  backgroundImage:
-                      userImage != null ? NetworkImage(userImage!) : null,
-                  child: userImage == null
+                  backgroundImage: widget.userImage != null
+                      ? NetworkImage(widget.userImage!)
+                      : null,
+                  child: widget.userImage == null
                       ? SvgPicture.asset(
                           AppIcons.person,
                           height: 20,
@@ -66,35 +71,35 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NotificationsScreen()));
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsScreen(),
+                  ),
+                );
+                setState(() {});
               },
               icon: Stack(
                 children: [
-                  SvgPicture.asset(
-                    AppIcons.notifications,
-                  ),
+                  SvgPicture.asset(AppIcons.notifications),
                   if (notificationCount > 0)
                     Positioned(
                       right: 0,
                       top: 0,
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 2),
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           minWidth: 12,
                           minHeight: 12,
                         ),
                         child: Text(
                           notificationCount.toString(),
-                          //'${state.count}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: 8,

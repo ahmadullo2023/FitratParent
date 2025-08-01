@@ -34,7 +34,6 @@ class App extends StatelessWidget {
             supportedLocales: const [
               Locale('uz'),
             ],
-            routerConfig: router,
           ),
         ),
       ),
