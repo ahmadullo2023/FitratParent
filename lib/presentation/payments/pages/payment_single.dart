@@ -178,8 +178,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 if (parsed == null) {
                                   return "Faqat raqam kiriting";
                                 }
-                                if (parsed < 1000) {
-                                  return "Minimal summa 1000 so‘m bo‘lishi kerak";
+                                if (parsed < 1001) {
+                                  return "Minimal summa 1000 so‘m dan ko'p bo‘lishi kerak";
                                 }
                                 return null;
                               },

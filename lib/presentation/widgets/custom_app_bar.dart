@@ -47,7 +47,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0, top: 12, bottom: 10),
-            child: Container(
+            child: SizedBox(
               height: 40,
               width: 35,
               child: GestureDetector(

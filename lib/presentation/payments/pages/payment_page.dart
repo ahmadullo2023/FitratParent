@@ -37,8 +37,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
             print(
                 "BU build bolganida payState ==> ${payState.paymentHistoryModel}");
             final filteredPayments = payState.paymentHistoryModel?.results
-                // ?.where((e) => e.studentInfo?.id == studentId2)
-                // .toList()
                 ??
                 [];
             return Scaffold(

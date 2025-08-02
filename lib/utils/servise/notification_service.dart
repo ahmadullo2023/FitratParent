@@ -152,13 +152,15 @@ class NotificationService {
       case NotificationType.Tasks:
       case NotificationType.Students:
       case NotificationType.Comments:
+      // context.push(CommentsPage(lidId: lidId, studentId: studentId));
+      // break;
       case NotificationType.Monitoring:
       case NotificationType.Results:
       case NotificationType.Examination:
       case NotificationType.Shopping:
       case NotificationType.Homework:
-      _navigateToDefault();
-      //context.read<MainBloc>().add(ChangeTab(2));
+        _navigateToDefault();
+        //context.read<MainBloc>().add(ChangeTab(2));
         break;
       default:
         _navigateToDefault();
