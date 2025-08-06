@@ -38,9 +38,10 @@ class PaymentRepository {
     print("paymentHistory funksiya ishladi");
 
     try {
+
       final response = await requestHelper.getWithAuth("/finance?creator=a668cce4-bc1b-46e5-a5fe-5d14ffc0ea19", log: true);
 
-      print("BU payment history ===> ${response}");
+      // print("BU payment history ===> ${response}");
 
       return PaymentHistoryModel.fromJson(response);
     } catch (e, s) {

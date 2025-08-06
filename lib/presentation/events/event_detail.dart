@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitrat_parent2/presentation/events/model/events_model.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:fitrat_parent2/utils/widgets/video_landscape_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -114,7 +115,7 @@ class _EventDetailState extends State<EventDetail> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: const Center(
-          child: CircularProgressIndicator(),
+          child: CupertinoActivityIndicator(),
         ),
       );
     }

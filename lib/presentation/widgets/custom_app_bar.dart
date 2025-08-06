@@ -35,18 +35,23 @@ class _CustomAppBarState extends State<CustomAppBar> {
         return AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           centerTitle: false,
-          title: Text(
-            widget.title ?? "",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 20,
-              color: const Color(0xFF1F2A37),
+          titleSpacing: 0,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              widget.title ?? "",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                color: const Color(0xFF1F2A37),
+              ),
             ),
           ),
           leading: Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 12, bottom: 10),
+            padding: const EdgeInsets.only(left: 12.0, top: 8, bottom: 8),
             child: SizedBox(
               height: 40,
               width: 35,

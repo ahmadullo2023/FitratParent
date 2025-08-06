@@ -92,7 +92,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       "Agar chiqishni xohlasangiz,\nma'lumotlar saqlanib qolinmaydi",
                   confirmButtonText: "Chiqish",
                   onConfirm: () {
-                    context.read<EditProfileBloc>()
+                    context
+                        .read<EditProfileBloc>()
                         .add(SetPhotoId(originalImageId));
                     Navigator.pop(context);
                     Navigator.pop(context, false);
@@ -136,11 +137,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               await ImagePickerDialog.show(
                                             context,
                                             isDeletable:
-                                                photoState.currentPhotoId != null,
+                                                photoState.currentPhotoId !=
+                                                    null,
                                           );
                                           if (image != null) {
                                             if (image is XFile) {
-                                              context.read<EditProfileBloc>().add(
+                                              context
+                                                  .read<EditProfileBloc>()
+                                                  .add(
                                                     UploadPhoto(
                                                       filePath: image.path,
                                                       fileName: image.name,
@@ -159,29 +163,63 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     child: photoState.isUploadingPhoto
                                         ? const Center(
                                             child: CupertinoActivityIndicator())
-                                        : _buildProfileImage(photoState, student),
+                                        : _buildProfileImage(
+                                            photoState, student),
                                   ),
                                 ),
                               );
                             },
                           ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              width: 32,
-                              height: 32,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              padding: const EdgeInsets.all(4),
-                              child: SvgPicture.asset(
-                                AppIcons.icEdit,
-                                width: 20,
-                                height: 20,
-                              ),
-                            ),
+                          BlocBuilder<EditProfileBloc, EditProfileState>(
+                            builder: (context, photoState) {
+                              return Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: photoState.isUploadingPhoto
+                                      ? null
+                                      : () async {
+                                          final image =
+                                              await ImagePickerDialog.show(
+                                            context,
+                                            isDeletable:
+                                                photoState.currentPhotoId !=
+                                                    null,
+                                          );
+                                          if (image != null) {
+                                            if (image is XFile) {
+                                              context
+                                                  .read<EditProfileBloc>()
+                                                  .add(
+                                                    UploadPhoto(
+                                                      filePath: image.path,
+                                                      fileName: image.name,
+                                                    ),
+                                                  );
+                                            } else if (image == "delete") {
+                                              context
+                                                  .read<EditProfileBloc>()
+                                                  .add(DeletePhoto());
+                                            }
+                                          }
+                                        },
+                                  child: Container(
+                                    width: 32,
+                                    height: 32,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: SvgPicture.asset(
+                                      AppIcons.icEdit,
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -228,7 +266,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           //   const SnackBar(content: Text('Xatolik yuz berdi')),
                           // );
                         }
-              
+
                         if (state.uploadError != null) {
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   SnackBar(content: Text('Rasm yuklashda xatolik: ${state.uploadError}')),
@@ -250,11 +288,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     "Shaxsiy ma'lumotlaringizga o'zgartirish kiritmoqchimisiz?",
                                 confirmButtonText: "O`zgartirish",
                                 onConfirm: () async {
-                                  final photoState = context.read<EditProfileBloc>().state;
-              
+                                  final photoState =
+                                      context.read<EditProfileBloc>().state;
+
                                   String? photoToSend;
                                   bool deletePhoto = false;
-              
+
                                   if (photoState.currentPhotoId == null &&
                                       originalImageId != null) {
                                     photoToSend = null;
@@ -265,17 +304,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   } else {
                                     photoToSend = originalImageId;
                                   }
-              
+
                                   context.read<EditProfileBloc>().add(EditData(
                                         name: nameController.text,
                                         lastName: lastNameController.text,
                                         phone: phoneController.text,
                                         photo: photoToSend,
                                       ));
-              
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
 
+                                  context.read<MainBloc>().add(LoadMe());
+                                  context.read<ProfileBloc>().add(GetMeEvent());
+
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
                                 },
                                 isDestructive: false,
                               );

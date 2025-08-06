@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -341,9 +342,11 @@ class _StoryScreenState extends State<StoryScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 75),
-                        child: buildProgressBar(),
+                        padding:
+                            const EdgeInsets.only(top: 24, left: 8, right: 8),
+                        child: SafeArea(
+                          child: buildProgressBar(),
+                        ),
                       ),
                     ],
                   ),
@@ -447,7 +450,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   child: VideoPlayer(widget.controller),
                 ),
               )
-            : const CircularProgressIndicator(),
+            : const CupertinoActivityIndicator(),
       ),
     );
   }

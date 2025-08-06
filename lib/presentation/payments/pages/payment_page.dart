@@ -36,9 +36,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
           builder: (payContext, payState) {
             print(
                 "BU build bolganida payState ==> ${payState.paymentHistoryModel}");
-            final filteredPayments = payState.paymentHistoryModel?.results
-                ??
-                [];
+            final filteredPayments =
+                payState.paymentHistoryModel?.results ?? [];
             return Scaffold(
               backgroundColor: Colors.white,
               body: SafeArea(
@@ -122,6 +121,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                     item.payment_method ?? "",
                                     item.amount.toString(),
                                     formatDate(item.created_at!),
+                                    item.kind?.name ?? "",
                                   );
                                 },
                               ),
@@ -138,7 +138,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
   }
 
   Widget _paymentItem(
-      bool isIncome, String method, String amount, String date) {
+      bool isIncome, String method, String amount, String date, String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Container(
@@ -183,8 +183,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Payment for course",
+                  Text(
+                    name,
+                    // "Payment for course",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   Text(method, style: const TextStyle(color: Colors.grey)),
