@@ -2,9 +2,11 @@ import 'package:fitrat_parent2/presentation/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../data/db/cache.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_colors.dart';
 import '../comments/pages/comments_page.dart';
+import '../courses/courses.dart';
 import '../home/home_screen.dart';
 import '../home/widgets/item_courses.dart';
 
@@ -42,8 +44,9 @@ class _ChildernPageState extends State<ChildernPage> {
                         MaterialPageRoute(
                             builder: (context) => CommentsPage(
                                 lidId: null,
-                                studentId:
-                                    'a63667b8-d991-4f8b-aae0-ca15927b2a46')));
+                                studentId: cache.getString("studentIddddddd")
+                                    //'a63667b8-d991-4f8b-aae0-ca15927b2a46'
+                            )));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
               SizedBox(width: 10),
@@ -80,7 +83,14 @@ class _ChildernPageState extends State<ChildernPage> {
                   ),
                   const SizedBox(height: 16),
                   ItemCourses(
-                      onClick: () {},
+                      onClick: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext) => CoursesList(
+                                      learningResponse: state.learningResponse!,
+                                    )));
+                      },
                       color: Color(0xFF35B26A),
                       subject: "Kimyo noldan",
                       name: state.learningResponse!.first.fullName.toString(),

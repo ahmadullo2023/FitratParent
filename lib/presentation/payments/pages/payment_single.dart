@@ -4,8 +4,10 @@ import 'package:fitrat_parent2/presentation/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../data/db/cache.dart';
 import '../../../utils/app_assets.dart';
 
 String selectedValue = "Click";
@@ -23,6 +25,33 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String? selectedMethod;
   final _formKey = GlobalKey<FormState>();
   String? _selectedType;
+  final _formatter = NumberFormat("#,##0", "uz_UZ"); // 1 000 format
+
+  @override
+  void initState() {
+    super.initState();
+
+    _amountController.addListener(() {
+      String text = _amountController.text.replaceAll(RegExp(r'[^0-9]'), '');
+      if (text.isEmpty) return;
+
+      final number = int.parse(text);
+      final newText = _formatter.format(number);
+
+      if (_amountController.text != newText) {
+        _amountController.value = TextEditingValue(
+          text: newText,
+          selection: TextSelection.collapsed(offset: newText.length),
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,12 +203,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 if (value == null || value.trim().isEmpty) {
                                   return "Iltimos, summani kiriting";
                                 }
-                                final parsed = double.tryParse(value.trim());
+                                final parsed = int.tryParse(
+                                  value.replaceAll(RegExp(r'[^0-9]'), ''),
+                                );
                                 if (parsed == null) {
                                   return "Faqat raqam kiriting";
                                 }
                                 if (parsed < 1001) {
-                                  return "Minimal summa 1000 so‘m dan ko'p bo‘lishi kerak";
+                                  return "Minimal summa 1000 so‘m dan ko‘p bo‘lishi kerak";
                                 }
                                 return null;
                               },
@@ -245,7 +276,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   bloc.add(PayEvent(
                                     lid: '',
                                     student:
-                                        '92b0b156-a097-46c6-92d9-d92aaeda099b',
+                                        cache.getString("studentIddddddd") ??
+                                            "",
                                     amount: _amountController.text,
                                     type: selectedValue,
                                   ));
@@ -496,7 +528,6 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
                   Navigator.pop(context, paymentMethods[selectedIndex]);
                   selectedValue = paymentMethods[selectedIndex];
                 }),
-
             const SizedBox(height: 10),
           ],
         ),

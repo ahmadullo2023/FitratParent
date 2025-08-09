@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:open_filex/open_filex.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
@@ -14,18 +14,18 @@ class CustomDownloadButtonWidget extends StatefulWidget {
   final int index;
   final String name;
 
-  const CustomDownloadButtonWidget({
-    super.key,
-    required this.fileUrl,
-    required this.index,
-    required this.name
-  });
+  const CustomDownloadButtonWidget(
+      {super.key,
+      required this.fileUrl,
+      required this.index,
+      required this.name});
 
   @override
   State createState() => _CustomDownloadButtonWidgetState();
 }
 
-class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget> {
+class _CustomDownloadButtonWidgetState
+    extends State<CustomDownloadButtonWidget> {
   final Dio _dio = Dio();
   double _progress = 0.0;
   bool _isDownloading = false;
@@ -105,15 +105,22 @@ class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget>
   }
 
   String _getFileExtension() {
-    return getFileNameFromUrl(widget.fileUrl)
-        .split(".")
-        .last
-        .toLowerCase();
+    return getFileNameFromUrl(widget.fileUrl).split(".").last.toLowerCase();
   }
 
   String _getFileIcon() {
     final extension = _getFileExtension();
-    final videoExtensions = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', '3gp', 'youtu.be'];
+    final videoExtensions = [
+      'mp4',
+      'avi',
+      'mov',
+      'wmv',
+      'flv',
+      'webm',
+      'mkv',
+      '3gp',
+      'youtu.be'
+    ];
 
     if (videoExtensions.contains(extension)) {
       return AppIcons.icVideo;
@@ -140,7 +147,7 @@ class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget>
           return;
         }
         if (_downloadComplete) {
-          OpenFilex.open(_filePath);
+          OpenFile.open(_filePath);
         }
       },
       child: Container(
@@ -193,7 +200,8 @@ class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget>
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xFF059669), // Green color for completed
+                            color:
+                                Color(0xFF059669), // Green color for completed
                           ),
                         ),
                       ),
@@ -214,7 +222,8 @@ class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget>
                       LinearProgressIndicator(
                         value: _progress / 100,
                         backgroundColor: const Color(0xffF3F4F6),
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.emerald500),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.emerald500),
                       ),
                     ],
 
@@ -239,14 +248,14 @@ class _CustomDownloadButtonWidgetState extends State<CustomDownloadButtonWidget>
                 _downloadComplete
                     ? Icons.check
                     : _isDownloading
-                    ? Icons.downloading
-                    : Icons.chevron_right,
+                        ? Icons.downloading
+                        : Icons.chevron_right,
                 size: 24,
                 color: _downloadComplete
                     ? AppColors.emerald500
                     : _isDownloading
-                    ? AppColors.emerald500
-                    : AppColors.black,
+                        ? AppColors.emerald500
+                        : AppColors.black,
               ),
             ],
           ),
