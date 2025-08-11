@@ -291,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(0xFFffffff),
+        color: Color(0xFFF3F4F6),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -301,8 +301,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               ClipOval(
                 child: Container(
-                  height: 46,
-                  width: 46,
+                  height: 48,
+                  width: 48,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.grey.shade300,
@@ -332,126 +332,196 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 72,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: const Border(
-                        top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 72,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: const Border(
+                  top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                  left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                  right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                  bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: SvgPicture.asset(
+                        AppIcons.walletFull,
+                        height: 20,
+                        width: 20,
+                        color: AppColors.emerald500, // Or change as needed
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: SvgPicture.asset(
-                              AppIcons.walletFull,
-                              height: 20,
-                              width: 20,
-                              color: AppColors.green,
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        formatMoney(balance),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      // const SizedBox(height: 4),
+                      Text(
+                        "Balans",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF6C737F),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            height: 74,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      height: 72,
+                      width: 200,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: const Border(
+                          top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          bottom:
+                              BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: SvgPicture.asset(
+                                AppIcons.progress,
+                                height: 24,
+                                width: 24,
+                                color:
+                                    AppColors.emerald500, // Or change as needed
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              formatMoney(balance),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                          const SizedBox(width: 12),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${progress * 1.5}%",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "Balans",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF6C737F),
+                              // const SizedBox(height: 4),
+                              Text(
+                                "Matematika",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF6C737F),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 72,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: const Border(
-                        top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                SizedBox(width: 8),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      height: 72,
+                      width: 200,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: const Border(
+                          top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                          bottom:
+                              BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: SvgPicture.asset(
-                              AppIcons.progress,
-                              height: 24,
-                              width: 24,
-                              color: AppColors.green, // Or change as needed
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: SvgPicture.asset(
+                                AppIcons.progress,
+                                height: 24,
+                                width: 24,
+                                color:
+                                    AppColors.emerald500, // Or change as needed
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${progress}%",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                          const SizedBox(width: 12),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${progress}%",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "O'zlashtirish",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xFF6C737F),
+                              // const SizedBox(height: 4),
+                              Text(
+                                "Ingliz tili",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF6C737F),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )
         ],
       ),

@@ -278,7 +278,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     student:
                                         cache.getString("studentIddddddd") ??
                                             "",
-                                    amount: _amountController.text,
+                                    amount: _amountController.text
+                                        .replaceAll(RegExp(r'[^0-9]'), ''),
                                     type: selectedValue,
                                   ));
 

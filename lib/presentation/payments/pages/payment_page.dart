@@ -28,22 +28,20 @@ class _PaymentsPageState extends State<PaymentsPage> {
     return formatter.format(dateTime);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return BlocBuilder<PaymentBloc, PaymentState>(
           builder: (payContext, payState) {
-            print("BU build bolganida payState ==> ${payState.paymentHistoryModel}");
-            final filteredPayments = payState.paymentHistoryModel?.results ?? [];
-
+            final filteredPayments =
+                payState.paymentHistoryModel?.results ?? [];
             return Scaffold(
               backgroundColor: Colors.white,
               body: SafeArea(
                 child: RefreshIndicator(
-                  color: Colors.white,
-                    backgroundColor: Colors.grey.shade300,
+                  color: Colors.green,
+                  backgroundColor: Colors.white,
                   onRefresh: () async {
                     context.read<PaymentBloc>().add(PaymentHistoryEvent());
                   },
@@ -55,7 +53,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       children: [
                         const Text(
                           "To'lovlar",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
@@ -64,14 +63,22 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             scrollDirection: Axis.horizontal,
                             itemCount: 1,
                             itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 7),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 7),
                               child: SizedBox(
                                 width: 330,
                                 child: _buildChildCard(
-                                  name: state.learningResponse?.first.fullName?.toString() ?? "",
+                                  name: state.learningResponse?.first.fullName
+                                          ?.toString() ??
+                                      "",
                                   subjects: "Kimyo noldan",
-                                  balance: state.learningResponse?.first.balance?.toString() ?? "0",
-                                  progress: state.learningResponse?.first.overallLearning?.toInt() ?? 0,
+                                  balance: state.learningResponse?.first.balance
+                                          ?.toString() ??
+                                      "0",
+                                  progress: state.learningResponse?.first
+                                          .overallLearning
+                                          ?.toInt() ??
+                                      0,
                                   avatar: Icons.person,
                                   balanceColor: Colors.green,
                                   context: context,
@@ -83,45 +90,48 @@ class _PaymentsPageState extends State<PaymentsPage> {
                         const SizedBox(height: 28),
                         const Text(
                           "To‘lovlar tarixi",
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16),
                         ),
                         SizedBox(
                           height: 410,
                           child: filteredPayments.isEmpty
                               ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset("assets/icons/26.svg"),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  "To’lovlar mavjud emas",
-                                  style: TextStyle(
-                                      color: Color(0xFF1F2A37),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
-                                  style: TextStyle(color: Color(0xFF6C737F)),
-                                ),
-                              ],
-                            ),
-                          )
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset("assets/icons/26.svg"),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "To’lovlar mavjud emas",
+                                        style: TextStyle(
+                                            color: Color(0xFF1F2A37),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
+                                        style:
+                                            TextStyle(color: Color(0xFF6C737F)),
+                                      ),
+                                    ],
+                                  ),
+                                )
                               : ListView.builder(
-                            itemCount: filteredPayments.length,
-                            itemBuilder: (context, index) {
-                              final item = filteredPayments[index];
-                              return _paymentItem(
-                                item.action != "INCOME",
-                                item.payment_method ?? "",
-                                item.amount.toString(),
-                                formatDate(item.created_at!),
-                                item.kind?.name ?? "",
-                              );
-                            },
-                          ),
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: filteredPayments.length,
+                                  itemBuilder: (context, index) {
+                                    final item = filteredPayments[index];
+                                    return _paymentItem(
+                                      item.action != "INCOME",
+                                      item.payment_method ?? "",
+                                      item.amount.toString(),
+                                      formatDate(item.created_at!),
+                                      item.kind?.name ?? "",
+                                    );
+                                  },
+                                ),
                         ),
                       ],
                     ),
@@ -134,118 +144,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
       },
     );
   }
-
-
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return BlocBuilder<HomeBloc, HomeState>(
-  //     builder: (context, state) {
-  //       return BlocBuilder<PaymentBloc, PaymentState>(
-  //         builder: (payContext, payState) {
-  //           print(
-  //               "BU build bolganida payState ==> ${payState.paymentHistoryModel}");
-  //           final filteredPayments =
-  //               payState.paymentHistoryModel?.results ?? [];
-  //           return Scaffold(
-  //             backgroundColor: Colors.white,
-  //             body: SafeArea(
-  //               child: SingleChildScrollView(
-  //                 padding: const EdgeInsets.all(20),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     const Text(
-  //                       "To'lovlar",
-  //                       style: TextStyle(
-  //                           fontSize: 22, fontWeight: FontWeight.w600),
-  //                     ),
-  //                     const SizedBox(height: 20),
-  //                     SizedBox(
-  //                       height: 160,
-  //                       child: ListView.builder(
-  //                         scrollDirection: Axis.horizontal,
-  //                         itemCount: 1,
-  //                         itemBuilder: (context, index) => Padding(
-  //                           padding: const EdgeInsets.symmetric(horizontal: 7),
-  //                           child: SizedBox(
-  //                             width: 330,
-  //                             child: _buildChildCard(
-  //                               name: state.learningResponse?.first.fullName
-  //                                       ?.toString() ??
-  //                                   "",
-  //                               subjects: "Kimyo noldan",
-  //                               balance: state.learningResponse?.first.balance
-  //                                       ?.toString() ??
-  //                                   "0",
-  //                               progress: state
-  //                                       .learningResponse?.first.overallLearning
-  //                                       ?.toInt() ??
-  //                                   0,
-  //                               avatar: Icons.person,
-  //                               balanceColor: Colors.green,
-  //                               context: context,
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                     const SizedBox(height: 28),
-  //                     const Text(
-  //                       "To‘lovlar tarixi",
-  //                       style: TextStyle(
-  //                           fontWeight: FontWeight.w600, fontSize: 16),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 410,
-  //                       child: filteredPayments.isEmpty
-  //                           ? Center(
-  //                               child: Column(
-  //                                 mainAxisAlignment: MainAxisAlignment.center,
-  //                                 children: [
-  //                                   SvgPicture.asset("assets/icons/26.svg"),
-  //                                   const SizedBox(height: 8),
-  //                                   const Text(
-  //                                     "To’lovlar mavjud emas",
-  //                                     style: TextStyle(
-  //                                         color: Color(0xFF1F2A37),
-  //                                         fontSize: 18,
-  //                                         fontWeight: FontWeight.w600),
-  //                                   ),
-  //                                   const SizedBox(height: 8),
-  //                                   const Text(
-  //                                     "Bu yerda sizning to’lovlaringiz tarixi ko’rinadi",
-  //                                     style:
-  //                                         TextStyle(color: Color(0xFF6C737F)),
-  //                                   ),
-  //                                 ],
-  //                               ),
-  //                             )
-  //                           : ListView.builder(
-  //                               itemCount: filteredPayments.length,
-  //                               itemBuilder: (context, index) {
-  //                                 final item = filteredPayments[index];
-  //                                 return _paymentItem(
-  //                                   item.action != "INCOME",
-  //                                   item.payment_method ?? "",
-  //                                   item.amount.toString(),
-  //                                   formatDate(item.created_at!),
-  //                                   item.kind?.name ?? "",
-  //                                 );
-  //                               },
-  //                             ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget _paymentItem(
       bool isIncome, String method, String amount, String date, String name) {
