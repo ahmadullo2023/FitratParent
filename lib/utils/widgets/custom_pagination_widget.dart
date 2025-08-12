@@ -199,7 +199,8 @@ class _CustomPaginationBlocWidgetState<T> extends State<CustomPaginationBlocWidg
     );
 
     return RefreshIndicator(
-      color: Colors.blue,
+      color: Colors.green,
+      backgroundColor: Colors.white,
       onRefresh: () async => _pagingController.refresh(),
       child: content,
     );

@@ -93,6 +93,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 body: RefreshIndicator(
+                  color: Colors.green,
+                  backgroundColor: Colors.white,
                   onRefresh: () async {
                     context.read<MainBloc>().add(LoadMe());
                     context.read<ProfileBloc>().add(GetMeEvent());
@@ -192,10 +194,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: () {
                               context.read<ProfileBloc>().add(GetMeEvent());
-
                               Navigator.push(
                                 context,
-
                                 MaterialPageRoute(
                                   builder: (context) => BlocProvider(
                                     create: (context) => EditProfileBloc(),

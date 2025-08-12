@@ -48,7 +48,6 @@ class _ChildernPageState extends State<ChildernPage> {
                             builder: (context) => CommentsPage(
                                 lidId: null,
                                 studentId: cache.getString("studentIddddddd")
-                                //'a63667b8-d991-4f8b-aae0-ca15927b2a46'
                                 )));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),

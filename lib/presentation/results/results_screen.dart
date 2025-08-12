@@ -115,6 +115,7 @@ class _ResultsScreenState extends State<ResultsScreen> {
                         resultType: item.fkName?.name ?? "",
                         score: item.point ?? "",
                         isBig: true,
+                        teacherName: item.teacher ?? "",
                         onTap: () {
                           item.file?.file != null &&
                                   (item.file!.file!.endsWith(".png") ||

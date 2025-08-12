@@ -216,7 +216,8 @@ import '../presentation/comments/widgets/message_item.dart';
 //       ),
 //     );
 //     return RefreshIndicator(
-//       color: AppColors.primaryColor,
+//                       color: Colors.green,
+//                   backgroundColor: Colors.white,
 //       onRefresh: () async {
 //         _pagingController.refresh();
 //       },
@@ -435,7 +436,8 @@ class _CustomPaginationWidgetState<T> extends State<CustomPaginationWidget<T>>
             ),
           );
     return RefreshIndicator(
-      color: AppColors.emerald500,
+      color: Colors.green,
+      backgroundColor: Colors.white,
       onRefresh: () async {
         _pagingController.refresh();
       },
@@ -652,7 +654,8 @@ class _CustomPaginationWidget2State<T> extends State<CustomPaginationWidget2<T>>
             ),
           );
     return RefreshIndicator(
-      color: AppColors.emerald500,
+      color: Colors.green,
+      backgroundColor: Colors.white,
       onRefresh: () async {
         _pagingController.refresh();
       },

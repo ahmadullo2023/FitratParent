@@ -9,6 +9,7 @@ class ItemResults extends StatelessWidget {
   final String resultType;
   final String score;
   final bool isBig;
+  final String teacherName;
   final VoidCallback onTap;
 
   const ItemResults(
@@ -19,6 +20,7 @@ class ItemResults extends StatelessWidget {
       required this.resultType,
       required this.score,
       required this.onTap,
+      required this.teacherName,
       this.isBig = true});
 
   @override
@@ -102,7 +104,7 @@ class ItemResults extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  resultType,
+                  "$resultType $score",
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
@@ -113,7 +115,7 @@ class ItemResults extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Overall - $score",
+                  teacherName,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,

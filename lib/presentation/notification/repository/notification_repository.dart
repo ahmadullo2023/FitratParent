@@ -15,7 +15,10 @@ class NotificationRepository {
       final response = await requestHelper
           .getWithAuth("/notifications/?page=$page", log: true);
 
-      notificationCount = response["count"];
+      notificationCount = (response["results"] as List)
+          .where((e) => e["has_read"] == false)
+          .length;
+      // notificationCount = response["count"];
 
       completer.complete(
         PaginationModel.fromJson(
