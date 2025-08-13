@@ -395,128 +395,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 72,
-                      width: 200,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          bottom:
-                              BorderSide(color: Color(0xFFE5E7EB), width: 4),
-                        ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 72,
+                    width: 200,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: const Border(
+                        top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
                       ),
-                      child: Row(
-                        children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: SvgPicture.asset(
-                                AppIcons.progress,
-                                height: 24,
-                                width: 24,
-                                color:
-                                    AppColors.emerald500, // Or change as needed
-                              ),
+                    ),
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: SvgPicture.asset(
+                              AppIcons.progress,
+                              height: 24,
+                              width: 24,
+                              color:
+                                  AppColors.emerald500, // Or change as needed
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${progress * 1.5}%",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${progress * 1.5}%",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
-                              // const SizedBox(height: 4),
-                              Text(
-                                "Matematika",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF6C737F),
-                                ),
+                            ),
+                            // const SizedBox(height: 4),
+                            Text(
+                              "Matematika",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF6C737F),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 SizedBox(width: 8),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 72,
-                      width: 200,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: const Border(
-                          top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                          bottom:
-                              BorderSide(color: Color(0xFFE5E7EB), width: 4),
-                        ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 72,
+                    width: 200,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: const Border(
+                        top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
+                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
                       ),
-                      child: Row(
-                        children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: SvgPicture.asset(
-                                AppIcons.progress,
-                                height: 24,
-                                width: 24,
-                                color:
-                                    AppColors.emerald500, // Or change as needed
-                              ),
+                    ),
+                    child: Row(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: SvgPicture.asset(
+                              AppIcons.progress,
+                              height: 24,
+                              width: 24,
+                              color:
+                                  AppColors.emerald500, // Or change as needed
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${progress}%",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${progress}%",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
-                              // const SizedBox(height: 4),
-                              Text(
-                                "Ingliz tili",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF6C737F),
-                                ),
+                            ),
+                            // const SizedBox(height: 4),
+                            Text(
+                              "Ingliz tili",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF6C737F),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
