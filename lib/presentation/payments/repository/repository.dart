@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import '../../../data/db/cache.dart';
 import '../../../utils/request_helper.dart';
 import '../model/payment_history_model.dart';
 import '../model/payment_model.dart';
@@ -16,7 +17,8 @@ class PaymentRepository {
           : {
               "params": {
                 "amount": amount,
-                "order_id": student,
+                "order_id": "7c15d251-0e87-40b4-ac7b-3ad8540d5eb8"
+                //cache.getString("orderId"),
               },
               "return_url": null
             };
@@ -38,10 +40,9 @@ class PaymentRepository {
     print("paymentHistory funksiya ishladi");
 
     try {
-
-      final response = await requestHelper.getWithAuth("/finance?creator=a668cce4-bc1b-46e5-a5fe-5d14ffc0ea19", log: true);
-
-      // print("BU payment history ===> ${response}");
+      final response = await requestHelper.getWithAuth(
+          "/finance?creator=a668cce4-bc1b-46e5-a5fe-5d14ffc0ea19",
+          log: true);
 
       return PaymentHistoryModel.fromJson(response);
     } catch (e, s) {
@@ -52,3 +53,4 @@ class PaymentRepository {
 }
 
 final paymentRepository = PaymentRepository();
+

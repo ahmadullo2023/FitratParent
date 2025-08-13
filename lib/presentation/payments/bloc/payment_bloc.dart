@@ -9,7 +9,6 @@ part 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   PaymentBloc() : super(PaymentState()) {
-
     on<PayEvent>((event, emit) async {
       emit(state.copyWith(status: PaymentStatus.loading));
       try {
@@ -31,7 +30,6 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       }
     });
 
-
     on<PaymentHistoryEvent>((event, emit) async {
       emit(state.copyWith(status: PaymentStatus.loading));
       try {
@@ -49,10 +47,6 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         emit(state.copyWith(status: PaymentStatus.error));
       }
     });
-
-
-
-
   }
 }
 
