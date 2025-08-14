@@ -10,6 +10,7 @@ import '../../utils/app_colors.dart';
 import '../../utils/custom_pagination_widget.dart';
 import '../../utils/formatters.dart';
 import '../../utils/widgets/connectivity_wrapper_widget.dart';
+import '../widgets/custom_button.dart';
 import 'model/notification_model.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 
@@ -53,14 +54,59 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               actions: _hasUnreadNotifications
                   ? [
                       IconButton(
-                        onPressed: () async {
-                          ReadNotificationsDialog.show(context,
-                              onClickOk: () async {
-                            setState(() {
-                              notificationRepository
-                                  .updateNotificationHasReadAll();
-                            });
-                          });
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: const Text(
+                                  'Belgilash?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                content: const Text(
+                                  'Bildirishnomalarni o‘qildi deb belgilamoqchimisiz?',
+                                  textAlign: TextAlign.center,
+                                ),
+                                actionsAlignment: MainAxisAlignment.center,
+                                actions: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: CustomButton(
+                                            isEnabled2: false,
+                                            text: "Yo'q",
+                                            onPressed: () {
+                                              print("yoq bosildi");
+                                              setState(() {});
+                                              Navigator.pop(context);
+                                            }),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: CustomButton(
+                                            text: "Ha",
+                                            onPressed: () {
+                                              setState(() {
+                                                notificationRepository
+                                                    .updateNotificationHasReadAll();
+                                              });
+                                              Navigator.pop(context);
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         icon: SvgPicture.asset(
                           AppIcons.doubleCheck,

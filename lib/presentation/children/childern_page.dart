@@ -113,6 +113,7 @@ class _ChildernPageState extends State<ChildernPage> {
                       },
                       color: Color(0xFF35B26A),
                       subject: "Kimyo noldan",
+                      imageUrl: state.learningResponse!.first.phone,
                       name: state.learningResponse!.first.fullName.toString(),
                       percentage: state.learningResponse!.first.overallLearning!),
 

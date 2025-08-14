@@ -10,6 +10,7 @@ class CustomButton extends StatefulWidget {
   final Widget? child;
   final double height;
   final bool isEnabled;
+  final bool isEnabled2;
   final String? fontFamily;
 
   const CustomButton({
@@ -20,6 +21,7 @@ class CustomButton extends StatefulWidget {
     this.child,
     this.height = 52,
     this.isEnabled = true,
+    this.isEnabled2 = true,
     this.fontFamily,
   });
 
@@ -32,14 +34,14 @@ class _CustomButtonState extends State<CustomButton> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = widget.isEnabled
+    final textColor = (widget.isEnabled && widget.isEnabled2)
         ? Colors.white
-        : Colors.grey.shade500;
+        : Colors.black;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       decoration: BoxDecoration(
-        gradient: widget.isEnabled
+        gradient: (widget.isEnabled && widget.isEnabled2)
             ? LinearGradient(
           colors: _isPressed
               ? [AppColors.emerald600, AppColors.emerald600]
@@ -55,25 +57,25 @@ class _CustomButtonState extends State<CustomButton> {
         borderRadius: BorderRadius.circular(10),
         border: Border(
           top: BorderSide(
-              color: widget.isEnabled
+              color: (widget.isEnabled && widget.isEnabled2)
                   ? AppColors.emerald600
                   : Colors.black.withValues(alpha: 0.1),
               width: widget.isEnabled ? 1.5 : 1),
           left: BorderSide(
-              color: widget.isEnabled
+              color: (widget.isEnabled && widget.isEnabled2)
                   ? AppColors.emerald600
                   : Colors.black.withValues(alpha: 0.1),
-              width: widget.isEnabled ? 1.5 : 1),
+              width: (widget.isEnabled && widget.isEnabled2) ? 1.5 : 1),
           right: BorderSide(
-              color: widget.isEnabled
+              color: (widget.isEnabled && widget.isEnabled2)
                   ? AppColors.emerald600
                   : Colors.black.withValues(alpha: 0.1),
               width: widget.isEnabled ? 1.5 : 1),
           bottom: BorderSide(
-              color: widget.isEnabled
+              color: (widget.isEnabled && widget.isEnabled2)
                   ? AppColors.emerald600
                   : Colors.black.withValues(alpha: 0.1),
-              width: widget.isEnabled
+              width: (widget.isEnabled && widget.isEnabled2)
                   ? (_isPressed ? 1.5 : 3)
                   : 1.5),
         ),
@@ -81,10 +83,10 @@ class _CustomButtonState extends State<CustomButton> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTapDown: widget.isEnabled ? (_) => setState(() => _isPressed = true) : null,
-          onTapUp: widget.isEnabled ? (_) => setState(() => _isPressed = false) : null,
-          onTapCancel: widget.isEnabled ? () => setState(() => _isPressed = false) : null,
-          onTap: widget.isEnabled ? widget.onPressed : null,
+          onTapDown: (widget.isEnabled || widget.isEnabled2) ? (_) => setState(() => _isPressed = true) : null,
+          onTapUp: (widget.isEnabled && widget.isEnabled2) ? (_) => setState(() => _isPressed = false) : null,
+          onTapCancel: (widget.isEnabled && widget.isEnabled2) ? () => setState(() => _isPressed = false) : null,
+          onTap: (widget.isEnabled) ? widget.onPressed : null,
           borderRadius: BorderRadius.circular(10),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,

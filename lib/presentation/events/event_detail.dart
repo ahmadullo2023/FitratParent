@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fitrat_parent2/presentation/events/model/events_model.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
 import 'package:fitrat_parent2/utils/widgets/video_landscape_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import '../../utils/app_colors.dart';
@@ -24,6 +26,7 @@ class _EventDetailState extends State<EventDetail> {
   Map<int, bool> _videoInitialized = {};
   Map<int, bool> _videoLoading = {};
   Map<int, bool> _videoEnded = {};
+  int activeIndex = 0;
 
   @override
   void initState() {
@@ -276,44 +279,68 @@ class _EventDetailState extends State<EventDetail> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                // autoPlay: true,
-                height: 200,
-                viewportFraction: 0.850,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-                enableInfiniteScroll: false,
-                padEnds: false,
-              ),
-              items: List.generate(widget.event.file?.length ?? 0, (index) {
+            CarouselSlider.builder(
+              itemCount: widget.event.file?.length ?? 0,
+              itemBuilder: (context, index, realIndex) {
                 final file = widget.event.file![index];
                 final filePath = file.file;
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
                   child: _isVideoFile(filePath)
                       ? _buildVideoPlayer(index)
                       : _isImageFile(filePath)
-                          ? _buildImageWidget(filePath!)
-                          : Container(
-                              height: 200,
+                          ? CachedNetworkImage(
+                              imageUrl: filePath!,
+                              fit: BoxFit.cover,
                               width: double.infinity,
-                              decoration: BoxDecoration(
+                              height: double.infinity,
+                              placeholder: (context, url) => Container(
                                 color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(16),
                               ),
+                              errorWidget: (context, url, error) => Container(
+                                color: Colors.grey[200],
+                                child:
+                                    const Icon(Icons.error, color: Colors.red),
+                              ),
+                            )
+                          : Container(
+                              color: Colors.grey[200],
                               child: const Center(
-                                child: Icon(
-                                  Icons.insert_drive_file,
-                                  size: 48,
-                                  color: Colors.grey,
-                                ),
+                                child: Icon(Icons.insert_drive_file,
+                                    size: 48, color: Colors.grey),
                               ),
                             ),
                 );
-              }),
+              },
+              options: CarouselOptions(
+                height: 200,
+                viewportFraction: 0.9,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                enableInfiniteScroll: true,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 4),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    activeIndex = index;
+                  });
+                },
+              ),
             ),
+            const SizedBox(height: 8),
+            AnimatedSmoothIndicator(
+              activeIndex: activeIndex,
+              count: widget.event.file?.length ?? 0,
+              effect: const ExpandingDotsEffect(
+                activeDotColor: Colors.green,
+                dotColor: Colors.grey,
+                dotHeight: 8,
+                dotWidth: 8,
+              ),
+            ),
+
             12.vertical,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -329,7 +356,7 @@ class _EventDetailState extends State<EventDetail> {
                   4.horizontal,
                   Text(
                       widget.event.endDate == null
-                          ? "No date"
+                          ? ""
                           : formatDate(widget.event.endDate!),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -344,7 +371,7 @@ class _EventDetailState extends State<EventDetail> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(widget.event.title ?? "No title",
+                child: Text(widget.event.title ?? "",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
@@ -364,24 +391,27 @@ class _EventDetailState extends State<EventDetail> {
               ),
             ),
             12.vertical,
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CustomButton(
-                    text: widget.event.linkPreview ?? "Qatnashish",
-                    onPressed: () async {
-                      final url = widget.event.link;
-                      if (url != null && url.isNotEmpty) {
-                        final uri = Uri.parse(url);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri,
-                              mode: LaunchMode.externalApplication);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("URL ochib bo'lmadi")),
-                          );
-                        }
-                      }
-                    })),
+            widget.event.linkPreview != ""
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: CustomButton(
+                        text: widget.event.linkPreview ?? "Qatnashish",
+                        onPressed: () async {
+                          final url = widget.event.link;
+                          if (url != null && url.isNotEmpty) {
+                            final uri = Uri.parse(url);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("URL ochib bo'lmadi")),
+                              );
+                            }
+                          }
+                        }))
+                : SizedBox(),
             12.vertical,
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -132,8 +132,6 @@ class ItemCourses extends StatelessWidget {
   }
 }
 
-
-
 class ItemCoursesShimmer extends StatelessWidget {
   const ItemCoursesShimmer({super.key});
 
@@ -141,30 +139,30 @@ class ItemCoursesShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-      SizedBox(
-      height: 69,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              width: 68,
-              height: 68,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Colors.white,
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) => const SizedBox(width: 4),
-      ),
-    ),
+        SizedBox(
+          height: 69,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  width: 68,
+                  height: 68,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 4),
+          ),
+        ),
         SizedBox(height: 38),
         Shimmer.fromColors(
           baseColor: Colors.grey.shade300,
@@ -374,10 +372,6 @@ class ItemCoursesShimmer extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 // class ItemCoursesShimmer extends StatelessWidget {
 //   const ItemCoursesShimmer({super.key});
