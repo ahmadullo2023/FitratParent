@@ -34,26 +34,25 @@ class _CustomButtonState extends State<CustomButton> {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = (widget.isEnabled && widget.isEnabled2)
-        ? Colors.white
-        : Colors.black;
+    final textColor =
+        (widget.isEnabled && widget.isEnabled2) ? Colors.white : Colors.black;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       decoration: BoxDecoration(
         gradient: (widget.isEnabled && widget.isEnabled2)
             ? LinearGradient(
-          colors: _isPressed
-              ? [AppColors.emerald600, AppColors.emerald600]
-              : [AppColors.emerald500, AppColors.emerald500],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        )
+                colors: _isPressed
+                    ? [AppColors.emerald600, AppColors.emerald600]
+                    : [AppColors.emerald500, AppColors.emerald500],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
             : LinearGradient(
-          colors: [Colors.grey.shade200, Colors.grey.shade200],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+                colors: [Colors.grey.shade200, Colors.grey.shade200],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
         borderRadius: BorderRadius.circular(10),
         border: Border(
           top: BorderSide(
@@ -76,16 +75,22 @@ class _CustomButtonState extends State<CustomButton> {
                   ? AppColors.emerald600
                   : Colors.black.withValues(alpha: 0.1),
               width: (widget.isEnabled && widget.isEnabled2)
-                  ? (_isPressed ? 1.5 : 3)
-                  : 1.5),
+                  ? (_isPressed ? 3 : 3)
+                  : 3),
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTapDown: (widget.isEnabled || widget.isEnabled2) ? (_) => setState(() => _isPressed = true) : null,
-          onTapUp: (widget.isEnabled && widget.isEnabled2) ? (_) => setState(() => _isPressed = false) : null,
-          onTapCancel: (widget.isEnabled && widget.isEnabled2) ? () => setState(() => _isPressed = false) : null,
+          onTapDown: (widget.isEnabled || widget.isEnabled2)
+              ? (_) => setState(() => _isPressed = true)
+              : null,
+          onTapUp: (widget.isEnabled && widget.isEnabled2)
+              ? (_) => setState(() => _isPressed = false)
+              : null,
+          onTapCancel: (widget.isEnabled && widget.isEnabled2)
+              ? () => setState(() => _isPressed = false)
+              : null,
           onTap: (widget.isEnabled) ? widget.onPressed : null,
           borderRadius: BorderRadius.circular(10),
           splashColor: Colors.transparent,
@@ -120,16 +125,16 @@ class _CustomButtonState extends State<CustomButton> {
                         widget.text,
                         style: widget.fontFamily != null
                             ? TextStyle(
-                          color: textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: widget.fontFamily,
-                        )
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: widget.fontFamily,
+                              )
                             : TextStyle(
-                          color: textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                       ),
                     ],
                   ),
