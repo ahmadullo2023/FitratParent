@@ -7411,7 +7411,7 @@ SubjectData _$SubjectDataFromJson(Map<String, dynamic> json) {
 mixin _$SubjectData {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
-  Photo? get photo => throw _privateConstructorUsedError;
+  Photo? get image => throw _privateConstructorUsedError;
   int? get course => throw _privateConstructorUsedError;
   bool? get hasLevel =>
       throw _privateConstructorUsedError; // List<int>? allThemes,
@@ -7437,13 +7437,13 @@ abstract class $SubjectDataCopyWith<$Res> {
   $Res call(
       {String? id,
       String? name,
-      Photo? photo,
+      Photo? image,
       int? course,
       bool? hasLevel,
       int? allThemes,
       String? label});
 
-  $PhotoCopyWith<$Res>? get photo;
+  $PhotoCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -7463,7 +7463,7 @@ class _$SubjectDataCopyWithImpl<$Res, $Val extends SubjectData>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
-    Object? photo = freezed,
+    Object? image = freezed,
     Object? course = freezed,
     Object? hasLevel = freezed,
     Object? allThemes = freezed,
@@ -7478,9 +7478,9 @@ class _$SubjectDataCopyWithImpl<$Res, $Val extends SubjectData>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      photo: freezed == photo
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as Photo?,
       course: freezed == course
           ? _value.course
@@ -7505,13 +7505,13 @@ class _$SubjectDataCopyWithImpl<$Res, $Val extends SubjectData>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PhotoCopyWith<$Res>? get photo {
-    if (_value.photo == null) {
+  $PhotoCopyWith<$Res>? get image {
+    if (_value.image == null) {
       return null;
     }
 
-    return $PhotoCopyWith<$Res>(_value.photo!, (value) {
-      return _then(_value.copyWith(photo: value) as $Val);
+    return $PhotoCopyWith<$Res>(_value.image!, (value) {
+      return _then(_value.copyWith(image: value) as $Val);
     });
   }
 }
@@ -7527,14 +7527,14 @@ abstract class _$$SubjectDataImplCopyWith<$Res>
   $Res call(
       {String? id,
       String? name,
-      Photo? photo,
+      Photo? image,
       int? course,
       bool? hasLevel,
       int? allThemes,
       String? label});
 
   @override
-  $PhotoCopyWith<$Res>? get photo;
+  $PhotoCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -7552,7 +7552,7 @@ class __$$SubjectDataImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
-    Object? photo = freezed,
+    Object? image = freezed,
     Object? course = freezed,
     Object? hasLevel = freezed,
     Object? allThemes = freezed,
@@ -7567,9 +7567,9 @@ class __$$SubjectDataImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      photo: freezed == photo
-          ? _value.photo
-          : photo // ignore: cast_nullable_to_non_nullable
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
               as Photo?,
       course: freezed == course
           ? _value.course
@@ -7598,7 +7598,7 @@ class _$SubjectDataImpl implements _SubjectData {
   const _$SubjectDataImpl(
       {this.id,
       this.name,
-      this.photo,
+      this.image,
       this.course,
       this.hasLevel,
       this.allThemes,
@@ -7612,7 +7612,7 @@ class _$SubjectDataImpl implements _SubjectData {
   @override
   final String? name;
   @override
-  final Photo? photo;
+  final Photo? image;
   @override
   final int? course;
   @override
@@ -7625,7 +7625,7 @@ class _$SubjectDataImpl implements _SubjectData {
 
   @override
   String toString() {
-    return 'SubjectData(id: $id, name: $name, photo: $photo, course: $course, hasLevel: $hasLevel, allThemes: $allThemes, label: $label)';
+    return 'SubjectData(id: $id, name: $name, image: $image, course: $course, hasLevel: $hasLevel, allThemes: $allThemes, label: $label)';
   }
 
   @override
@@ -7635,7 +7635,7 @@ class _$SubjectDataImpl implements _SubjectData {
             other is _$SubjectDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.photo, photo) || other.photo == photo) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.course, course) || other.course == course) &&
             (identical(other.hasLevel, hasLevel) ||
                 other.hasLevel == hasLevel) &&
@@ -7647,7 +7647,7 @@ class _$SubjectDataImpl implements _SubjectData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, photo, course, hasLevel, allThemes, label);
+      runtimeType, id, name, image, course, hasLevel, allThemes, label);
 
   /// Create a copy of SubjectData
   /// with the given fields replaced by the non-null parameter values.
@@ -7669,7 +7669,7 @@ abstract class _SubjectData implements SubjectData {
   const factory _SubjectData(
       {final String? id,
       final String? name,
-      final Photo? photo,
+      final Photo? image,
       final int? course,
       final bool? hasLevel,
       final int? allThemes,
@@ -7683,7 +7683,7 @@ abstract class _SubjectData implements SubjectData {
   @override
   String? get name;
   @override
-  Photo? get photo;
+  Photo? get image;
   @override
   int? get course;
   @override

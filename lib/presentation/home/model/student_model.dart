@@ -440,7 +440,7 @@ class SubjectData with _$SubjectData {
   const factory SubjectData({
     String? id,
     String? name,
-    Photo? photo,
+    Photo? image,
     int? course,
     bool? hasLevel,
 

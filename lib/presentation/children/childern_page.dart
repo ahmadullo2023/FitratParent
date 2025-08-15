@@ -47,8 +47,8 @@ class _ChildernPageState extends State<ChildernPage> {
                         MaterialPageRoute(
                             builder: (context) => CommentsPage(
                                 lidId: null,
-                                studentId: cache.getString("studentIddddddd")
-                                )));
+                                studentId:
+                                    cache.getString("studentIddddddd"))));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
               SizedBox(width: 10),
@@ -84,8 +84,6 @@ class _ChildernPageState extends State<ChildernPage> {
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   const SizedBox(height: 16),
-
-
                   ItemCourses(
                       onClick: () {
                         Navigator.push(
@@ -93,10 +91,13 @@ class _ChildernPageState extends State<ChildernPage> {
                           MaterialPageRoute(
                             builder: (context) => ConnectivityWrapper(
                               child: ThemesScreen(
-                                courseId: state.students?.first.group?.courseId ?? "",
-                                levelId: state.students?.first.group?.levelId ?? "",
+                                courseId:
+                                    state.students?.first.group?.courseId ?? "",
+                                levelId:
+                                    state.students?.first.group?.levelId ?? "",
                                 title: state.students?.first.group?.course ??
-                                    state.students?.first.group?.subject?.name ??
+                                    state
+                                        .students?.first.group?.subject?.name ??
                                     "",
                               ),
                             ),
@@ -115,10 +116,8 @@ class _ChildernPageState extends State<ChildernPage> {
                       subject: "Kimyo noldan",
                       imageUrl: state.learningResponse!.first.phone,
                       name: state.learningResponse!.first.fullName.toString(),
-                      percentage: state.learningResponse!.first.overallLearning!),
-
-
-
+                      percentage:
+                          state.learningResponse!.first.overallLearning!),
                   const SizedBox(height: 16),
                 ],
               ),
@@ -257,8 +256,7 @@ class _ChildernPageState extends State<ChildernPage> {
                         top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
                         left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
                         right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        bottom:
-                            BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
                       ),
                     ),
                     child: Row(
@@ -318,8 +316,7 @@ class _ChildernPageState extends State<ChildernPage> {
                         top: BorderSide(color: Color(0xFFE5E7EB), width: 2),
                         left: BorderSide(color: Color(0xFFE5E7EB), width: 2),
                         right: BorderSide(color: Color(0xFFE5E7EB), width: 2),
-                        bottom:
-                            BorderSide(color: Color(0xFFE5E7EB), width: 4),
+                        bottom: BorderSide(color: Color(0xFFE5E7EB), width: 4),
                       ),
                     ),
                     child: Row(
@@ -376,7 +373,8 @@ class _ChildernPageState extends State<ChildernPage> {
   Widget _buildCoursesSection(List<StudentModel>? students) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, homeState) {
-        final courseScores = homeState.learningResponse?.first.courseScores ?? [];
+        final courseScores =
+            homeState.learningResponse?.first.courseScores ?? [];
         return ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

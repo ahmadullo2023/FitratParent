@@ -669,9 +669,9 @@ _$SubjectDataImpl _$$SubjectDataImplFromJson(Map<String, dynamic> json) =>
     _$SubjectDataImpl(
       id: json['id'] as String?,
       name: json['name'] as String?,
-      photo: json['photo'] == null
+      image: json['image'] == null
           ? null
-          : Photo.fromJson(json['photo'] as Map<String, dynamic>),
+          : Photo.fromJson(json['image'] as Map<String, dynamic>),
       course: (json['course'] as num?)?.toInt(),
       hasLevel: json['has_level'] as bool?,
       allThemes: (json['all_themes'] as num?)?.toInt(),
@@ -682,7 +682,7 @@ Map<String, dynamic> _$$SubjectDataImplToJson(_$SubjectDataImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'photo': instance.photo?.toJson(),
+      'image': instance.image?.toJson(),
       'course': instance.course,
       'has_level': instance.hasLevel,
       'all_themes': instance.allThemes,
