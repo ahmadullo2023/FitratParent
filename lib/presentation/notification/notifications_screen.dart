@@ -97,6 +97,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                               setState(() {
                                                 notificationRepository
                                                     .updateNotificationHasReadAll();
+                                                _notificationController
+                                                    .refresh();
                                               });
                                               Navigator.pop(context);
                                             }),
@@ -147,7 +149,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
                         setState(() {
                           _hasUnreadNotifications = result.results
-                                  ?.any((item) => item.hasRead == false) ??
+                                  ?.any((item) => item.isRead == false) ??
                               false;
                         });
 

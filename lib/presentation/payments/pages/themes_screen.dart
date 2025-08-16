@@ -9,6 +9,7 @@ import '../../themes/models/theme_model.dart';
 import '../../themes/pages/theme_detail_screen.dart';
 import '../../themes/widgets/item_theme.dart';
 
+
 class ThemesScreen extends StatefulWidget {
   const ThemesScreen(
       {super.key, this.levelId, required this.courseId, required this.title});
@@ -100,11 +101,13 @@ class _ThemesScreenState extends State<ThemesScreen>
                               },
                             );
                           },
+
                           getItems: (page) => context
                               .read<ThemesBloc>()
                               .getThemesForPagination(page,
-                                  courseId: widget.courseId,
-                                  levelId: widget.levelId ?? ""),
+                              courseId: widget.courseId,
+                              levelId: widget.levelId ?? ""),
+
                         )));
               case ThemesStatus.loading:
                 return Center(child: LoadingWidget());

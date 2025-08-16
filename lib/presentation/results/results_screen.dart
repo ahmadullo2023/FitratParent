@@ -125,6 +125,15 @@ class _ResultsScreenState extends State<ResultsScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => Scaffold(
+                                          appBar: AppBar(
+                                            leading: IconButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: Icon(Icons.arrow_back_ios,
+                                                    color: Colors.white)),
+                                            backgroundColor: Colors.black,
+                                          ),
                                           backgroundColor: Colors.black,
                                           body: Center(
                                               child: InteractiveViewer(

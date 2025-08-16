@@ -16,7 +16,7 @@ class NotificationRepository {
           .getWithAuth("/notifications/?page=$page", log: true);
 
       notificationCount = (response["results"] as List)
-          .where((e) => e["has_read"] == false)
+          .where((e) => e["is_read"] == false)
           .length;
       // notificationCount = response["count"];
 

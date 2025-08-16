@@ -92,25 +92,18 @@ class _ChildernPageState extends State<ChildernPage> {
                             builder: (context) => ConnectivityWrapper(
                               child: ThemesScreen(
                                 courseId:
-                                    state.students?.first.group?.courseId ?? "",
+                                    "c1cacd4b-428e-4a7e-89a8-5974af999cbc",
+                                //state.students?.first.group?.courseId ?? "",
                                 levelId:
                                     state.students?.first.group?.levelId ?? "",
                                 title: state.students?.first.group?.course ??
                                     state
                                         .students?.first.group?.subject?.name ??
-                                    "",
+                                    "Kimyo noldan",
                               ),
                             ),
                           ),
                         );
-
-                        // _buildCoursesSection(state.students);
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (BuildContext) => CoursesList(
-                        //               learningResponse: state.learningResponse!,
-                        //             )));
                       },
                       color: Color(0xFF35B26A),
                       subject: "Kimyo noldan",
@@ -367,63 +360,6 @@ class _ChildernPageState extends State<ChildernPage> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildCoursesSection(List<StudentModel>? students) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, homeState) {
-        final courseScores =
-            homeState.learningResponse?.first.courseScores ?? [];
-        return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          itemCount: students?.length ?? 0,
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemBuilder: (context, index) {
-            final student = students?[index];
-            final subject = student?.group?.subject?.name ?? "";
-            final courseId = student?.group?.courseId ?? "";
-
-            double percentage = 0.0;
-            try {
-              final matchingCourse = courseScores.firstWhere(
-                (course) => course.courseId == courseId,
-              );
-              percentage = matchingCourse.overall ?? 0;
-            } catch (e) {
-              percentage = 0.0;
-            }
-            return ItemCourses(
-              onClick: () {
-                print("++__++__+_+_++");
-                print(cache.getString("homework_type"));
-                print("++__++__+_+_++");
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ConnectivityWrapper(
-                      child: ThemesScreen(
-                        courseId: student?.group?.courseId ?? "",
-                        levelId: student?.group?.levelId ?? "",
-                        title: student?.group?.course ??
-                            student?.group?.subject?.name ??
-                            "",
-                      ),
-                    ),
-                  ),
-                );
-              },
-              color: Colors.blue,
-              subject: subject,
-              name: student?.group?.teacher ?? "",
-              percentage: percentage,
-            );
-          },
-        );
-      },
     );
   }
 }

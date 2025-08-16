@@ -89,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         context.read<HomeBloc>().add(LoadStories());
                         context.read<ProfileBloc>().add(GetMeEvent());
                         context.read<HomeBloc>().add(LoadLearnings());
+                        notificationRepository.getNotifications(page: 1);
                         getResults();
+                        getEvents();
                       },
                       child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
