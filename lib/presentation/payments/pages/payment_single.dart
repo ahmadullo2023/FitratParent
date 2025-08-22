@@ -20,6 +20,8 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
+String parentId = "92b0b156-a097-46c6-92d9-d92aaeda099b";
+
 class _PaymentScreenState extends State<PaymentScreen> {
   final _amountController = TextEditingController();
   String? selectedMethod;
@@ -270,14 +272,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           CustomButton(
                               text: "To‘lash",
                               onPressed: () async {
+
+                                print("------> ${state.learningResponse?.first.studentId}");
+                                print("++++++> ${state.learningResponse
+                                    ?.where((e) => e.studentId == parentId)
+                                    .map((e) => e.studentId)
+                                    .join(",") ?? ""}");
+
                                 final bloc = context.read<PaymentBloc>();
 
                                 if (_formKey.currentState!.validate()) {
                                   bloc.add(PayEvent(
                                     lid: '',
-                                    student:
-                                        cache.getString("studentIddddddd") ??
-                                            "",
+                                    student: state.learningResponse
+                                        ?.where((e) => e.studentId == parentId)
+                                        .map((e) => e.studentId)
+                                        .join(",") ?? "",
                                     amount: _amountController.text
                                         .replaceAll(RegExp(r'[^0-9]'), ''),
                                     type: selectedValue,

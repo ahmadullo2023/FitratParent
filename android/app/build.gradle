@@ -5,6 +5,12 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "uz.sector.soft.fitrat_parent2"
     compileSdk = 35
@@ -29,11 +35,20 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
+            storeFile keystoreProperties["storeFile"] ? file(keystoreProperties["storeFile"]) : null
+            storePassword keystoreProperties["storePassword"]
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
             minifyEnabled false
             shrinkResources false
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -44,6 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0"
+    implementation("com.google.android.material:material:1.12.0")
 }
 
 flutter {

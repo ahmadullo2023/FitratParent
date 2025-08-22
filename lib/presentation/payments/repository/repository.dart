@@ -17,8 +17,7 @@ class PaymentRepository {
           : {
               "params": {
                 "amount": amount,
-                "order_id": "7c15d251-0e87-40b4-ac7b-3ad8540d5eb8"
-                //cache.getString("orderId"),
+                "order_id": student,
               },
               "return_url": null
             };
@@ -41,7 +40,7 @@ class PaymentRepository {
 
     try {
       final response = await requestHelper.getWithAuth(
-          "/finance?creator=a668cce4-bc1b-46e5-a5fe-5d14ffc0ea19",
+          "/finance?creator=${cache.getString("studentIddddddd")}",
           log: true);
 
       return PaymentHistoryModel.fromJson(response);
