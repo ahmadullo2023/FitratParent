@@ -1,6 +1,6 @@
 import 'package:fitrat_parent2/presentation/notification/repository/notification_repository.dart';
-import 'package:fitrat_parent2/presentation/notification/widget/dialog_notification.dart';
 import 'package:fitrat_parent2/presentation/notification/widget/item_notification.dart';
+import 'package:fitrat_parent2/utils/extensions/navigator_extension.dart';
 import 'package:fitrat_parent2/utils/servise/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +10,7 @@ import '../../utils/app_colors.dart';
 import '../../utils/custom_pagination_widget.dart';
 import '../../utils/formatters.dart';
 import '../../utils/widgets/connectivity_wrapper_widget.dart';
+import '../children/childern_page.dart';
 import '../widgets/custom_button.dart';
 import 'model/notification_model.dart';
 import 'package:fitrat_parent2/utils/number_extension.dart';
@@ -134,6 +135,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         date: Formatter.dateFormatter(item.createdAt),
                         showDot: item.isRead ?? false,
                         onTap: () async {
+                          if (item.choice == "Examination") {
+                            context.push(ChildernPage());
+                          }
+
                           notificationRepository.updateNotificationIsRead(
                               notificationId: item.id);
                           NotificationService.markNotificationAsRead(

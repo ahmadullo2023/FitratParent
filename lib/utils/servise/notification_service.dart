@@ -7,6 +7,7 @@ import 'package:fitrat_parent2/utils/extensions/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../firebase_options.dart';
+import '../../presentation/children/childern_page.dart';
 
 int uuidToInt(String uuid) => uuid.hashCode.abs() % 2147483647;
 
@@ -157,6 +158,8 @@ class NotificationService {
       case NotificationType.Monitoring:
       case NotificationType.Results:
       case NotificationType.Examination:
+        context.push(ChildernPage());
+        break;
       case NotificationType.Shopping:
       case NotificationType.Homework:
         _navigateToDefault();

@@ -35,7 +35,7 @@ class _ChildernPageState extends State<ChildernPage> {
                 },
                 icon: Icon(Icons.arrow_back)),
             title: Text(
-              "Farzandim",
+              "Farzandlarim",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             centerTitle: true,
@@ -61,7 +61,7 @@ class _ChildernPageState extends State<ChildernPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Farzandim",
+                    "Farzandlarim",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 20),
