@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:logger/logger.dart';
 import '../../../data/db/cache.dart';
 import '../../../data/hive/hive_helper.dart';
@@ -6,8 +5,6 @@ import '../../../utils/request_helper.dart';
 import '../model/login_model.dart';
 
 class AuthRepository {
-
-
   Future<LoginModel?> login({
     required String phoneNumber,
     required String password,
@@ -45,9 +42,6 @@ class AuthRepository {
     }
   }
 
-
-
-
   Future<dynamic> setPassword(
       {required String phoneNumber,
       required confirmationCode,
@@ -76,6 +70,7 @@ class AuthRepository {
     try {
       final body = {
         "phone": phone,
+        "role": "Parents"
       };
 
       final response = await requestHelper.post(

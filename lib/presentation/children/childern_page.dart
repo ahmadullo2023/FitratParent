@@ -92,8 +92,7 @@ class _ChildernPageState extends State<ChildernPage> {
                             builder: (context) => ConnectivityWrapper(
                               child: ThemesScreen(
                                 courseId:
-                                    "c1cacd4b-428e-4a7e-89a8-5974af999cbc",
-                                //state.students?.first.group?.courseId ?? "",
+                                    "c1cacd4b-428e-4a7e-89a8-5974af999cbc", //state.students?.first.group?.courseId ?? "",
                                 levelId:
                                     state.students?.first.group?.levelId ?? "",
                                 title: state.students?.first.group?.course ??
@@ -107,7 +106,8 @@ class _ChildernPageState extends State<ChildernPage> {
                       },
                       color: Color(0xFF35B26A),
                       subject: "Kimyo noldan",
-                      imageUrl: state.learningResponse!.first.phone,
+                      imageUrl:
+                          state.students?.first.student?.photo?.file ?? "",
                       name: state.learningResponse!.first.fullName.toString(),
                       percentage:
                           state.learningResponse!.first.overallLearning!),

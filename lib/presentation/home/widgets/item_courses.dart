@@ -54,19 +54,22 @@ class ItemCourses extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: Color(0xFFEFF7FF),
+                    color: color.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: imageUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: imageUrl!,
-                          height: 24,
-                          width: 24,
-                          fit: BoxFit.cover,
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: CachedNetworkImage(
+                            imageUrl: imageUrl!,
+                            height: 48,
+                            width: 48,
+                            fit: BoxFit.cover,
+                          ),
                         )
                       : Icon(
                           Icons.book,
-                          color: Colors.blue,
+                          color: color,
                           size: 24,
                         ),
                 ),

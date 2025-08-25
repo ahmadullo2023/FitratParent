@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
 import '../../widgets/custom_button.dart';
@@ -66,7 +64,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   ),
                   Padding(
                     padding:
-                    const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
+                        const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
                     child: Text(
                       "Endi siz yangi parol o’rnatishingiz mumkin va ishonchli parol o’ylab toping",
                       textAlign: TextAlign.center,
@@ -99,7 +97,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   ),
                   Padding(
                     padding:
-                    const EdgeInsets.only(left: 16, right: 16, top: 16),
+                        const EdgeInsets.only(left: 16, right: 16, top: 16),
                     child: CustomButton(
                       isEnabled: password.isNotEmpty && password == newPassword,
                       text: "Parolni o‘zgartirish",
@@ -117,7 +115,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                                     builder: (context) => LoginScreen()));
                           }
                         } catch (e) {
-
+                          print("xatolik ==> $e");
                         }
                       },
                     ),
