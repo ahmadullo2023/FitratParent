@@ -107,7 +107,9 @@ class _ChildernPageState extends State<ChildernPage> {
                       color: Color(0xFF35B26A),
                       subject: "Kimyo noldan",
                       imageUrl:
-                          state.students?.first.student?.photo?.file ?? "",
+                          // state.learningResponse!.first.photo,
+                          state.students?.first.group?.subject?.image?.file ??
+                              defaultImage,
                       name: state.learningResponse!.first.fullName.toString(),
                       percentage:
                           state.learningResponse!.first.overallLearning!),
@@ -198,7 +200,7 @@ class _ChildernPageState extends State<ChildernPage> {
                         AppIcons.walletFull,
                         height: 20,
                         width: 20,
-                        color: AppColors.emerald500, // Or change as needed
+                        color: AppColors.emerald500,
                       ),
                     ),
                   ),
@@ -362,4 +364,7 @@ class _ChildernPageState extends State<ChildernPage> {
       ),
     );
   }
+
+  String defaultImage =
+      "https://api.ft.sector-soft.ru/media/files/photo_2025-08-19_09-52-40.jpg";
 }

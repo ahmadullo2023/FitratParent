@@ -531,6 +531,7 @@ class LearningResponse with _$LearningResponse {
     String? studentId,
     String? fullName,
     String? phone,
+
     double? balance,
     double? overallLearning,
     List<dynamic>? courseScores
