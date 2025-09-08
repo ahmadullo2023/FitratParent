@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:fitrat_parent2/main.dart';
 import 'package:fitrat_parent2/presentation/home/repository/home_repository.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/item_courses.dart';
 import 'package:fitrat_parent2/presentation/home/widgets/item_story.dart';

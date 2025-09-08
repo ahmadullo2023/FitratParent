@@ -82,10 +82,13 @@ class ItemResults extends StatelessWidget {
                 children: [
                   if (studentImageUrl != null &&
                       studentImageUrl!.isNotEmpty) ...[
-                    CircleAvatar(
-                      radius: 12,
-                      backgroundImage: NetworkImage(studentImageUrl!),
-                    ),
+                    Icon(Icons.person, color: Colors.black26),
+
+                    // CircleAvatar(
+                    //   backgroundColor: Colors.white,
+                    //   radius: 12,
+                    //   backgroundImage: NetworkImage("https://icons.veryicon.com/png/o/miscellaneous/bitisland-world/person-18.png")),
+
                     const SizedBox(width: 8),
                   ],
                   Expanded(

@@ -1,5 +1,3 @@
-import 'package:chucker_flutter/chucker_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitrat_parent2/data/db/cache.dart';
 import 'package:fitrat_parent2/data/hive/hive_helper.dart';
@@ -12,12 +10,23 @@ import 'package:fitrat_parent2/presentation/splash/splash_page.dart';
 import 'package:fitrat_parent2/utils/servise/no_internet.dart';
 import 'package:fitrat_parent2/utils/servise/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/alice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:overlay_support/overlay_support.dart';
+
 import 'generated/l10n.dart';
 
+// navigatorKey umumiy foydalanish uchun
 final navigatorKey = GlobalKey<NavigatorState>();
+
+// Alice instance
+final Alice alice = Alice(
+  navigatorKey: navigatorKey,
+  showNotification: true,
+  showInspectorOnShake: true,
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +38,10 @@ void main() async {
 
   await initializeCache();
   await HiveHelper.init();
+
+  // navigatorKey ulash
+  alice.setNavigatorKey(navigatorKey);
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -41,9 +54,6 @@ void main() async {
         BlocProvider<BalanceBloc>(
           create: (_) => BalanceBloc()..add(GetBalances()),
         ),
-        // BlocProvider<EditProfileBloc>(
-        //   create: (_) => EditProfileBloc()..add(EditData(name: '', lastName: '', phone: '')),
-        // ),
         BlocProvider<PaymentBloc>(
           create: (_) => PaymentBloc()
             ..add(PayEvent(lid: '', student: '', amount: '', type: '')),
@@ -66,7 +76,7 @@ void main() async {
                 compensation: [])),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -77,26 +87,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     NotificationService.getFcmToken();
-    // return App();
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      navigatorObservers: [ChuckerFlutter.navigatorObserver],
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      showSemanticsDebugger: false,
-      title: 'Fitrat Parent',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        fontFamily: GoogleFonts.outfit().fontFamily,
+
+    return OverlaySupport(
+      child: MaterialApp(
+        navigatorKey: alice.getNavigatorKey(),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        showSemanticsDebugger: false,
+        title: 'Fitrat Parent',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          fontFamily: GoogleFonts.outfit().fontFamily,
+        ),
+        home: SplashScreen(),
       ),
-      home: SplashScreen(),
-      // home: HolderScreen(),
     );
   }
 }

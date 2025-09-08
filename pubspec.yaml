@@ -16,7 +16,7 @@ dependencies:
   freezed: ^2.4.3
   shared_preferences: ^2.0.6
   shimmer: ^3.0.0
-  permission_handler: ^11.3.1
+  permission_handler: ^12.0.1
   cached_network_image: ^3.4.0
   flutter_svg: ^2.0.16
   retrofit: ^4.4.0
@@ -66,6 +66,7 @@ dependencies:
   firebase_messaging: ^15.2.10
   flutter_local_notifications: ^19.3.1
   open_file: ^3.5.10
+  flutter_alice: ^2.0.1
   http: ^1.4.0
   sms_autofill: ^2.4.1
   another_flushbar: ^1.12.30

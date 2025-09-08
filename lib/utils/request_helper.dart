@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:chuck_interceptor/chuck_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +20,13 @@ bool isTokenExpired(String token) {
   return JwtDecoder.isExpired(token);
 }
 
-final baseUrl = 'https://api.ft.sector-soft.ru';
+final baseUrl = 'https://api.dev.fitrat.sectorsoft.uz';
+// final baseUrl = 'https://api.fitrat.sectorsoft.uz';
+// final baseUrl = 'https://api.ft.sector-soft.ru';
 // final baseUrl = 'https://api.fitrat.sector-soft.ru';
 
 class RequestHelper {
   final logger = Logger();
-
-  Chuck chuck = Chuck(showNotification: true);
   final dio = Dio()
     ..interceptors.add(TalkerDioLogger(
       settings: const TalkerDioLoggerSettings(
@@ -37,12 +36,20 @@ class RequestHelper {
       ),
     ));
 
-  // ..interceptors.add(chuck.getDioInterceptor());
-
   Completer<void>? _refreshCompleter;
 
   RequestHelper() {
-    // dio.interceptors.add(DurationLoggingInterceptor());
+    // 1) Talker logger interceptor
+    dio.interceptors.add(TalkerDioLogger(
+      settings: const TalkerDioLoggerSettings(
+        printRequestHeaders: true,
+        printResponseHeaders: true,
+        printResponseMessage: true,
+      ),
+    ));
+
+    // 2) Alice interceptor (eng muhim qismi!)
+    dio.interceptors.add(alice.getDioInterceptor());
   }
 
   String? get _token {
@@ -341,7 +348,7 @@ class RequestHelper {
   Future<dynamic> uploadFile(
       FormData formData, Function(int persentage) onProgress) async {
     return _handleRequest(() async {
-      final response = await Dio().post(
+      final response = await dio.post(
         'https://api.fitrat.sector-soft.ru/upload/',
         data: formData,
         onSendProgress: (sent, total) {

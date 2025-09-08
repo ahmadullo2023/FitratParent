@@ -68,10 +68,7 @@ class AuthRepository {
 
   Future<dynamic> sendCode({required String phone}) async {
     try {
-      final body = {
-        "phone": phone,
-        "role": "Parents"
-      };
+      final body = {"phone": phone, "role": "Parents"};
 
       final response = await requestHelper.post(
         "/auth/password-reset/",

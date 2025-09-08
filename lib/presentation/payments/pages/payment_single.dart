@@ -272,12 +272,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           CustomButton(
                               text: "To‘lash",
                               onPressed: () async {
-
-                                print("------> ${state.learningResponse?.first.studentId}");
-                                print("++++++> ${state.learningResponse
-                                    ?.where((e) => e.studentId == parentId)
-                                    .map((e) => e.studentId)
-                                    .join(",") ?? ""}");
+                                print(
+                                    "------> ${state.learningResponse?.first.studentId}");
+                                print(
+                                    "++++++> ${state.learningResponse?.where((e) => e.studentId == parentId).map((e) => e.studentId).join(",") ?? ""}");
 
                                 final bloc = context.read<PaymentBloc>();
 
@@ -285,9 +283,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   bloc.add(PayEvent(
                                     lid: '',
                                     student: state.learningResponse
-                                        ?.where((e) => e.studentId == parentId)
-                                        .map((e) => e.studentId)
-                                        .join(",") ?? "",
+                                            ?.where(
+                                                (e) => e.studentId == parentId)
+                                            .map((e) => e.studentId)
+                                            .join(",") ??
+                                        "",
                                     amount: _amountController.text
                                         .replaceAll(RegExp(r'[^0-9]'), ''),
                                     type: selectedValue,
@@ -314,7 +314,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   }
                                 }
                               }),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 40),
                         ],
                       ),
                     ),

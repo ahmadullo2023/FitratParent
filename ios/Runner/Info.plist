@@ -47,5 +47,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- 📌 Privacy usage descriptions -->
+	<key>NSCameraUsageDescription</key>
+	<string>Kameradan foydalanish uchun ruxsat kerak</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Audio yozib olish uchun ruxsat kerak</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Fotolarni tanlash va yuklash uchun ruxsat kerak</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Fotolarni saqlash uchun ruxsat kerak</string>
 </dict>
 </plist>
