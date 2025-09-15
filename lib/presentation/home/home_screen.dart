@@ -251,7 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ?.first.fullName
                                                       ?.toString() ??
                                                   "",
-                                              subjects: "Kimyo noldan",
+                                              subjects:
+                                                  "Matematika, Ingliz tili",
                                               balance: homeState1
                                                       .learningResponse
                                                       ?.first
@@ -296,9 +297,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ResultsScreen(),
+                                                                builder: (context) =>
+                                                                    ResultsScreen(
+                                                                        results:
+                                                                            results),
                                                               ));
                                                         },
                                                         child: Text("Barchasi",

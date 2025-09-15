@@ -75,7 +75,7 @@ class HomeRepository {
   Future<List<LearningResponse>> getLearning() async {
     try {
       final response =
-          await requestHelper.getWithAuth("/parents/childrens/", log: true);
+          await requestHelper.getWithAuth("/parents/children/", log: true);
       List list = response;
       return list.map((e) => LearningResponse.fromJson(e)).toList();
     } catch (e, s) {

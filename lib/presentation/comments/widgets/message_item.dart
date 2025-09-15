@@ -85,14 +85,58 @@ class MessageItem extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           height: 300,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: CustomCachedNetworkImage(
-                              imageUrl: model.file!.file!,
-                              fit: BoxFit.cover,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => Scaffold(
+                                    backgroundColor: AppColors.black,
+                                    appBar: AppBar(
+                                      backgroundColor: AppColors.black,
+                                      leading: IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: Icon(
+                                            Icons.arrow_back_ios,
+                                            color: AppColors.white,
+                                          )),
+                                    ),
+                                    body: Column(
+                                      children: [
+                                        Spacer(),
+                                        CustomCachedNetworkImage(
+                                          imageUrl: model.file!.file!,
+                                        ),
+                                        SizedBox(height: 100),
+                                        Spacer(),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: CustomCachedNetworkImage(
+                                imageUrl: model.file!.file!,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
+                        // SizedBox(
+                        //   width: double.infinity,
+                        //   height: 300,
+                        //   child: ClipRRect(
+                        //     borderRadius: BorderRadius.circular(8),
+                        //     child: CustomCachedNetworkImage(
+                        //       imageUrl: model.file!.file!,
+                        //       fit: BoxFit.cover,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                       model.file?.file != null ? 8.vertical : 0.vertical,
                       Text(

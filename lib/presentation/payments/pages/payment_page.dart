@@ -46,7 +46,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     context.read<PaymentBloc>().add(PaymentHistoryEvent());
                   },
                   child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
+                    // physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                   name: state.learningResponse?.first.fullName
                                           ?.toString() ??
                                       "",
-                                  subjects: "Kimyo noldan",
+                                  subjects: "Matematika, Ingliz tili",
                                   balance: state.learningResponse?.first.balance
                                           ?.toString() ??
                                       "0",
@@ -94,7 +95,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
                               fontWeight: FontWeight.w600, fontSize: 16),
                         ),
                         SizedBox(
-                          height: 410,
+                          height: 460,
                           child: filteredPayments.isEmpty
                               ? Center(
                                   child: Column(
@@ -118,19 +119,22 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                     ],
                                   ),
                                 )
-                              : ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: filteredPayments.length,
-                                  itemBuilder: (context, index) {
-                                    final item = filteredPayments[index];
-                                    return _paymentItem(
-                                      item.action != "INCOME",
-                                      item.payment_method ?? "",
-                                      item.amount.toString(),
-                                      formatDate(item.created_at!),
-                                      item.kind?.name ?? "",
-                                    );
-                                  },
+                              : Padding(
+                                  padding: const EdgeInsets.only(bottom: 65),
+                                  child: ListView.builder(
+                                    // physics: NeverScrollableScrollPhysics(),
+                                    itemCount: filteredPayments.length,
+                                    itemBuilder: (context, index) {
+                                      final item = filteredPayments[index];
+                                      return _paymentItem(
+                                        item.action != "INCOME",
+                                        item.payment_method ?? "",
+                                        item.amount.toString(),
+                                        formatDate(item.created_at!),
+                                        item.kind?.name ?? "",
+                                      );
+                                    },
+                                  ),
                                 ),
                         ),
                       ],

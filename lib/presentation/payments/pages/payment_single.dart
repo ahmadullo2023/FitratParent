@@ -152,7 +152,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16)),
-                                        Text("Kimyo noldan",
+                                        Text("Matematika, Ingliz tili",
                                             style:
                                                 TextStyle(color: Colors.grey)),
                                       ],
@@ -164,7 +164,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          const Text("Summa",
+                          const Text("Miqdor",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
@@ -369,7 +369,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     const SizedBox(height: 18),
                     ...List.generate(1, (index) {
                       final isSelected = selectedIndex == index;
-                      final subject = "Kimyo noldan";
+                      final subject = "Matematika, Ingliz tili";
                       final avatar = 'https://randomuser.me/api/g';
 
                       return GestureDetector(

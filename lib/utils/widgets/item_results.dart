@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../app_assets.dart';
 
 class ItemResults extends StatelessWidget {
@@ -119,6 +118,8 @@ class ItemResults extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   teacherName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 14,

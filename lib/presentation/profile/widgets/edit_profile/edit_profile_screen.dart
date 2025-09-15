@@ -304,7 +304,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   } else {
                                     photoToSend = originalImageId;
                                   }
-
                                   context.read<EditProfileBloc>().add(EditData(
                                         name: nameController.text,
                                         lastName: lastNameController.text,
@@ -338,7 +337,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget _buildProfileImage(EditProfileState photoState, dynamic student) {
     final currentPhotoId = photoState.currentPhotoId;
 
-    // If there's a current photo ID that matches the original, use the original file URL
     if (currentPhotoId != null &&
         currentPhotoId == originalImageId &&
         student?.photo?.file?.isNotEmpty == true) {
@@ -372,7 +370,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
     }
 
-    // No image at all - show default avatar
     return SvgPicture.asset(
       AppIcons.person,
       fit: BoxFit.cover,

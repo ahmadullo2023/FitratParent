@@ -8,7 +8,7 @@ class CommentRepository {
   Future<PaginationModel<CommentModel>> getComments(
       {required String userId, required int page}) async {
     final response = await requestHelper.getWithAuth(
-      "/comments/app/a63667b8-d991-4f8b-aae0-ca15927b2a46/?page=1",
+      "/comments/app/14b13cca-1910-404f-8013-a8e552c8d127/?page=1",
       log: true,
     );
     return PaginationModel.fromJson(
@@ -16,7 +16,6 @@ class CommentRepository {
       (json) => CommentModel.fromJson(json as Map<String, dynamic>),
     );
   }
-
 
   Future<void> addComment({
     String? student,
@@ -27,9 +26,9 @@ class CommentRepository {
   }) async {
     final body = {
       "comment": comment,
-      "student": "a63667b8-d991-4f8b-aae0-ca15927b2a46",
+      "student": "14b13cca-1910-404f-8013-a8e552c8d127",
       "lid": null,
-      "file" : imgId,
+      "file": imgId,
       "creator": cache.getString("id"),
     };
     Logger().t(["BODY", body]);

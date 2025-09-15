@@ -258,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             name: state.learningResponse?.first.fullName
                                     ?.toString() ??
                                 "",
-                            subjects: "Kimyo noldan",
+                            subjects: "Matematika, Ingliz tili",
                             balance: state.learningResponse?.first.balance
                                     ?.toString() ??
                                 "0",

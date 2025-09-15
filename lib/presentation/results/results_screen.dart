@@ -9,7 +9,9 @@ import '../balance/widgets/custom_chip.dart';
 import 'model/results_model.dart';
 
 class ResultsScreen extends StatefulWidget {
-  const ResultsScreen({super.key});
+  const ResultsScreen({required this.results, super.key});
+
+  final List<ResultsModel> results;
 
   @override
   State<ResultsScreen> createState() => _ResultsScreenState();

@@ -5,8 +5,8 @@ import '../../../utils/request_helper.dart';
 import '../model/results_model.dart';
 
 class ResultsRepository {
-
-  Future< PaginationModel<ResultsModel>> getResults ({String? fkId, required int page}) async {
+  Future<PaginationModel<ResultsModel>> getResults(
+      {String? fkId, required int page}) async {
     String a = fkId ?? "";
     try {
       final response = await requestHelper.getWithAuth(
@@ -16,14 +16,13 @@ class ResultsRepository {
 
       return PaginationModel.fromJson(
         response,
-            (json) => ResultsModel.fromJson(json as Map<String, dynamic>),
+        (json) => ResultsModel.fromJson(json as Map<String, dynamic>),
       );
     } catch (e, s) {
       Logger().e(["ERROR", e, s]);
       rethrow;
     }
   }
-
 
   // Future<List<ResultsModel>> getResultsNoPg({String? studentId, String? status}) async {
   //   try {
@@ -48,12 +47,11 @@ class ResultsRepository {
   //   }
   // }
 
-
-
-  Future<List<ResultsModel>> getResultsNoPg({String? studentId, String? status}) async {
+  Future<List<ResultsModel>> getResultsNoPg(
+      {String? studentId, String? status}) async {
     try {
       final response = await requestHelper.getWithAuth(
-        "/quiz-results/student-results/?page=1&student=${studentId ?? ""}&status=${status ?? ""}",
+        "/quiz-results/student-results/?page=1&status=Accepted",
         log: true,
       );
 
@@ -67,14 +65,12 @@ class ResultsRepository {
       print(results);
       print("+++++++++++++++");
 
-
       return results;
     } catch (e, s) {
       Logger().e(["ERROR", e, s]);
       rethrow;
     }
   }
-
 
   // Future<List<ResultsModel>> getResultsNoPg() async {
   //   try {
@@ -92,19 +88,17 @@ class ResultsRepository {
   //   }
   // }
 
-  Future<List<FKNameModel>> getResultTypes () async {
+  Future<List<FKNameModel>> getResultTypes() async {
     try {
-      final response = await requestHelper.getWithAuth(
-          "/compensation/points-name/"
-      );
+      final response =
+          await requestHelper.getWithAuth("/compensation/points-name/");
       List list = response;
       return list.map((e) => FKNameModel.fromJson(e)).toList();
-  } catch (e, s) {
-  Logger().e(["ERROR", e, s]);
-  rethrow;
-}
+    } catch (e, s) {
+      Logger().e(["ERROR", e, s]);
+      rethrow;
+    }
   }
-
 }
 
 final resultsRepository = ResultsRepository();

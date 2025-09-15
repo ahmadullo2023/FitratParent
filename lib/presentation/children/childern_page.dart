@@ -68,7 +68,7 @@ class _ChildernPageState extends State<ChildernPage> {
                   _buildChildCard(
                     name: state.learningResponse?.first.fullName?.toString() ??
                         "",
-                    subjects: "Kimyo noldan",
+                    subjects: "Matematika, Ingliz tili",
                     balance:
                         state.learningResponse?.first.balance?.toString() ??
                             "0",
@@ -92,27 +92,30 @@ class _ChildernPageState extends State<ChildernPage> {
                             builder: (context) => ConnectivityWrapper(
                               child: ThemesScreen(
                                 courseId:
-                                    "c1cacd4b-428e-4a7e-89a8-5974af999cbc", //state.students?.first.group?.courseId ?? "",
+                                    // "c1cacd4b-428e-4a7e-89a8-5974af999cbc",
+                                    state.students?.first.group?.courseId ?? "",
                                 levelId:
                                     state.students?.first.group?.levelId ?? "",
                                 title: state.students?.first.group?.course ??
                                     state
                                         .students?.first.group?.subject?.name ??
-                                    "Kimyo noldan",
+                                    "Matematika,",
                               ),
                             ),
                           ),
                         );
                       },
                       color: Color(0xFF35B26A),
-                      subject: "Kimyo noldan",
+                      subject: "Matematika",
                       imageUrl:
-                          // state.learningResponse!.first.photo,
-                          state.students?.first.group?.subject?.image?.file ??
-                              defaultImage,
-                      name: state.learningResponse!.first.fullName.toString(),
+                          //state.learningResponse!.first.photo,
+                          state.students?.first.group?.subject?.image?.file,
+                      // ??
+                      // defaultImage,
+                      name: state.learningResponse?.first.fullName.toString() ??
+                          "",
                       percentage:
-                          state.learningResponse!.first.overallLearning!),
+                          state.learningResponse?.first.overallLearning! ?? 0),
                   const SizedBox(height: 16),
                 ],
               ),

@@ -390,28 +390,28 @@ class _EventDetailState extends State<EventDetail> {
                         fontFamily: "outfitMedium")),
               ),
             ),
-            12.vertical,
-            widget.event.linkPreview != ""
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomButton(
-                        text: widget.event.linkPreview ?? "Qatnashish",
-                        onPressed: () async {
-                          final url = widget.event.link;
-                          if (url != null && url.isNotEmpty) {
-                            final uri = Uri.parse(url);
-                            if (await canLaunchUrl(uri)) {
-                              await launchUrl(uri,
-                                  mode: LaunchMode.externalApplication);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text("URL ochib bo'lmadi")),
-                              );
-                            }
-                          }
-                        }))
-                : SizedBox(),
+            //12.vertical,
+            // widget.event.linkPreview != ""
+            //     ? Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 16),
+            //         child: CustomButton(
+            //             text: widget.event.linkPreview ?? "Qatnashish",
+            //             onPressed: () async {
+            //               final url = widget.event.link;
+            //               if (url != null && url.isNotEmpty) {
+            //                 final uri = Uri.parse(url);
+            //                 if (await canLaunchUrl(uri)) {
+            //                   await launchUrl(uri,
+            //                       mode: LaunchMode.externalApplication);
+            //                 } else {
+            //                   ScaffoldMessenger.of(context).showSnackBar(
+            //                     const SnackBar(
+            //                         content: Text("URL ochib bo'lmadi")),
+            //                   );
+            //                 }
+            //               }
+            //             }))
+            //     : SizedBox(),
             12.vertical,
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -427,6 +427,27 @@ class _EventDetailState extends State<EventDetail> {
             // 12.vertical,
           ],
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+        child: widget.event.linkPreview != ""
+            ? CustomButton(
+                text: widget.event.linkPreview ?? "Qatnashish",
+                onPressed: () async {
+                  final url = widget.event.link;
+                  if (url != null && url.isNotEmpty) {
+                    final uri = Uri.parse(url);
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri,
+                          mode: LaunchMode.externalApplication);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("URL ochib bo'lmadi")),
+                      );
+                    }
+                  }
+                })
+            : SizedBox(),
       ),
     );
   }

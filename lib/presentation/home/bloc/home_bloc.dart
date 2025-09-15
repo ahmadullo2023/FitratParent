@@ -5,23 +5,17 @@ import '../model/story/story_model.dart';
 import '../model/student_model.dart';
 import '../repository/home_repository.dart';
 
-
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState()) {
-
-
-
     on<LoadStories>((event, emit) async {
       emit(state.copyWith(status: StoriesStatus.loading));
       try {
         final result = await homeRepository.getStories();
         emit(state.copyWith(
-            status: StoriesStatus.success,
-            storiesModel: result
-        ));
+            status: StoriesStatus.success, storiesModel: result));
       } on DioException catch (e) {
         emit(state.copyWith(status: StoriesStatus.error));
       } catch (e) {
@@ -49,18 +43,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         final result = await homeRepository.getLearning();
         emit(state.copyWith(
-            learningStatus: LearningStatus.success,
-          learningResponse: result
-        ));
+            learningStatus: LearningStatus.success, learningResponse: result));
       } on DioException catch (e) {
         emit(state.copyWith(learningStatus: LearningStatus.error));
       } catch (e) {
         emit(state.copyWith(learningStatus: LearningStatus.error));
       }
     });
-
   }
 }
 
 enum StudentStatus { loading, success, error }
+
 enum CoursesStatus { loading, success, error }

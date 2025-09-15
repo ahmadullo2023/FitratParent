@@ -39,7 +39,6 @@ class RequestHelper {
   Completer<void>? _refreshCompleter;
 
   RequestHelper() {
-    // 1) Talker logger interceptor
     dio.interceptors.add(TalkerDioLogger(
       settings: const TalkerDioLoggerSettings(
         printRequestHeaders: true,
@@ -48,7 +47,6 @@ class RequestHelper {
       ),
     ));
 
-    // 2) Alice interceptor (eng muhim qismi!)
     dio.interceptors.add(alice.getDioInterceptor());
   }
 
