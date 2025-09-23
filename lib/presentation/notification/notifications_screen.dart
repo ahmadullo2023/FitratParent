@@ -143,7 +143,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               notificationId: item.id);
                           NotificationService.markNotificationAsRead(
                               item.id ?? '');
-                          _notificationController.refresh();
+
+                          Future.delayed(const Duration(milliseconds: 300), () {
+                            _notificationController.refresh();
+                          });
                         },
                       );
                     },

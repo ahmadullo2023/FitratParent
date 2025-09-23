@@ -54,6 +54,19 @@ class _StoryScreenState extends State<StoryScreen> {
   set currentProgress(double value) => progressMap[currentOuterIndex] = value;
   set currentInnerIndex(int value) => innerIndexMap[currentOuterIndex] = value;
 
+  /// Pause (and optionally reset) a cached video controller by url
+  void _pauseVideoForUrl(String url, {bool reset = false}) {
+    if (url.endsWith('.mp4') && _videoControllerCache.containsKey(url)) {
+      final c = _videoControllerCache[url]!;
+      if (c.value.isInitialized) {
+        try {
+          c.pause();
+          if (reset) c.seekTo(Duration.zero);
+        } catch (_) {}
+      }
+    }
+  }
+
   void _startProgress() {
     if (isPaused || _isAnimating) return;
 
@@ -69,11 +82,16 @@ class _StoryScreenState extends State<StoryScreen> {
 
     const tick = Duration(milliseconds: 50);
     _timer = Timer.periodic(tick, (timer) {
-      if (!isPaused && !_isAnimating) {
+      if (!isPaused && !_isAnimating && mounted) {
         setState(() {
           currentProgress += tick.inMilliseconds / storyDuration.inMilliseconds;
           if (currentProgress >= 1.0) {
             currentProgress = 0.0;
+
+            final prevUrl =
+                widget.storiesData[currentOuterIndex][currentInnerIndex];
+            _pauseVideoForUrl(prevUrl, reset: true);
+
             if (currentInnerIndex <
                 widget.storiesData[currentOuterIndex].length - 1) {
               currentInnerIndex++;
@@ -110,6 +128,9 @@ class _StoryScreenState extends State<StoryScreen> {
 
   void _goToPreviousStory() {
     if (currentInnerIndex > 0) {
+      final prevUrl = widget.storiesData[currentOuterIndex][currentInnerIndex];
+      _pauseVideoForUrl(prevUrl, reset: true);
+
       setState(() {
         currentInnerIndex--;
         _innerPageController.jumpToPage(currentInnerIndex);
@@ -127,6 +148,9 @@ class _StoryScreenState extends State<StoryScreen> {
 
   void _goToNextStory() {
     if (currentInnerIndex < widget.storiesData[currentOuterIndex].length - 1) {
+      final prevUrl = widget.storiesData[currentOuterIndex][currentInnerIndex];
+      _pauseVideoForUrl(prevUrl, reset: true);
+
       setState(() {
         currentInnerIndex++;
         _innerPageController.jumpToPage(currentInnerIndex);
@@ -158,6 +182,9 @@ class _StoryScreenState extends State<StoryScreen> {
     _outerPageController.dispose();
     _innerPageController.dispose();
     for (final controller in _videoControllerCache.values) {
+      try {
+        controller.removeListener(() {});
+      } catch (_) {}
       controller.dispose();
     }
     _videoControllerCache.clear();
@@ -196,14 +223,17 @@ class _StoryScreenState extends State<StoryScreen> {
     if (url.endsWith('.mp4')) {
       if (!_videoControllerCache.containsKey(url)) {
         final controller = VideoPlayerController.networkUrl(Uri.parse(url));
+        _videoControllerCache[url] = controller;
+
         controller.initialize().then((_) {
-          setState(() {});
-          controller.play();
-          if (storyIndex == currentOuterIndex) {
-            _updateStoryDuration(controller.value.duration);
+          if (mounted) {
+            setState(() {});
+            if (storyIndex == currentOuterIndex && !isPaused && !_isAnimating) {
+              controller.play();
+              _updateStoryDuration(controller.value.duration);
+            }
           }
         });
-        _videoControllerCache[url] = controller;
       }
 
       final controller = _videoControllerCache[url]!;
@@ -248,6 +278,9 @@ class _StoryScreenState extends State<StoryScreen> {
                 final controller = _videoControllerCache[prevUrl]!;
                 if (controller.value.isInitialized) {
                   _videoPositionCache[prevUrl] = controller.value.position;
+                  try {
+                    controller.pause();
+                  } catch (_) {}
                 }
               }
 
@@ -260,10 +293,20 @@ class _StoryScreenState extends State<StoryScreen> {
               if (newUrl.endsWith('.mp4') &&
                   _videoControllerCache.containsKey(newUrl)) {
                 final controller = _videoControllerCache[newUrl]!;
-                controller.seekTo(Duration.zero);
-                controller.play();
+                try {
+                  final saved = _videoPositionCache[newUrl];
+                  if (saved != null && saved > Duration.zero) {
+                    controller.seekTo(saved);
+                  } else {
+                    controller.seekTo(Duration.zero);
+                  }
+                  controller.play();
+                } catch (_) {}
               }
 
+              try {
+                _innerPageController.dispose();
+              } catch (_) {}
               _innerPageController =
                   PageController(initialPage: currentInnerIndex);
               isPaused = false;
@@ -382,14 +425,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.initState();
 
     if (widget.controller.value.isInitialized) {
-      widget.controller.play();
-    } else {
-      widget.controller.initialize().then((_) {
-        if (mounted) {
-          setState(() {});
-          widget.controller.play();
-        }
-      });
+      if (!widget.isPaused) widget.controller.play();
     }
 
     widget.controller.addListener(_onVideoUpdate);
@@ -408,10 +444,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       parent?.setVideoProgress(progress);
     }
 
-    final videoUrl = widget.controller.dataSource;
-    parent?._videoPositionCache[videoUrl] = position;
-
     if (!_isNextTriggered &&
+        duration > Duration.zero &&
         position >= duration - const Duration(milliseconds: 300)) {
       _isNextTriggered = true;
       Future.microtask(() {
@@ -423,6 +457,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   void didUpdateWidget(covariant VideoPlayerWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.controller != widget.controller) {
+      try {
+        oldWidget.controller.removeListener(_onVideoUpdate);
+      } catch (_) {}
+      widget.controller.addListener(_onVideoUpdate);
+      _isNextTriggered = false;
+    }
+
     if (oldWidget.isPaused != widget.isPaused &&
         widget.controller.value.isInitialized) {
       if (widget.isPaused) {
@@ -435,27 +478,31 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onVideoUpdate);
+    try {
+      widget.controller.removeListener(_onVideoUpdate);
+    } catch (_) {}
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.controller.value.isInitialized) {
+      return const Center(child: CupertinoActivityIndicator());
+    }
+
     return Container(
       width: double.infinity,
       height: double.infinity,
       color: Colors.black,
       child: Center(
-        child: widget.controller.value.isInitialized
-            ? FittedBox(
-                fit: BoxFit.contain,
-                child: SizedBox(
-                  width: widget.controller.value.size.width,
-                  height: widget.controller.value.size.height,
-                  child: VideoPlayer(widget.controller),
-                ),
-              )
-            : const CupertinoActivityIndicator(),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: SizedBox(
+            width: widget.controller.value.size.width,
+            height: widget.controller.value.size.height,
+            child: VideoPlayer(widget.controller),
+          ),
+        ),
       ),
     );
   }
