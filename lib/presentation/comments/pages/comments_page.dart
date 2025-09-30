@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -26,12 +27,36 @@ class CommentsPage extends HookConsumerWidget {
   final String? lidId;
   final String? studentId;
 
+  bool isSameDay(DateTime d1, DateTime d2) {
+    return d1.year == d2.year && d1.month == d2.month && d1.day == d2.day;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commentController = useTextEditingController();
     final pagingController =
         useState<PagingController<int, CommentModel>?>(null);
     final selectedImage = useState<File?>(null);
+    DateTime? lastDate;
+    String? _lastRenderedDate;
+
+    String formatUzbekDate(DateTime date) {
+      final now = DateTime.now()
+          .toUtc()
+          .add(const Duration(hours: 5)); // Uzbekistan TZ (+5)
+      final today = DateTime(now.year, now.month, now.day);
+      final yesterday = today.subtract(const Duration(days: 1));
+
+      final target = DateTime(date.year, date.month, date.day);
+
+      if (target == today) {
+        return "Bugun";
+      } else if (target == yesterday) {
+        return "Kecha";
+      } else {
+        return DateFormat('dd.MM.yyyy').format(date);
+      }
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -62,7 +87,53 @@ class CommentsPage extends HookConsumerWidget {
                 onInit: (controller) => pagingController.value = controller,
                 upsideDown: true,
                 spacing: 12,
-                itemBuilder: (item) => MessageItem(model: item),
+                itemBuilder: (item) {
+                  final items = pagingController.value?.itemList ?? [];
+                  final currentIndex = items.indexOf(item);
+
+                  final itemDateTime = DateTime.parse(item.createdAt ?? "");
+                  final currentDate = formatUzbekDate(itemDateTime);
+
+                  String? nextDate;
+                  if (currentIndex + 1 < items.length) {
+                    final nextItem = items[currentIndex + 1];
+                    if (nextItem.createdAt != null) {
+                      nextDate =
+                          formatUzbekDate(DateTime.parse(nextItem.createdAt!));
+                    }
+                  }
+
+                  final showDate = currentDate != nextDate;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      if (showDate)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, top: 5, bottom: 10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Color(0xFFF3F4F6),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              child: Text(
+                                currentDate,
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF6C737F),
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
+                      MessageItem(model: item),
+                    ],
+                  );
+                },
                 getItems: (page) => commentRepository.getComments(
                   userId: studentId!,
                   page: page,
@@ -168,7 +239,6 @@ class CommentsPage extends HookConsumerWidget {
                               await commentRepository.addComment(
                                 comment: commentController.text.trim(),
                                 student: studentId,
-                                lid: lidId,
                                 imgId: imageId,
                               );
                               commentController.clear();

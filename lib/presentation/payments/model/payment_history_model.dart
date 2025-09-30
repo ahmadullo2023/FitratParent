@@ -30,7 +30,7 @@ class ResultsModel with _$ResultsModel {
       String? attendance,
       String? stuff,
       String? comment,
-      StudentInfo? studentInfo,
+      StudentInfo? student,
       String? created_at,
       String? updated_at,
       double? total,

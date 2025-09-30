@@ -252,7 +252,7 @@ mixin _$ResultsModel {
   String? get attendance => throw _privateConstructorUsedError;
   String? get stuff => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
-  StudentInfo? get studentInfo => throw _privateConstructorUsedError;
+  StudentInfo? get student => throw _privateConstructorUsedError;
   String? get created_at => throw _privateConstructorUsedError;
   String? get updated_at => throw _privateConstructorUsedError;
   double? get total => throw _privateConstructorUsedError;
@@ -285,14 +285,14 @@ abstract class $ResultsModelCopyWith<$Res> {
       String? attendance,
       String? stuff,
       String? comment,
-      StudentInfo? studentInfo,
+      StudentInfo? student,
       String? created_at,
       String? updated_at,
       double? total,
       double? balance});
 
   $KindModelCopyWith<$Res>? get kind;
-  $StudentInfoCopyWith<$Res>? get studentInfo;
+  $StudentInfoCopyWith<$Res>? get student;
 }
 
 /// @nodoc
@@ -320,7 +320,7 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
     Object? attendance = freezed,
     Object? stuff = freezed,
     Object? comment = freezed,
-    Object? studentInfo = freezed,
+    Object? student = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? total = freezed,
@@ -367,9 +367,9 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
-      studentInfo: freezed == studentInfo
-          ? _value.studentInfo
-          : studentInfo // ignore: cast_nullable_to_non_nullable
+      student: freezed == student
+          ? _value.student
+          : student // ignore: cast_nullable_to_non_nullable
               as StudentInfo?,
       created_at: freezed == created_at
           ? _value.created_at
@@ -408,13 +408,13 @@ class _$ResultsModelCopyWithImpl<$Res, $Val extends ResultsModel>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $StudentInfoCopyWith<$Res>? get studentInfo {
-    if (_value.studentInfo == null) {
+  $StudentInfoCopyWith<$Res>? get student {
+    if (_value.student == null) {
       return null;
     }
 
-    return $StudentInfoCopyWith<$Res>(_value.studentInfo!, (value) {
-      return _then(_value.copyWith(studentInfo: value) as $Val);
+    return $StudentInfoCopyWith<$Res>(_value.student!, (value) {
+      return _then(_value.copyWith(student: value) as $Val);
     });
   }
 }
@@ -438,7 +438,7 @@ abstract class _$$ResultsModelImplCopyWith<$Res>
       String? attendance,
       String? stuff,
       String? comment,
-      StudentInfo? studentInfo,
+      StudentInfo? student,
       String? created_at,
       String? updated_at,
       double? total,
@@ -447,7 +447,7 @@ abstract class _$$ResultsModelImplCopyWith<$Res>
   @override
   $KindModelCopyWith<$Res>? get kind;
   @override
-  $StudentInfoCopyWith<$Res>? get studentInfo;
+  $StudentInfoCopyWith<$Res>? get student;
 }
 
 /// @nodoc
@@ -473,7 +473,7 @@ class __$$ResultsModelImplCopyWithImpl<$Res>
     Object? attendance = freezed,
     Object? stuff = freezed,
     Object? comment = freezed,
-    Object? studentInfo = freezed,
+    Object? student = freezed,
     Object? created_at = freezed,
     Object? updated_at = freezed,
     Object? total = freezed,
@@ -520,9 +520,9 @@ class __$$ResultsModelImplCopyWithImpl<$Res>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
-      studentInfo: freezed == studentInfo
-          ? _value.studentInfo
-          : studentInfo // ignore: cast_nullable_to_non_nullable
+      student: freezed == student
+          ? _value.student
+          : student // ignore: cast_nullable_to_non_nullable
               as StudentInfo?,
       created_at: freezed == created_at
           ? _value.created_at
@@ -559,7 +559,7 @@ class _$ResultsModelImpl implements _ResultsModel {
       this.attendance,
       this.stuff,
       this.comment,
-      this.studentInfo,
+      this.student,
       this.created_at,
       this.updated_at,
       this.total,
@@ -589,7 +589,7 @@ class _$ResultsModelImpl implements _ResultsModel {
   @override
   final String? comment;
   @override
-  final StudentInfo? studentInfo;
+  final StudentInfo? student;
   @override
   final String? created_at;
   @override
@@ -601,7 +601,7 @@ class _$ResultsModelImpl implements _ResultsModel {
 
   @override
   String toString() {
-    return 'ResultsModel(id: $id, action: $action, casher: $casher, amount: $amount, kind: $kind, payment_method: $payment_method, lid: $lid, attendance: $attendance, stuff: $stuff, comment: $comment, studentInfo: $studentInfo, created_at: $created_at, updated_at: $updated_at, total: $total, balance: $balance)';
+    return 'ResultsModel(id: $id, action: $action, casher: $casher, amount: $amount, kind: $kind, payment_method: $payment_method, lid: $lid, attendance: $attendance, stuff: $stuff, comment: $comment, student: $student, created_at: $created_at, updated_at: $updated_at, total: $total, balance: $balance)';
   }
 
   @override
@@ -621,8 +621,7 @@ class _$ResultsModelImpl implements _ResultsModel {
                 other.attendance == attendance) &&
             (identical(other.stuff, stuff) || other.stuff == stuff) &&
             (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.studentInfo, studentInfo) ||
-                other.studentInfo == studentInfo) &&
+            (identical(other.student, student) || other.student == student) &&
             (identical(other.created_at, created_at) ||
                 other.created_at == created_at) &&
             (identical(other.updated_at, updated_at) ||
@@ -645,7 +644,7 @@ class _$ResultsModelImpl implements _ResultsModel {
       attendance,
       stuff,
       comment,
-      studentInfo,
+      student,
       created_at,
       updated_at,
       total,
@@ -679,7 +678,7 @@ abstract class _ResultsModel implements ResultsModel {
       final String? attendance,
       final String? stuff,
       final String? comment,
-      final StudentInfo? studentInfo,
+      final StudentInfo? student,
       final String? created_at,
       final String? updated_at,
       final double? total,
@@ -709,7 +708,7 @@ abstract class _ResultsModel implements ResultsModel {
   @override
   String? get comment;
   @override
-  StudentInfo? get studentInfo;
+  StudentInfo? get student;
   @override
   String? get created_at;
   @override

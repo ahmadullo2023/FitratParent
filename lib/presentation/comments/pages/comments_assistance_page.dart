@@ -120,7 +120,6 @@ class CommentsAssistantPage extends HookConsumerWidget {
                     comment: commentController.text,
                     student: id,
                     // createdAt: DateTime.now().toUtc().toIso8601String(),
-                    lid: id,
                   )
                       .then((_) {
                     pagingController.value?.refresh();

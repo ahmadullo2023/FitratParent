@@ -26,8 +26,6 @@ class PaymentRepository {
           type == "Click" ? "/clickuz/order/" : "/webhook/paycom", body,
           log: true);
 
-      print("BU payment ===> ${response}");
-
       return PaymentModel.fromJson(response);
     } catch (e, s) {
       Logger().e(["ERROR", e, s]);
@@ -36,7 +34,8 @@ class PaymentRepository {
   }
 
   Future<PaymentHistoryModel> paymentHistory() async {
-    print("paymentHistory funksiya ishladi");
+    print(
+        "paymentHistory funksiya ishladi ===> ${cache.getString("studentIddddddd")}");
 
     try {
       final response = await requestHelper.getWithAuth(

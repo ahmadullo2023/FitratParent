@@ -51,23 +51,49 @@ class MessageItem extends StatelessWidget {
                   ? const EdgeInsets.only(left: 70)
                   : const EdgeInsets.only(right: 50, left: 30),
               padding: const EdgeInsets.all(8),
+
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.shade200,
-                  width: 1,
-                ),
-                color: isByMine ? Color(0xFFC2F0D5) : AppColors.white,
-
+                // border: Border.all(
+                //   color: Colors.grey.shade200,
+                //   width: 1,
+                // ),
+                color: isByMine ? const Color(0xFFC2F0D5) : AppColors.white,
                 borderRadius: BorderRadius.only(
-                  bottomRight:
-                      !isByMine ? Radius.circular(10) : Radius.circular(0),
-                  topLeft: !isByMine ? Radius.circular(0) : Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
+                  bottomRight: !isByMine
+                      ? const Radius.circular(10)
+                      : const Radius.circular(0),
+                  topLeft: !isByMine
+                      ? const Radius.circular(0)
+                      : const Radius.circular(10),
+                  topRight: const Radius.circular(10),
+                  bottomLeft: const Radius.circular(10),
                 ),
-
-                // borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: .2,
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
+
+              // decoration: BoxDecoration(
+              //   border: Border.all(
+              //     color: Colors.grey.shade200,
+              //     width: 1,
+              //   ),
+              //   color: isByMine ? Color(0xFFC2F0D5) : AppColors.white,
+              //   borderRadius: BorderRadius.only(
+              //     bottomRight: !isByMine ? Radius.circular(10) : Radius.circular(0),
+              //     topLeft: !isByMine ? Radius.circular(0) : Radius.circular(10),
+              //     topRight: Radius.circular(10),
+              //     bottomLeft: Radius.circular(10),
+              //   ),
+              //
+              //   // borderRadius: BorderRadius.circular(8),
+              // ),
+
               child: Stack(
                 children: [
                   Column(

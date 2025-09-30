@@ -46,9 +46,9 @@ class _ChildernPageState extends State<ChildernPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => CommentsPage(
+
                                 lidId: null,
-                                studentId:
-                                    cache.getString("studentIddddddd"))));
+                                studentId: state.learningResponse?.first.studentId)));
                   },
                   child: SvgPicture.asset("assets/icons/SupportIcon.svg")),
               SizedBox(width: 10),

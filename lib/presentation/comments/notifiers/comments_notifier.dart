@@ -16,6 +16,6 @@ class CommentsNotifier extends _$CommentsNotifier {
   Future<void> addComment(
       {String? student, String? lid, required String comment}) async {
     return commentRepository.addComment(
-        student: student, lid: lid, comment: comment);
+        student: student, comment: comment);
   }
 }

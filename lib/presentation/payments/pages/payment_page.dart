@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
+import '../../widgets/custom_button.dart';
 
 class PaymentsPage extends StatefulWidget {
   const PaymentsPage({super.key});
@@ -47,7 +48,6 @@ class _PaymentsPageState extends State<PaymentsPage> {
                   },
                   child: SingleChildScrollView(
                     physics: NeverScrollableScrollPhysics(),
-                    // physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,16 +122,142 @@ class _PaymentsPageState extends State<PaymentsPage> {
                               : Padding(
                                   padding: const EdgeInsets.only(bottom: 65),
                                   child: ListView.builder(
-                                    // physics: NeverScrollableScrollPhysics(),
                                     itemCount: filteredPayments.length,
                                     itemBuilder: (context, index) {
+                                      print(
+                                          "filteredPayments[index] ==> ${filteredPayments[index]}");
+
                                       final item = filteredPayments[index];
-                                      return _paymentItem(
-                                        item.action != "INCOME",
-                                        item.payment_method ?? "",
-                                        item.amount.toString(),
-                                        formatDate(item.created_at!),
-                                        item.kind?.name ?? "",
+                                      return GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            16))),
+                                            builder: (context) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topRight: Radius
+                                                                .circular(12),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    12))),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 12),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      // Header
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          const Text(
+                                                            "To‘lov ma’lumotlari",
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                            icon: const Icon(
+                                                                Icons.close),
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: item.action ==
+                                                                  "INCOME"
+                                                              ? Colors
+                                                                  .green.shade50
+                                                              : Colors
+                                                                  .red.shade50,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: item.action ==
+                                                                "INCOME"
+                                                            ? Icon(
+                                                                Icons
+                                                                    .north_east,
+                                                                color: Colors
+                                                                    .green,
+                                                                size: 28)
+                                                            : Icon(
+                                                                Icons
+                                                                    .north_east,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: 28),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 16),
+                                                      _infoRow("O‘quvchi",
+                                                          "${item.student?.first_name ?? ""} ${item.student?.last_name ?? ""}"),
+                                                      _infoRow("Miqdor",
+                                                          "${item.action == "INCOME" ? "+" : "-"}${formatAmount(item.amount?.toString())}"),
+                                                      _infoRow(
+                                                          "To‘lov maqsadi",
+                                                          item.action ==
+                                                                  "INCOME"
+                                                              ? "Kirim"
+                                                              : "Chiqim"),
+                                                      _infoRow("To‘lov usuli",
+                                                          "Payme"),
+                                                      _infoRow("Izoh",
+                                                          item.comment ?? ""),
+                                                      _infoRow(
+                                                          "Sana",
+                                                          formatDate(
+                                                              item.created_at ??
+                                                                  "")),
+                                                      const SizedBox(
+                                                          height: 20),
+                                                      CustomButton(
+                                                          text: "Yopish",
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                      SizedBox(height: 45),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: _paymentItem(
+                                          item.action != "INCOME",
+                                          item.payment_method ?? "",
+                                          item.amount.toString(),
+                                          formatDate(item.created_at!),
+                                          item.kind?.name ?? "",
+                                        ),
                                       );
                                     },
                                   ),
@@ -360,5 +486,62 @@ class _PaymentsPageState extends State<PaymentsPage> {
         ],
       ),
     );
+  }
+
+  /// InfoRow helper
+  Widget _infoRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          const SizedBox(width: 12),
+          title == "O‘quvchi"
+              ? SizedBox(
+                  width: 220,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      value,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                )
+              : Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      value,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+
+  /// Miqdor formatlash
+  String formatAmount(String? amount) {
+    if (amount == null) return '';
+    final number = int.tryParse(amount) ?? 0;
+    final formatter = NumberFormat.decimalPattern();
+    return formatter.format(number);
   }
 }

@@ -31,13 +31,22 @@ class _ItemNotificationState extends State<ItemNotification> {
   }
 
   void _handleTap() {
-    if (_showDot) {
+    if (!_showDot) {
       setState(() {
         _showDot = false;
       });
     }
     widget.onTap();
   }
+
+  // void _handleTap() {
+  //   if (_showDot) {
+  //     setState(() {
+  //       _showDot = false;
+  //     });
+  //   }
+  //   widget.onTap();
+  // }
 
   @override
   Widget build(BuildContext context) {

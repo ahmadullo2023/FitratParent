@@ -282,12 +282,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   bloc.add(PayEvent(
                                     lid: '',
-                                    student: state.learningResponse
-                                            ?.where(
-                                                (e) => e.studentId == parentId)
-                                            .map((e) => e.studentId)
-                                            .join(",") ??
+                                    student: state.learningResponse?.first
+                                            .studentId ??
                                         "",
+                                    //     ?.where(
+                                    //         (e) => e.studentId == parentId)
+                                    //     .map((e) => e.studentId)
+                                    //     .join(",") ??
+                                    // "",
                                     amount: _amountController.text
                                         .replaceAll(RegExp(r'[^0-9]'), ''),
                                     type: selectedValue,
