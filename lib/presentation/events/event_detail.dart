@@ -34,6 +34,33 @@ class _EventDetailState extends State<EventDetail> {
     _initializeVideoControllers();
   }
 
+  bool _isAnyVideoPlaying = false;
+
+  void _onVideoStateChanged(int index) {
+    final controller = _videoControllers[index];
+    if (controller == null || !controller.value.isInitialized) {
+      return;
+    }
+
+    final VideoPlayerValue value = controller.value;
+    bool hasEnded =
+        value.position >= value.duration && value.duration.inMilliseconds > 0;
+
+    bool isPlaying = value.isPlaying;
+
+    if (_isAnyVideoPlaying != isPlaying) {
+      setState(() {
+        _isAnyVideoPlaying = isPlaying;
+      });
+    }
+
+    if (_videoEnded[index] != hasEnded) {
+      setState(() {
+        _videoEnded[index] = hasEnded;
+      });
+    }
+  }
+
   void _initializeVideoControllers() {
     for (int i = 0; i < (widget.event.file?.length ?? 0); i++) {
       final file = widget.event.file![i];
@@ -91,22 +118,22 @@ class _EventDetailState extends State<EventDetail> {
     });
   }
 
-  void _onVideoStateChanged(int index) {
-    final controller = _videoControllers[index];
-    if (controller == null || !controller.value.isInitialized) {
-      return;
-    }
-
-    final VideoPlayerValue value = controller.value;
-    bool hasEnded =
-        value.position >= value.duration && value.duration.inMilliseconds > 0;
-
-    if (_videoEnded[index] != hasEnded) {
-      setState(() {
-        _videoEnded[index] = hasEnded;
-      });
-    }
-  }
+  // void _onVideoStateChanged(int index) {
+  //   final controller = _videoControllers[index];
+  //   if (controller == null || !controller.value.isInitialized) {
+  //     return;
+  //   }
+  //
+  //   final VideoPlayerValue value = controller.value;
+  //   bool hasEnded =
+  //       value.position >= value.duration && value.duration.inMilliseconds > 0;
+  //
+  //   if (_videoEnded[index] != hasEnded) {
+  //     setState(() {
+  //       _videoEnded[index] = hasEnded;
+  //     });
+  //   }
+  // }
 
   Widget _buildVideoPlayer(int index) {
     if (_videoLoading[index] == true) {
@@ -319,7 +346,7 @@ class _EventDetailState extends State<EventDetail> {
                 enlargeCenterPage: true,
                 enlargeStrategy: CenterPageEnlargeStrategy.scale,
                 enableInfiniteScroll: true,
-                autoPlay: true,
+                autoPlay: !_isAnyVideoPlaying,
                 autoPlayInterval: const Duration(seconds: 4),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 onPageChanged: (index, reason) {
@@ -329,6 +356,56 @@ class _EventDetailState extends State<EventDetail> {
                 },
               ),
             ),
+
+            // CarouselSlider.builder(
+            //   itemCount: widget.event.file?.length ?? 0,
+            //   itemBuilder: (context, index, realIndex) {
+            //     final file = widget.event.file![index];
+            //     final filePath = file.file;
+            //     return ClipRRect(
+            //       borderRadius: BorderRadius.circular(16),
+            //       child: _isVideoFile(filePath)
+            //           ? _buildVideoPlayer(index)
+            //           : _isImageFile(filePath)
+            //               ? CachedNetworkImage(
+            //                   imageUrl: widget.event.photo!.file ?? filePath!,
+            //                   fit: BoxFit.cover,
+            //                   width: double.infinity,
+            //                   height: double.infinity,
+            //                   placeholder: (context, url) => Container(
+            //                     color: Colors.grey[200],
+            //                   ),
+            //                   errorWidget: (context, url, error) => Container(
+            //                     color: Colors.grey[200],
+            //                     child:
+            //                         const Icon(Icons.error, color: Colors.red),
+            //                   ),
+            //                 )
+            //               : Container(
+            //                   color: Colors.grey[200],
+            //                   child: const Center(
+            //                     child: Icon(Icons.insert_drive_file,
+            //                         size: 48, color: Colors.grey),
+            //                   ),
+            //                 ),
+            //     );
+            //   },
+            //   options: CarouselOptions(
+            //     height: 200,
+            //     viewportFraction: 0.9,
+            //     enlargeCenterPage: true,
+            //     enlargeStrategy: CenterPageEnlargeStrategy.scale,
+            //     enableInfiniteScroll: true,
+            //     autoPlay: true,
+            //     autoPlayInterval: const Duration(seconds: 4),
+            //     autoPlayAnimationDuration: const Duration(milliseconds: 800),
+            //     onPageChanged: (index, reason) {
+            //       setState(() {
+            //         activeIndex = index;
+            //       });
+            //     },
+            //   ),
+            // ),
             const SizedBox(height: 8),
             AnimatedSmoothIndicator(
               activeIndex: activeIndex,

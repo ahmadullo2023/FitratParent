@@ -65,6 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final student = context.watch<MainBloc>().state.studentModel;
     final student2 = context.watch<MainBloc>().state.meModel;
 
+    final now = DateTime.now();
+
+    final activeEvents = events.where((event) {
+      if (event.endDate == null) return true;
+      final end = DateTime.tryParse(event.endDate!);
+      if (end == null) return true;
+      return end.isAfter(now);
+    }).toList();
+
     return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
       return BlocBuilder<ProfileBloc, ProfileState>(
         builder: (proContext, proState) {
@@ -139,46 +148,48 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         const SizedBox(height: 12),
                                         12.vertical,
-                                        if (events.isNotEmpty) ...[
+
+                                        if (activeEvents.isNotEmpty) ...[
                                           Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16.0),
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      "Tadbirlar",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Color(0xff0D121C),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 18,
-                                                          fontFamily:
-                                                              "outfitMedium"),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Tadbirlar",
+                                                  style: TextStyle(
+                                                    color: Color(0xff0D121C),
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                    fontFamily: "outfitMedium",
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EventsScreen()),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    "Barchasi",
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppColors.emerald500,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 14,
                                                     ),
-                                                    InkWell(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          EventsScreen()));
-                                                        },
-                                                        child: Text("Barchasi",
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .emerald500,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontSize: 14,
-                                                            )))
-                                                  ])),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                           12.vertical,
                                           CarouselSlider(
                                             options: CarouselOptions(
@@ -196,19 +207,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Duration(milliseconds: 600),
                                               autoPlayCurve: Curves.easeInOut,
                                             ),
-                                            items: List.generate(events.length,
-                                                (index) {
+                                            items: List.generate(
+                                                activeEvents.length, (index) {
                                               return Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 6),
                                                 child: ItemEvents(
                                                   backgroundImage:
-                                                      events[index].photo?.file,
-                                                  title:
-                                                      events[index].comment ??
-                                                          "No comment yet",
-                                                  time: events[index].endDate ??
+                                                      activeEvents[index]
+                                                          .photo
+                                                          ?.file,
+                                                  title: activeEvents[index]
+                                                          .comment ??
+                                                      "No comment yet",
+                                                  time: activeEvents[index]
+                                                          .endDate ??
                                                       "",
                                                   onTab: () {
                                                     Navigator.push(
@@ -216,8 +230,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             EventDetail(
-                                                                event: events[
-                                                                    index]),
+                                                                event:
+                                                                    activeEvents[
+                                                                        index]),
                                                       ),
                                                     );
                                                   },
@@ -228,6 +243,97 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                           const SizedBox(height: 12),
                                         ],
+
+                                        // if (events.isNotEmpty) ...[
+                                        //   Padding(
+                                        //       padding:
+                                        //           const EdgeInsets.symmetric(
+                                        //               horizontal: 16.0),
+                                        //       child: Row(
+                                        //           mainAxisAlignment:
+                                        //               MainAxisAlignment
+                                        //                   .spaceBetween,
+                                        //           children: [
+                                        //             Text(
+                                        //               "Tadbirlar",
+                                        //               style: TextStyle(
+                                        //                   color:
+                                        //                       Color(0xff0D121C),
+                                        //                   fontWeight:
+                                        //                       FontWeight.w600,
+                                        //                   fontSize: 18,
+                                        //                   fontFamily:
+                                        //                       "outfitMedium"),
+                                        //             ),
+                                        //             InkWell(
+                                        //                 onTap: () {
+                                        //                   Navigator.push(
+                                        //                       context,
+                                        //                       MaterialPageRoute(
+                                        //                           builder:
+                                        //                               (context) =>
+                                        //                                   EventsScreen()));
+                                        //                 },
+                                        //                 child: Text("Barchasi",
+                                        //                     style: TextStyle(
+                                        //                       color: AppColors
+                                        //                           .emerald500,
+                                        //                       fontWeight:
+                                        //                           FontWeight
+                                        //                               .w400,
+                                        //                       fontSize: 14,
+                                        //                     )))
+                                        //           ])),
+                                        //   12.vertical,
+                                        //   CarouselSlider(
+                                        //     options: CarouselOptions(
+                                        //       autoPlay: true,
+                                        //       height: 126,
+                                        //       viewportFraction: 0.8,
+                                        //       enlargeCenterPage: true,
+                                        //       enlargeStrategy:
+                                        //           CenterPageEnlargeStrategy
+                                        //               .height,
+                                        //       enableInfiniteScroll: true,
+                                        //       padEnds: true,
+                                        //       initialPage: 0,
+                                        //       autoPlayAnimationDuration:
+                                        //           Duration(milliseconds: 600),
+                                        //       autoPlayCurve: Curves.easeInOut,
+                                        //     ),
+                                        //     items: List.generate(events.length,
+                                        //         (index) {
+                                        //       return Padding(
+                                        //         padding:
+                                        //             const EdgeInsets.symmetric(
+                                        //                 horizontal: 6),
+                                        //         child: ItemEvents(
+                                        //           backgroundImage:
+                                        //               events[index].photo?.file,
+                                        //           title:
+                                        //               events[index].comment ??
+                                        //                   "No comment yet",
+                                        //           time: events[index].endDate ??
+                                        //               "",
+                                        //           onTab: () {
+                                        //             Navigator.push(
+                                        //               context,
+                                        //               MaterialPageRoute(
+                                        //                 builder: (context) =>
+                                        //                     EventDetail(
+                                        //                         event: events[
+                                        //                             index]),
+                                        //               ),
+                                        //             );
+                                        //           },
+                                        //           isEvent: true,
+                                        //         ),
+                                        //       );
+                                        //     }),
+                                        //   ),
+                                        //   const SizedBox(height: 12),
+                                        // ],
+
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12),

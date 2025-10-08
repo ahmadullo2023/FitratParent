@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
 class StoryScreen extends StatefulWidget {
@@ -254,149 +255,152 @@ class _StoryScreenState extends State<StoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: GestureDetector(
-        onVerticalDragEnd: (details) {
-          if (details.velocity.pixelsPerSecond.dy > 500) {
-            Navigator.pop(context);
-          }
-        },
-        child: PageView.builder(
-          controller: _outerPageController,
-          itemCount: widget.storiesData.length,
-          physics: const BouncingScrollPhysics(),
-          onPageChanged: (index) {
-            setState(() {
-              final prevOuterIndex = currentOuterIndex;
-              final prevInnerIndex = innerIndexMap[prevOuterIndex] ?? 0;
-              final prevUrl =
-                  widget.storiesData[prevOuterIndex][prevInnerIndex];
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: GestureDetector(
+          onVerticalDragEnd: (details) {
+            if (details.velocity.pixelsPerSecond.dy > 500) {
+              Navigator.pop(context);
+            }
+          },
+          child: PageView.builder(
+            controller: _outerPageController,
+            itemCount: widget.storiesData.length,
+            physics: const BouncingScrollPhysics(),
+            onPageChanged: (index) {
+              setState(() {
+                final prevOuterIndex = currentOuterIndex;
+                final prevInnerIndex = innerIndexMap[prevOuterIndex] ?? 0;
+                final prevUrl =
+                    widget.storiesData[prevOuterIndex][prevInnerIndex];
 
-              if (prevUrl.endsWith('.mp4') &&
-                  _videoControllerCache.containsKey(prevUrl)) {
-                final controller = _videoControllerCache[prevUrl]!;
-                if (controller.value.isInitialized) {
-                  _videoPositionCache[prevUrl] = controller.value.position;
+                if (prevUrl.endsWith('.mp4') &&
+                    _videoControllerCache.containsKey(prevUrl)) {
+                  final controller = _videoControllerCache[prevUrl]!;
+                  if (controller.value.isInitialized) {
+                    _videoPositionCache[prevUrl] = controller.value.position;
+                    try {
+                      controller.pause();
+                    } catch (_) {}
+                  }
+                }
+
+                currentOuterIndex = index;
+                currentProgress = progressMap[index] ?? 0.0;
+                currentInnerIndex = innerIndexMap[index] ?? 0;
+
+                final newUrl =
+                    widget.storiesData[currentOuterIndex][currentInnerIndex];
+                if (newUrl.endsWith('.mp4') &&
+                    _videoControllerCache.containsKey(newUrl)) {
+                  final controller = _videoControllerCache[newUrl]!;
                   try {
-                    controller.pause();
+                    final saved = _videoPositionCache[newUrl];
+                    if (saved != null && saved > Duration.zero) {
+                      controller.seekTo(saved);
+                    } else {
+                      controller.seekTo(Duration.zero);
+                    }
+                    controller.play();
                   } catch (_) {}
                 }
-              }
 
-              currentOuterIndex = index;
-              currentProgress = progressMap[index] ?? 0.0;
-              currentInnerIndex = innerIndexMap[index] ?? 0;
-
-              final newUrl =
-                  widget.storiesData[currentOuterIndex][currentInnerIndex];
-              if (newUrl.endsWith('.mp4') &&
-                  _videoControllerCache.containsKey(newUrl)) {
-                final controller = _videoControllerCache[newUrl]!;
                 try {
-                  final saved = _videoPositionCache[newUrl];
-                  if (saved != null && saved > Duration.zero) {
-                    controller.seekTo(saved);
-                  } else {
-                    controller.seekTo(Duration.zero);
-                  }
-                  controller.play();
+                  _innerPageController.dispose();
                 } catch (_) {}
-              }
+                _innerPageController =
+                    PageController(initialPage: currentInnerIndex);
+                isPaused = false;
+                _isAnimating = false;
+                _timer?.cancel();
+              });
 
-              try {
-                _innerPageController.dispose();
-              } catch (_) {}
-              _innerPageController =
-                  PageController(initialPage: currentInnerIndex);
-              isPaused = false;
-              _isAnimating = false;
-              _timer?.cancel();
-            });
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _startProgress();
+              });
+            },
+            itemBuilder: (context, index) {
+              return AnimatedBuilder(
+                animation: _outerPageController,
+                builder: (context, child) {
+                  double value = 0.0;
+                  if (_outerPageController.position.haveDimensions) {
+                    value = _outerPageController.page! - index;
+                  }
+                  value = value.clamp(-1.0, 1.0);
+                  bool isAnimatingNow = value.abs() > 0.01;
 
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _startProgress();
-            });
-          },
-          itemBuilder: (context, index) {
-            return AnimatedBuilder(
-              animation: _outerPageController,
-              builder: (context, child) {
-                double value = 0.0;
-                if (_outerPageController.position.haveDimensions) {
-                  value = _outerPageController.page! - index;
-                }
-                value = value.clamp(-1.0, 1.0);
-                bool isAnimatingNow = value.abs() > 0.01;
-
-                if (isAnimatingNow != _isAnimating) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    setState(() {
-                      _isAnimating = isAnimatingNow;
-                      if (_isAnimating) {
-                        _timer?.cancel();
-                      } else if (!isPaused) {
-                        _startProgress();
-                      }
+                  if (isAnimatingNow != _isAnimating) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      setState(() {
+                        _isAnimating = isAnimatingNow;
+                        if (_isAnimating) {
+                          _timer?.cancel();
+                        } else if (!isPaused) {
+                          _startProgress();
+                        }
+                      });
                     });
-                  });
-                }
+                  }
 
-                return Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateY(pi / 3 * value),
-                  child: Stack(
-                    children: [
-                      const SizedBox(height: 12),
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onLongPressStart: (_) {
-                          setState(() {
-                            _isLongPressing = true;
-                            if (!isPaused) _pauseStory();
-                          });
-                        },
-                        onLongPressEnd: (_) {
-                          setState(() {
-                            _isLongPressing = false;
-                            if (isPaused && !_isAnimating) _resumeStory();
-                          });
-                        },
-                        onTapUp: (details) {
-                          if (_isLongPressing || _isAnimating) return;
-                          final dx = details.globalPosition.dx;
-                          final third = MediaQuery.of(context).size.width / 3;
-                          if (dx < third) {
-                            _goToPreviousStory();
-                          } else if (dx > 2 * third) {
-                            _goToNextStory();
-                          } else {
-                            isPaused ? _resumeStory() : _pauseStory();
-                          }
-                        },
-                        child: PageView.builder(
-                          controller: _innerPageController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: widget.storiesData[index].length,
-                          itemBuilder: (context, i) =>
-                              buildMedia(widget.storiesData[index][i], index),
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(pi / 3 * value),
+                    child: Stack(
+                      children: [
+                        const SizedBox(height: 12),
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onLongPressStart: (_) {
+                            setState(() {
+                              _isLongPressing = true;
+                              if (!isPaused) _pauseStory();
+                            });
+                          },
+                          onLongPressEnd: (_) {
+                            setState(() {
+                              _isLongPressing = false;
+                              if (isPaused && !_isAnimating) _resumeStory();
+                            });
+                          },
+                          onTapUp: (details) {
+                            if (_isLongPressing || _isAnimating) return;
+                            final dx = details.globalPosition.dx;
+                            final third = MediaQuery.of(context).size.width / 3;
+                            if (dx < third) {
+                              _goToPreviousStory();
+                            } else if (dx > 2 * third) {
+                              _goToNextStory();
+                            } else {
+                              isPaused ? _resumeStory() : _pauseStory();
+                            }
+                          },
+                          child: PageView.builder(
+                            controller: _innerPageController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: widget.storiesData[index].length,
+                            itemBuilder: (context, i) =>
+                                buildMedia(widget.storiesData[index][i], index),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 24, left: 8, right: 8),
-                        child: SafeArea(
-                          child: buildProgressBar(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 24, left: 8, right: 8),
+                          child: SafeArea(
+                            child: buildProgressBar(),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

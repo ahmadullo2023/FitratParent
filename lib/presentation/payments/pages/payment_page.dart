@@ -25,7 +25,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   String formatDate(String isoString) {
     final dateTime = DateTime.parse(isoString).toLocal();
-    final formatter = DateFormat('dd.MM.yyyy, HH:mm');
+    final formatter = DateFormat('HH:mm, dd.MM.yyyy');
     return formatter.format(dateTime);
   }
 
@@ -150,10 +150,12 @@ class _PaymentsPageState extends State<PaymentsPage> {
                                                                 Radius.circular(
                                                                     12))),
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 12),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 16,
+                                                          right: 16,
+                                                          bottom: 40,
+                                                          top: 12),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
